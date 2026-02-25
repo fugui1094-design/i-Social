@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>i-Social Mirror｜社会化生存·全息镜像测试</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Gatekeeper Screen -->
+      <section id="gate-screen" class="screen active">
+        <div class="card gate-card">
+          <div class="badge">i-Social Mirror</div>
+          <h1 class="title">社会化生存·全息镜像测试</h1>
+          <p class="subtitle">深度扫描你的防御机制与博弈段位</p>
+          <label class="input-label" for="access-code">请输入测试码</label>
+          <div class="input-row">
+            <input
+              id="access-code"
+              type="password"
+              placeholder="例如：SHH2026CS13"
+              autocomplete="off"
+            />
+            <button id="start-btn" class="primary-btn">开始测试</button>
+          </div>
+          <p id="access-error" class="error-text"></p>
+          <p class="helper-text">提示：测试码仅用于筛选“认真对待自己”的人。</p>
+        </div>
+      </section>
+
+      <!-- Quiz Screen -->
+      <section id="quiz-screen" class="screen">
+        <header class="top-bar">
+          <div class="progress-wrapper">
+            <div id="progress-bar" class="progress-bar"></div>
+          </div>
+          <div id="progress-text" class="progress-text">Question 1 / 30</div>
+        </header>
+
+        <main class="quiz-main">
+          <div id="question-card" class="card question-card slide-in">
+            <div class="question-meta">
+              <span id="question-index" class="question-index">Q1</span>
+              <span class="question-tag">社会化情境判断</span>
+            </div>
+            <h2 id="question-text" class="question-text"></h2>
+            <div id="options-container" class="options-container"></div>
+          </div>
+        </main>
+      </section>
+
+      <!-- Loading / Analyzing Screen -->
+      <section id="analyzing-screen" class="screen">
+        <div class="card analyzing-card">
+          <div class="loader"></div>
+          <p class="analyzing-title">正在分析你的社会化全息镜像...</p>
+          <p class="analyzing-subtitle">深度扫描防御机制、能量分配与博弈段位</p>
+        </div>
+      </section>
+
+      <!-- Result Screen -->
+      <section id="result-screen" class="screen">
+        <div class="card result-card">
+          <div class="badge">扫描完成</div>
+          <h2 class="result-title">你的 i-Social 镜像</h2>
+
+          <div class="score-row">
+            <div class="score-block">
+              <span class="score-label">总分</span>
+              <span id="total-score" class="score-value">0</span>
+            </div>
+            <div class="score-block">
+              <span class="score-label">段位称号</span>
+              <span id="rank-title" class="rank-title"></span>
+            </div>
+          </div>
+
+          <div class="mirror-section">
+            <h3 class="section-title">镜像画像</h3>
+            <p id="mirror-text" class="mirror-text"></p>
+          </div>
+
+          <div class="prescription-section">
+            <h3 class="section-title">生存处方</h3>
+            <div id="prescription-list" class="prescription-list"></div>
+          </div>
+
+          <div class="actions-row">
+            <button id="save-btn" class="secondary-btn">保存结果截图</button>
+            <a id="guide-link" href="http://www.baidu.com/" target="_blank" rel="noopener noreferrer" class="guide-btn">免费领取社会化指南</a>
+            <button id="retry-btn" class="ghost-btn">重新测试</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- html2canvas for screenshot -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+  </html>
+
