@@ -1,0 +1,2505 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LITERATURE · 文学人物原型测试</title>
+    <meta name="description" content="一份完整度更高的文学人物原型测试。24 道题，匹配 16 种文学人物侧面。"/>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --font-serif-cn: "Songti SC", "STSong", "STKaiti", "SimSun", "Noto Serif SC", "Source Han Serif SC", "宋体", serif;
+            --font-serif-en: "Baskerville", "Palatino Linotype", "Book Antiqua", "Hoefler Text", "Times New Roman", Georgia, serif;
+            --font-sans-en: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif;
+            --bg: #f1ede5;
+            --panel: #faf7f1;
+            --line: #d9cfbf;
+            --ink: #1d1916;
+            --muted: #7c6f60;
+            --soft: #a69785;
+            --accent: #a74538;
+            --accent-soft: #efe0dc;
+            --moss: #697362;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f4f1ea;
+            color: #1a1a1a;
+            font-family: var(--font-serif-cn);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #faf7f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app::before {
+            display: none;
+        }
+
+        .screen {
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .cover {
+            min-height: 100vh;
+            padding: 46px 34px 24px;
+            text-align: center;
+        }
+
+        .cover.active {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            align-items: start;
+            min-height: 100svh;
+            min-height: 100dvh;
+            height: 100svh;
+            height: 100dvh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+            touch-action: pan-y;
+        }
+
+        .cover > div:nth-child(2) {
+            align-self: center;
+        }
+
+        .cover-kicker, .result-kicker, .section-kicker, .quiz-meta, .cover-meta, .footer-meta {
+            font-family: var(--font-serif-en);
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        .cover-kicker {
+            color: var(--soft);
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        .cover-sub {
+            color: var(--soft);
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            font-style: italic;
+            margin-bottom: 28px;
+        }
+
+        .cover-title {
+            font-family: var(--font-serif-en);
+            font-size: 66px;
+            line-height: 0.96;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+        }
+
+        .cover-cn {
+            margin-top: 18px;
+            font-size: 24px;
+            letter-spacing: 0.28em;
+        }
+
+        .cover-copy {
+            max-width: 330px;
+            margin: 0 auto;
+            font-size: 15px;
+            color: #493f34;
+            line-height: 2;
+        }
+
+        .ornament {
+            margin: 26px 0 20px;
+            color: #b8ab96;
+            letter-spacing: 0.44em;
+        }
+
+        .cover-meta {
+            font-size: 12px;
+            color: var(--soft);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .main-btn, .sub-btn {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            transition: 0.25s ease;
+            font-family: inherit;
+        }
+
+        .main-btn {
+            background: var(--ink);
+            color: #f7f3ec;
+            padding: 17px 18px;
+            font-size: 14px;
+            letter-spacing: 0.3em;
+            border-radius: 4px;
+        }
+
+        .main-btn:hover, .main-btn:active {
+            transform: translateY(-1px);
+            background: #2a2420;
+        }
+
+        .sub-btn {
+            background: transparent;
+            border: 1px solid #bfae97;
+            color: var(--muted);
+            padding: 14px 18px;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            border-radius: 4px;
+        }
+
+        .sub-btn:hover, .sub-btn:active {
+            background: rgba(191, 174, 151, 0.08);
+        }
+
+        .hint {
+            margin-top: 14px;
+            font-size: 11px;
+            color: var(--soft);
+            font-style: italic;
+        }
+
+        .footer-meta {
+            font-size: 11px;
+            color: var(--soft);
+            line-height: 1.9;
+            margin-top: 0;
+            padding-top: 14px;
+            border-top: 1px solid rgba(191, 174, 151, 0.5);
+        }
+
+        .quiz, .loading {
+            padding: 24px 26px 48px;
+        }
+
+        .result {
+            padding: 0 0 60px;
+        }
+
+        .quiz-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .quiz-meta {
+            font-size: 12px;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .progress-bar {
+            height: 1px;
+            background: #ddd4c7;
+            overflow: hidden;
+            margin-bottom: 34px;
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+            background: var(--ink);
+            transition: width 0.35s ease;
+        }
+
+        .question-text {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 18px 18px 18px 16px;
+            border: 1px solid #ded6cb;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: flex;
+            gap: 14px;
+        }
+
+        .option:hover, .option:active {
+            border-color: #bfab90;
+            transform: translateY(-1px);
+            background: #fff;
+        }
+
+        .opt-index {
+            flex: 0 0 auto;
+            font-family: var(--font-serif-en);
+            font-size: 20px;
+            color: var(--accent);
+            min-width: 18px;
+        }
+
+        .opt-text {
+            font-size: 15px;
+            color: #4f453b;
+        }
+
+        .quiz-actions {
+            margin-top: 28px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.18em;
+            cursor: pointer;
+        }
+
+        .loading {
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .loading-box {
+            max-width: 280px;
+        }
+
+        .loading-copy {
+            font-size: 20px;
+            line-height: 1.9;
+            color: #4a4035;
+        }
+
+        .loading-dots {
+            margin-top: 22px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c8baa3;
+            animation: pulse 1.2s infinite ease-in-out;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes pulse {
+            0%, 80%, 100% {
+                opacity: 0.35;
+                transform: translateY(0);
+            }
+
+            40% {
+                opacity: 1;
+                transform: translateY(-4px);
+            }
+        }
+
+        .capture-area {
+            background: transparent;
+        }
+
+        .result-section, .meter-card, .relation-card, .books, .closing {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+        }
+
+        .brand-bar {
+            padding: 20px 32px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-bar .logo {
+            font-family: var(--font-serif-en);
+            font-size: 13px;
+            letter-spacing: 0.3em;
+            color: #7a6f5c;
+        }
+
+        .brand-bar .meta {
+            font-family: var(--font-sans-en);
+            font-size: 11px;
+            color: #a59886;
+            letter-spacing: 0.08em;
+        }
+
+        .hero {
+            padding: 50px 32px 40px;
+            text-align: center;
+        }
+
+        .hero-label {
+            font-family: var(--font-serif-en);
+            font-size: 14px;
+            color: #8a7d6a;
+            letter-spacing: 0.15em;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .hero-meaning {
+            font-family: var(--font-serif-en);
+            color: #a59886;
+            font-size: 13px;
+            font-style: italic;
+            letter-spacing: 0.06em;
+            margin-bottom: 28px;
+        }
+
+        .hero-cn-name {
+            font-size: 30px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            letter-spacing: 0.08em;
+        }
+
+        .epigraph {
+            font-family: var(--font-serif-en);
+            font-style: italic;
+            max-width: 340px;
+            margin: 18px auto 0;
+            padding: 0;
+            border: none;
+            color: #4a4338;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        .result-section, .meter-card, .books, .closing {
+            margin: 18px 32px 0;
+            padding: 24px 0 0;
+            border-top: 1px solid rgba(217, 207, 191, 0.88);
+        }
+
+        .section {
+            padding: 36px 36px 0;
+        }
+
+        .section-label {
+            font-family: var(--font-serif-cn);
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #241d17;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .persona-text {
+            font-size: 15px;
+            color: #2a2620;
+            line-height: 1.85;
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+
+        .persona-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .tag {
+            font-family: var(--font-serif-en);
+            font-style: italic;
+            font-size: 13px;
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid #c4b8a0;
+            border-radius: 20px;
+            color: #6a5f4c;
+        }
+
+        .section-kicker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-serif-cn);
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #241d17;
+            margin-bottom: 16px;
+            text-transform: none;
+        }
+
+        .result-p {
+            font-size: 15px;
+            color: #453a30;
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+
+        .result-p:last-child {
+            margin-bottom: 0;
+        }
+
+        .meter-card {
+            padding-bottom: 18px;
+        }
+
+        .radar-wrap {
+            margin-top: 5px;
+        }
+
+        .radar-chart {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .radar-grid {
+            fill: none;
+            stroke: rgba(122, 111, 92, 0.22);
+            stroke-width: 1;
+        }
+
+        .radar-axis {
+            stroke: rgba(122, 111, 92, 0.18);
+            stroke-width: 1;
+        }
+
+        .radar-area {
+            fill: rgba(167, 69, 56, 0.18);
+            stroke: #a74538;
+            stroke-width: 2;
+        }
+
+        .radar-point {
+            fill: #a74538;
+        }
+
+        .radar-label {
+            font-family: var(--font-serif-cn);
+            font-size: 12px;
+            fill: #625648;
+        }
+
+        .radar-legend {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 12px;
+        }
+
+        .radar-legend-item {
+            padding: 10px 12px;
+            border: 1px solid rgba(196, 184, 160, 0.75);
+            border-radius: 10px;
+            background: rgba(241, 237, 229, 0.5);
+        }
+
+        .radar-legend-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .radar-legend-name {
+            font-size: 13px;
+            color: #3f352c;
+        }
+
+        .radar-legend-value {
+            font-family: var(--font-serif-en);
+            font-size: 14px;
+            color: #8a7d6a;
+        }
+
+        .radar-legend-desc {
+            margin-top: 6px;
+            font-size: 11px;
+            line-height: 1.7;
+            color: #8a7d6a;
+        }
+
+        .meter {
+            margin-bottom: 15px;
+        }
+
+        .meter:last-child {
+            margin-bottom: 0;
+        }
+
+        .meter-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #625648;
+            margin-bottom: 6px;
+        }
+
+        .meter-track {
+            height: 7px;
+            border-radius: 999px;
+            background: #ece5da;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #b55a49 0%, #735e52 100%);
+        }
+
+        .relation-grid {
+            display: grid;
+            gap: 14px;
+            margin: 18px 32px 0;
+        }
+
+        .relation-card {
+            padding: 18px 0 16px;
+            border-top: 1px solid rgba(217, 207, 191, 0.88);
+        }
+
+        .relation-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-serif-cn);
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #241d17;
+            margin-bottom: 14px;
+            text-transform: none;
+        }
+
+        .title-icon {
+            width: 18px;
+            height: 18px;
+            color: #9b7d5c;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
+        .title-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .title-text {
+            display: inline-block;
+        }
+
+        .relation-title {
+            font-size: 20px;
+            font-family: var(--font-serif-en);
+            margin-bottom: 6px;
+        }
+
+        .relation-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .relation-copy {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #453a30;
+            text-align: justify;
+        }
+
+        .book-item {
+            padding: 14px 0;
+            border-top: 1px solid rgba(217, 207, 191, 0.7);
+        }
+
+        .book-item:first-child {
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .book-role {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(196, 184, 160, 0.85);
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            color: #8a7d6a;
+            background: rgba(241, 237, 229, 0.55);
+        }
+
+        .book-author {
+            font-size: 12px;
+            color: var(--soft);
+            margin-top: 3px;
+        }
+
+        .book-reason {
+            font-size: 14px;
+            color: #4f4439;
+            margin-top: 8px;
+            text-align: justify;
+        }
+
+        .closing {
+            text-align: left;
+        }
+
+        .prescription-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .prescription-item {
+            display: grid;
+            grid-template-columns: 24px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .prescription-index {
+            font-family: var(--font-serif-en);
+            font-size: 16px;
+            color: #9b7d5c;
+            line-height: 1.7;
+        }
+
+        .prescription-copy {
+            font-size: 15px;
+            color: #4f4439;
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .result-actions {
+            margin-top: 28px;
+            padding: 0 36px;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+
+        .share-btn {
+            display: inline-block;
+            padding: 14px 36px;
+            background: transparent;
+            color: #1a1a1a;
+            font-family: var(--font-serif-cn);
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            border: 1px solid #1a1a1a;
+            border-radius: 28px;
+            cursor: pointer;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background: #1a1a1a;
+            color: #f4f1ea;
+            transform: translateY(-2px);
+        }
+
+        .share-btn:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        .restart-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: min(280px, 100%);
+            padding: 14px 20px;
+            background: #1a1a1a;
+            color: #f4f1ea;
+            font-family: var(--font-serif-cn);
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            border-radius: 28px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            background: #2a2620;
+            transform: translateY(-2px);
+        }
+
+        .share-slot {
+            text-align: center;
+        }
+
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 12, 8, 0.92);
+            z-index: 9999;
+            padding: 40px 20px;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .share-modal.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .share-modal img {
+            max-width: 90%;
+            max-height: 70vh;
+            border-radius: 4px;
+            margin-top: 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            animation: riseUp 0.6s ease;
+        }
+
+        @keyframes riseUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .share-tip {
+            color: #f4f1ea;
+            font-family: var(--font-serif-cn);
+            margin-top: 24px;
+            font-size: 13px;
+            letter-spacing: 0.15em;
+            line-height: 1.8;
+        }
+
+        .share-tip em {
+            font-family: var(--font-serif-en);
+            font-style: italic;
+            color: #a59886;
+            font-size: 11px;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .close-share {
+            position: fixed;
+            top: 20px;
+            right: 28px;
+            color: #f4f1ea;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        @media (max-width: 520px) {
+            .cover {
+                padding: 38px 24px 20px;
+            }
+
+            .cover-title {
+                font-size: 56px;
+            }
+
+            .question-text {
+                font-size: 18px;
+            }
+
+            .brand-bar {
+                padding: 18px 24px 0;
+            }
+
+            .hero {
+                padding: 44px 24px 32px;
+            }
+
+            .hero-cn-name {
+                font-size: 26px;
+            }
+
+            .section {
+                padding: 32px 24px 0;
+            }
+
+            .result-actions {
+                padding: 0 24px;
+            }
+
+            .footer-meta {
+                margin-top: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+    <section class="screen cover active" id="cover">
+        <div>
+            <div class="cover-kicker">LITERATURE · archive no. 01</div>
+            <div class="cover-sub">a small literary personality prototype</div>
+            <div class="cover-title">LITERATURE</div>
+            <div class="cover-cn">文 学 人 物 原 型</div>
+        </div>
+        <div>
+            <div class="cover-copy">有些人把现实活成秩序， 有些人把情感活成神话。
+                你更接近哪一种文学人物原型？
+            </div>
+            <div class="ornament">· · ·</div>
+            <button class="main-btn" onclick="startQuiz()">开 始 测 试</button>
+        </div>
+        <div class="footer-meta">
+            LITERATURE / single file prototype
+            <br/>built for literary personality mapping
+
+        </div>
+    </section>
+    <section class="screen quiz" id="quiz">
+        <div class="quiz-head">
+            <div class="quiz-meta" id="quizSection">第 01 题</div>
+            <div class="quiz-meta" id="quizProgress">01 / 24</div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options" id="options"></div>
+        <div class="quiz-actions">
+            <button class="back-btn" id="backBtn" onclick="goBack()">← 上 一 题
+            </button>
+        </div>
+    </section>
+    <section class="screen loading" id="loading">
+        <div class="loading-box">
+            <div class="loading-copy">
+                正在替你
+                <br/>翻阅那些更像你的人物侧影……
+
+            </div>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </section>
+    <section class="screen result" id="result"></section>
+</div>
+<div class="share-modal" id="shareModal">
+    <span class="close-share" onclick="closeShare()">×</span>
+    <img id="shareImage" alt="文学人物原型结果图"/>
+    <div class="share-tip">
+        长按图片保存到相册
+        <br/>
+        <em>save to share · LITERATURE</em>
+    </div>
+</div>
+<script>
+    const _0x4de497 = _0x22e9;
+    (function(_0x34cce0, _0x10315b) {
+        const _0x514828 = {
+            _0x470063: 0x1e1,
+            _0x424983: 0x3b6,
+            _0x3567e5: 0x1d0,
+            _0x58d9fe: 0x527,
+            _0xe037b3: 0x65d,
+            _0x47a891: 0x177
+        }
+          , _0x3d9725 = _0x22e9
+          , _0x107eae = _0x34cce0();
+        while (!![]) {
+            try {
+                const _0x84bdb3 = -parseInt(_0x3d9725(_0x514828._0x470063)) / (-0xc30 + 0x1392 + 0x761 * -0x1) + parseInt(_0x3d9725(_0x514828._0x424983)) / (-0xa5b + -0x1a8 * -0x13 + -0x1 * 0x151b) * (parseInt(_0x3d9725(0x3bb)) / (-0x65b + -0xf85 + 0xd * 0x1af)) + parseInt(_0x3d9725(0x544)) / (-0x4eb * 0x7 + 0x1 * 0x17a6 + 0x1 * 0xacb) * (parseInt(_0x3d9725(0x375)) / (-0x1 * -0x1cf6 + 0x1cd4 + 0x283 * -0x17)) + parseInt(_0x3d9725(_0x514828._0x3567e5)) / (0x19b9 + 0x217 * 0xe + -0x36f5) + -parseInt(_0x3d9725(_0x514828._0x58d9fe)) / (-0x68 * -0x1c + -0xd8d * 0x1 + 0x234) * (parseInt(_0x3d9725(0x307)) / (0x1 * -0x1905 + -0x6b1 + 0x1fbe)) + parseInt(_0x3d9725(_0x514828._0xe037b3)) / (-0x21bd + 0x210a + 0xbc) + parseInt(_0x3d9725(_0x514828._0x47a891)) / (-0x4 * 0x605 + 0x1c48 + 0x2 * -0x215);
+                if (_0x84bdb3 === _0x10315b)
+                    break;
+                else
+                    _0x107eae['push'](_0x107eae['shift']());
+            } catch (_0x11f7ee) {
+                _0x107eae['push'](_0x107eae['shift']());
+            }
+        }
+    }(_0x5850, -0x29a31 + -0x54221 + 0xac484));
+    function _0x22e9(_0x5330b1, _0x1d9206) {
+        _0x5330b1 = _0x5330b1 - (-0x17 * 0x13e + 0x1861 + 0x1 * 0x581);
+        const _0x19dba9 = _0x5850();
+        let _0x46999a = _0x19dba9[_0x5330b1];
+        if (_0x22e9['bQzHrk'] === undefined) {
+            var _0xf1e324 = function(_0x2255b6) {
+                const _0x572fa0 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
+                let _0x5f2727 = ''
+                  , _0x37ed12 = '';
+                for (let _0x279003 = -0x59 * -0x1d + 0x1f15 * -0x1 + 0x1500, _0xc4d637, _0x597519, _0x318f9c = 0xd5d + -0x1862 + 0xb05; _0x597519 = _0x2255b6['charAt'](_0x318f9c++); ~_0x597519 && (_0xc4d637 = _0x279003 % (-0xdfb + -0x7e6 + 0x15e5) ? _0xc4d637 * (0x1 * -0x1f01 + 0x3c7 * 0x7 + -0x268 * -0x2) + _0x597519 : _0x597519,
+                _0x279003++ % (-0x3 * -0xb66 + 0x9ab + -0x2bd9)) ? _0x5f2727 += String['fromCharCode'](0xc59 + 0x1ba3 + -0x26fd & _0xc4d637 >> (-(0xa * -0x28e + -0x133f + 0x2ccd * 0x1) * _0x279003 & 0x345 * 0x6 + 0x1fe4 + -0x14 * 0x293)) : 0x5 * 0x765 + -0x6cb * -0x4 + 0x1 * -0x4025) {
+                    _0x597519 = _0x572fa0['indexOf'](_0x597519);
+                }
+                for (let _0x3355ee = 0xd77 + 0xf * 0x287 + -0x4 * 0xcd8, _0x2b36cf = _0x5f2727['length']; _0x3355ee < _0x2b36cf; _0x3355ee++) {
+                    _0x37ed12 += '%' + ('00' + _0x5f2727['charCodeAt'](_0x3355ee)['toString'](-0x3 * 0x2a5 + 0x2 * 0xefd + -0x15fb))['slice'](-(0x7c9 * -0x1 + 0x1eb7 + -0x16ec));
+                }
+                return decodeURIComponent(_0x37ed12);
+            };
+            _0x22e9['cjnUdD'] = _0xf1e324,
+            _0x22e9['WVnbPk'] = {},
+            _0x22e9['bQzHrk'] = !![];
+        }
+        const _0x2133ed = _0x19dba9[0x4e6 + 0xf1f + -0x1 * 0x1405]
+          , _0x19b402 = _0x5330b1 + _0x2133ed
+          , _0xa1eb7c = _0x22e9['WVnbPk'][_0x19b402];
+        return !_0xa1eb7c ? (_0x46999a = _0x22e9['cjnUdD'](_0x46999a),
+        _0x22e9['WVnbPk'][_0x19b402] = _0x46999a) : _0x46999a = _0xa1eb7c,
+        _0x46999a;
+    }
+    const DIMENSIONS = [{
+        'key': _0x4de497(0x329),
+        'label': _0x4de497(0x292),
+        'desc': '你与喧哗、表演和群体' + _0x4de497(0x717)
+    }, {
+        'key': _0x4de497(0x1b8),
+        'label': _0x4de497(0x269),
+        'desc': _0x4de497(0x6db) + _0x4de497(0x775)
+    }, {
+        'key': _0x4de497(0x63f),
+        'label': _0x4de497(0x42f),
+        'desc': _0x4de497(0x714) + _0x4de497(0x278)
+    }, {
+        'key': _0x4de497(0x19e),
+        'label': _0x4de497(0x6e8),
+        'desc': _0x4de497(0x7f5) + _0x4de497(0x45e)
+    }, {
+        'key': _0x4de497(0x3ec),
+        'label': _0x4de497(0x49d),
+        'desc': '你跨越身份、经验与他' + '者视角的流动能力。'
+    }]
+      , TITLE_ICONS = {
+        'persona': '<svg\x20viewB' + _0x4de497(0x364) + _0x4de497(0x51f) + _0x4de497(0x4b9) + _0x4de497(0x1ee) + _0x4de497(0x465) + _0x4de497(0x42d) + _0x4de497(0x4f9) + _0x4de497(0x80e) + _0x4de497(0x813) + _0x4de497(0x801) + _0x4de497(0x18d) + _0x4de497(0x179) + _0x4de497(0x3f8) + _0x4de497(0x481) + _0x4de497(0x407) + '\x2015.1189\x208' + '.43544\x2014.' + _0x4de497(0x639) + _0x4de497(0x2b0) + 'C12.2652\x201' + _0x4de497(0x634) + _0x4de497(0x7ef) + _0x4de497(0x337) + '10.4537L14' + '.1721\x208.99' + _0x4de497(0x535) + _0x4de497(0x30d) + _0x4de497(0x76d) + '25004\x2016.2' + _0x4de497(0x739) + '4\x2016.5858\x20' + '6.58248C17' + _0x4de497(0x304) + _0x4de497(0x7f9) + _0x4de497(0x367) + _0x4de497(0x647) + '9C12.4197\x20' + '5.08182\x208.' + _0x4de497(0x1db) + '647\x206.9391' + _0x4de497(0x7fc) + 'M17\x208.9973' + _0x4de497(0x810) + _0x4de497(0x1da) + _0x4de497(0x408) + _0x4de497(0x666) + _0x4de497(0x44f) + _0x4de497(0x30e) + _0x4de497(0x796) + _0x4de497(0x294) + '99824\x2021.9' + _0x4de497(0x5ba) + _0x4de497(0x32c) + _0x4de497(0x31e) + _0x4de497(0x672) + _0x4de497(0x228) + _0x4de497(0x4cf) + '\x206.99313\x201' + '8.0027\x207.9' + _0x4de497(0x283) + _0x4de497(0x34b) + _0x4de497(0x525) + '.66382\x2017\x20' + _0x4de497(0x55a) + _0x4de497(0x51b),
+        'coordinates': _0x4de497(0x1e5) + _0x4de497(0x364) + _0x4de497(0x51f) + '\x22currentCo' + _0x4de497(0x1ee) + '=\x22http://w' + _0x4de497(0x42d) + _0x4de497(0x4f9) + _0x4de497(0x80e) + _0x4de497(0x16e) + _0x4de497(0x37c) + '835\x205.3950' + _0x4de497(0x404) + '4.51629\x205.' + _0x4de497(0x61f) + _0x4de497(0x67f) + _0x4de497(0x35c) + _0x4de497(0x32f) + _0x4de497(0x630) + _0x4de497(0x4c8) + '4\x209.75027\x20' + _0x4de497(0x35f) + _0x4de497(0x590) + _0x4de497(0x264) + _0x4de497(0x528) + _0x4de497(0x7d2) + _0x4de497(0x3c8) + _0x4de497(0x5d1) + _0x4de497(0x31f) + _0x4de497(0x681) + _0x4de497(0x5bc) + 'L17.7026\x206' + _0x4de497(0x426) + _0x4de497(0x41d) + _0x4de497(0x26e) + _0x4de497(0x47a) + _0x4de497(0x657) + '5C18.8003\x20' + _0x4de497(0x1f1) + _0x4de497(0x54a) + '551\x208.7502' + _0x4de497(0x319) + _0x4de497(0x6f5) + '4033\x201.479' + _0x4de497(0x24f) + _0x4de497(0x3ba) + _0x4de497(0x32e) + _0x4de497(0x170) + '44\x208.61964' + _0x4de497(0x7d9) + _0x4de497(0x64a) + _0x4de497(0x54f) + '842\x201.7727' + _0x4de497(0x5e0) + _0x4de497(0x2d2) + '.6163\x2011.4' + _0x4de497(0x383) + '\x2010.433L15' + '.8842\x201.77' + _0x4de497(0x5b2) + '33\x2020H17.0' + '003V22H5.0' + _0x4de497(0x4cd) + _0x4de497(0x629) + _0x4de497(0x68e) + _0x4de497(0x301) + _0x4de497(0x335) + _0x4de497(0x6a6) + _0x4de497(0x663) + _0x4de497(0x2b6) + '7\x204.74147\x20' + _0x4de497(0x43f) + '6589\x2021.94' + _0x4de497(0x80f) + '21.9108\x204.' + _0x4de497(0x668) + '66C4.47106' + '\x2021.8492\x204' + _0x4de497(0x806) + '831\x204.4161' + _0x4de497(0x290) + _0x4de497(0x5c2) + _0x4de497(0x37b) + _0x4de497(0x1c8) + _0x4de497(0x70e) + _0x4de497(0x245) + _0x4de497(0x273) + _0x4de497(0x67d) + _0x4de497(0x531) + _0x4de497(0x5e1) + _0x4de497(0x589) + _0x4de497(0x71f) + _0x4de497(0x29d) + _0x4de497(0x5b6) + _0x4de497(0x38f) + 'C3.98786\x202' + _0x4de497(0x7d0) + '924\x2020.681' + _0x4de497(0x3b1) + _0x4de497(0x2f9) + ('25\x2016.6029' + _0x4de497(0x1f7) + '.6029L6.73' + _0x4de497(0x2a8) + _0x4de497(0x55f)),
+        'modern': '<svg\x20viewB' + _0x4de497(0x364) + _0x4de497(0x51f) + _0x4de497(0x4b9) + _0x4de497(0x1ee) + _0x4de497(0x465) + _0x4de497(0x42d) + _0x4de497(0x4f9) + _0x4de497(0x80e) + _0x4de497(0x762) + '1H1V19H3V4' + _0x4de497(0x29a) + _0x4de497(0x39c) + '\x204\x203H14C14' + '.5523\x203\x2015' + _0x4de497(0x7bd) + _0x4de497(0x4b8) + _0x4de497(0x538) + _0x4de497(0x1fe) + _0x4de497(0x18c) + _0x4de497(0x3df) + _0x4de497(0x75c) + _0x4de497(0x493) + _0x4de497(0x39f) + _0x4de497(0x37f) + _0x4de497(0x4a9) + _0x4de497(0x55f),
+        'armor': _0x4de497(0x1e5) + 'ox=\x220\x200\x2024' + '\x2024\x22\x20fill=' + _0x4de497(0x4b9) + 'lor\x22\x20xmlns' + _0x4de497(0x465) + _0x4de497(0x42d) + _0x4de497(0x4f9) + _0x4de497(0x80e) + _0x4de497(0x4a8) + _0x4de497(0x5c7) + _0x4de497(0x7bc) + _0x4de497(0x5c5) + '52\x206.7812\x20' + _0x4de497(0x38a) + _0x4de497(0x2ba) + '7.2188\x2017.' + _0x4de497(0x45f) + _0x4de497(0x401) + _0x4de497(0x25e) + '3\x2019\x2013.78' + _0x4de497(0x510) + _0x4de497(0x246) + _0x4de497(0x789) + '4ZM3.78307' + _0x4de497(0x200) + '2\x201L20.216' + _0x4de497(0x1b0) + _0x4de497(0x2c6) + _0x4de497(0x3a1) + '.33347\x2021\x20' + _0x4de497(0x5aa) + '.7889C21\x201' + _0x4de497(0x26c) + _0x4de497(0x447) + _0x4de497(0x318) + _0x4de497(0x230) + _0x4de497(0x7cc) + '\x2018.7812C4' + _0x4de497(0x7c0) + _0x4de497(0x353) + _0x4de497(0x50f) + _0x4de497(0x345) + _0x4de497(0x70f) + _0x4de497(0x4a4) + '2.92766\x203.' + _0x4de497(0x504) + _0x4de497(0x49f) + _0x4de497(0x748) + '\x2015.0451L9' + _0x4de497(0x289) + _0x4de497(0x58d) + _0x4de497(0x457) + 'L10.5305\x208' + _0x4de497(0x1e2) + _0x4de497(0x160) + '8.97746L16' + _0x4de497(0x49c) + '492L14.377' + _0x4de497(0x3fe) + '14.9389\x2015' + _0x4de497(0x296) + _0x4de497(0x251) + _0x4de497(0x317),
+        'weakness': _0x4de497(0x1e5) + _0x4de497(0x364) + '\x2024\x22\x20fill=' + _0x4de497(0x4b9) + _0x4de497(0x1ee) + '=\x22http://w' + 'ww.w3.org/' + _0x4de497(0x4f9) + _0x4de497(0x80e) + _0x4de497(0x6c7) + _0x4de497(0x2d8) + _0x4de497(0x4c2) + _0x4de497(0x1ca) + _0x4de497(0x314) + _0x4de497(0x476) + '\x207.02472\x202' + _0x4de497(0x2c0) + '37\x2020.4786' + '\x2012.993L11' + _0x4de497(0x400) + _0x4de497(0x6ae) + _0x4de497(0x5f0) + '41705\x2010.6' + '37\x201.49571' + _0x4de497(0x4e4) + '.75736\x204.7' + _0x4de497(0x2d4) + _0x4de497(0x166) + '\x209.64519\x202' + _0x4de497(0x529) + _0x4de497(0x3de) + '3ZM18.827\x20' + _0x4de497(0x56e) + '3279\x204.667' + _0x4de497(0x561) + _0x4de497(0x776) + '3.337\x206.01' + '687L12.001' + _0x4de497(0x7dc) + '10.6661\x206.' + _0x4de497(0x71d) + _0x4de497(0x600) + _0x4de497(0x198) + _0x4de497(0x5e4) + _0x4de497(0x737) + _0x4de497(0x2d7) + '3\x207.66131\x20' + _0x4de497(0x38d) + '.0473\x204.97' + _0x4de497(0x350) + _0x4de497(0x695) + '18.6543L19' + _0x4de497(0x705) + _0x4de497(0x77c) + '5\x2010.0467\x20' + _0x4de497(0x28b) + _0x4de497(0x692) + _0x4de497(0x59e) + _0x4de497(0x586),
+        'books': _0x4de497(0x1e5) + 'ox=\x220\x200\x2024' + _0x4de497(0x51f) + '\x22currentCo' + _0x4de497(0x1ee) + '=\x22http://w' + 'ww.w3.org/' + _0x4de497(0x4f9) + '<path\x20d=\x22M' + _0x4de497(0x6a7) + _0x4de497(0x214) + _0x4de497(0x7c8) + '20.5523\x202\x20' + _0x4de497(0x376) + _0x4de497(0x582) + _0x4de497(0x6c6) + _0x4de497(0x74b) + '\x2011.2671\x203' + _0x4de497(0x563) + _0x4de497(0x76c) + _0x4de497(0x64c) + _0x4de497(0x69d) + _0x4de497(0x2f3) + _0x4de497(0x1c5) + '3\x2022\x203.447' + _0x4de497(0x1e6) + _0x4de497(0x77a) + _0x4de497(0x7af) + _0x4de497(0x2ae) + _0x4de497(0x551) + _0x4de497(0x611) + _0x4de497(0x169) + '9543\x2013\x207V' + _0x4de497(0x5a3) + _0x4de497(0x724) + _0x4de497(0x463) + _0x4de497(0x4e2) + _0x4de497(0x1df) + _0x4de497(0x51b),
+        'prescription': '<svg\x20viewB' + 'ox=\x220\x200\x2024' + _0x4de497(0x51f) + _0x4de497(0x4b9) + _0x4de497(0x1ee) + _0x4de497(0x465) + _0x4de497(0x42d) + _0x4de497(0x4f9) + _0x4de497(0x80e) + _0x4de497(0x6e5) + _0x4de497(0x4e8) + _0x4de497(0x80a) + _0x4de497(0x424) + _0x4de497(0x553) + _0x4de497(0x1f0) + _0x4de497(0x16f) + '\x2019.7782C1' + _0x4de497(0x197) + _0x4de497(0x5a1) + _0x4de497(0x5d6) + _0x4de497(0x362) + _0x4de497(0x75e) + '906\x2017.435' + _0x4de497(0x74d) + '3.6361\x204.2' + _0x4de497(0x5f9) + _0x4de497(0x729) + _0x4de497(0x620) + _0x4de497(0x6c2) + '869\x2017.435' + _0x4de497(0x20a) + _0x4de497(0x6e5) + _0x4de497(0x2b5) + _0x4de497(0x1fd) + _0x4de497(0x225) + _0x4de497(0x7ca) + _0x4de497(0x1f5) + _0x4de497(0x727) + '32\x2014.2692' + _0x4de497(0x42b) + _0x4de497(0x38b) + _0x4de497(0x4ff) + '4C7.19851\x20' + _0x4de497(0x6ba) + _0x4de497(0x65e) + _0x4de497(0x2fa) + '3\x2018.364L1' + _0x4de497(0x577) + _0x4de497(0x3b0) + _0x4de497(0x282) + _0x4de497(0x330) + _0x4de497(0x6d1) + '.2696\x204.07' + _0x4de497(0x7e1) + _0x4de497(0x5a9) + _0x4de497(0x3f0) + _0x4de497(0x5b9) + _0x4de497(0x32b) + _0x4de497(0x448) + '11.2929C19' + _0x4de497(0x5bb) + _0x4de497(0x65a) + _0x4de497(0x67e) + _0x4de497(0x7ee) + _0x4de497(0x59f) + _0x4de497(0x75d)
+    }
+      , BOOK_ROLES = [_0x4de497(0x613), _0x4de497(0x5d0), _0x4de497(0x4d3)]
+      , ARCHETYPE_ORDER = [_0x4de497(0x797), 'JANE', _0x4de497(0x195), _0x4de497(0x28e), _0x4de497(0x44c), _0x4de497(0x78a), _0x4de497(0x6f8), 'ANNA', _0x4de497(0x411), 'SANT', _0x4de497(0x341), _0x4de497(0x4da), _0x4de497(0x5db), _0x4de497(0x4ca), 'DULI', _0x4de497(0x343)];
+    function titleWithIcon(_0x29b53f, _0x20d1db) {
+        const _0x48a942 = {
+            _0x4b76e6: 0x7da
+        }
+          , _0x1e4231 = _0x4de497;
+        return _0x1e4231(_0x48a942._0x4b76e6) + _0x1e4231(0x74f) + _0x1e4231(0x43b) + _0x1e4231(0x585) + _0x1e4231(0x443) + TITLE_ICONS[_0x29b53f] + (_0x1e4231(0x3f2) + 'an\x20class=\x22' + 'title-text' + '\x22>') + _0x20d1db + _0x1e4231(0x1ad);
+    }
+    const ARCHETYPES = {
+        'DAIY': {
+            'code': _0x4de497(0x797),
+            'name': _0x4de497(0x1dd),
+            'author': _0x4de497(0x5bd),
+            'source': _0x4de497(0x6dd),
+            'vec': [-0x5 * 0x4a1 + -0x5b * -0x11 + 0x111b, -(-0x60e + -0x137 + 0x746), -0x999 + 0x2f4 * -0x4 + 0x156b * 0x1, -(0x1caa + 0x1 * 0x757 + -0x18 * 0x180), 0x49 * -0x2f + -0x156c + 0x22d4],
+            'tags': [_0x4de497(0x823), '真情洁癖', '易碎审美'],
+            'axis': _0x4de497(0x25f),
+            'quote': '“你不是脆弱，你只是' + _0x4de497(0x4ee),
+            'profile': ['你对情绪、语气和气氛' + _0x4de497(0x1a0) + _0x4de497(0x7fa) + _0x4de497(0x62e) + _0x4de497(0x18e), _0x4de497(0x357) + _0x4de497(0x379) + _0x4de497(0x4b7) + _0x4de497(0x1d5) + _0x4de497(0x32d)],
+            'modern': '你常常是群体里最安静' + _0x4de497(0x6f2) + '。社交未必少，但真正' + _0x4de497(0x42c) + _0x4de497(0x769) + '，而不是被热闹包围。' + _0x4de497(0x4f4) + _0x4de497(0x462) + _0x4de497(0x403) + '没察觉到的情绪噪点。',
+            'prescription': [_0x4de497(0x4bd) + _0x4de497(0x4f6) + _0x4de497(0x6e1), _0x4de497(0x702) + _0x4de497(0x30a) + _0x4de497(0x560) + _0x4de497(0x5fe), _0x4de497(0x809) + '你的人，少在试探和敷' + _0x4de497(0x4e0)],
+            'books': [{
+                'title': _0x4de497(0x6dd),
+                'author': _0x4de497(0x5bd),
+                'reason': '你读它时不会像在读故' + '事，更像在看一种过高' + '精度的感受力如何与世' + _0x4de497(0x5c4)
+            }, {
+                'title': _0x4de497(0x32a),
+                'author': _0x4de497(0x1bb),
+                'reason': _0x4de497(0x2a0) + _0x4de497(0x79f) + _0x4de497(0x3a5)
+            }, {
+                'title': _0x4de497(0x5de),
+                'author': '沈复',
+                'reason': _0x4de497(0x63a) + _0x4de497(0x812) + _0x4de497(0x742) + _0x4de497(0x4bf)
+            }]
+        },
+        'JANE': {
+            'code': _0x4de497(0x5b3),
+            'name': _0x4de497(0x2a2),
+            'author': _0x4de497(0x60a),
+            'source': _0x4de497(0x2fb),
+            'vec': [-0x1949 + 0xa * -0x28e + 0x32d5, 0xba7 * 0x3 + 0x105e * 0x2 + -0x43af, -(0x133 * 0x1f + 0x3 * -0x652 + -0x29a * 0x7), 0x20be * 0x1 + 0xe1b + 0x15 * -0x23b, 0x4dd + 0x3 * -0x1f7 + 0x108],
+            'tags': [_0x4de497(0x606), _0x4de497(0x2f4), _0x4de497(0x5fd)],
+            'axis': _0x4de497(0x423) + '人',
+            'quote': _0x4de497(0x309) + _0x4de497(0x6d2),
+            'profile': ['你看重的不是被爱，而' + _0x4de497(0x7be) + _0x4de497(0x497) + '会很快触发你的警觉。', _0x4de497(0x397) + _0x4de497(0x740) + _0x4de497(0x6ca) + _0x4de497(0x703)],
+            'modern': _0x4de497(0x427) + '里都很重视对等。别人' + _0x4de497(0x248) + _0x4de497(0x6a2) + _0x4de497(0x188) + _0x4de497(0x684) + _0x4de497(0x238) + _0x4de497(0x77e) + _0x4de497(0x62b),
+            'prescription': [_0x4de497(0x548) + _0x4de497(0x4d7) + _0x4de497(0x4db), _0x4de497(0x249) + _0x4de497(0x1af) + '明自己值得信任。', _0x4de497(0x194) + _0x4de497(0x3b3) + _0x4de497(0x24a)],
+            'books': [{
+                'title': _0x4de497(0x2fb),
+                'author': '夏洛蒂·勃朗特',
+                'reason': '这不是重读经典，而是' + _0x4de497(0x23e) + '必须先把自己站稳。'
+            }, {
+                'title': '《第二性》',
+                'author': _0x4de497(0x791),
+                'reason': _0x4de497(0x258) + _0x4de497(0x478) + '上更清楚的结构语言。'
+            }, {
+                'title': _0x4de497(0x3fd),
+                'author': _0x4de497(0x389),
+                'reason': _0x4de497(0x568) + _0x4de497(0x2ac) + _0x4de497(0x607) + '有理论支点。'
+            }]
+        },
+        'SCAR': {
+            'code': _0x4de497(0x195),
+            'name': _0x4de497(0x53d),
+            'author': _0x4de497(0x444),
+            'source': '《飘》',
+            'vec': [-(0x356 + 0x971 + 0x5 * -0x28e), 0x19c1 + 0xe * -0x53 + -0x1536, -0x1866 + -0x1 * -0x137 + 0x172f, -0x2375 + -0x1ab0 + 0x3e27, -(0x1 * -0xaf1 + 0x205c + -0x1569)],
+            'tags': [_0x4de497(0x645), _0x4de497(0x2e4), _0x4de497(0x4ed)],
+            'axis': _0x4de497(0x206) + '人',
+            'quote': _0x4de497(0x628) + '再说。”',
+            'profile': [_0x4de497(0x313) + '实，甚至有点冷，但那' + _0x4de497(0x2bb) + _0x4de497(0x4cc) + '。', _0x4de497(0x3ee) + _0x4de497(0x223) + _0x4de497(0x288) + _0x4de497(0x5b7)],
+            'modern': _0x4de497(0x4a0) + '机和残局。别人还在消' + _0x4de497(0x342) + _0x4de497(0x4e3) + _0x4de497(0x280) + _0x4de497(0x549) + _0x4de497(0x36b) + _0x4de497(0x220) + _0x4de497(0x24d) + '拉回可控。',
+            'prescription': [_0x4de497(0x387) + _0x4de497(0x612) + _0x4de497(0x73c) + _0x4de497(0x3a2), '别把情绪一律当作拖累' + _0x4de497(0x279) + _0x4de497(0x766) + '。', _0x4de497(0x5b1) + _0x4de497(0x784) + _0x4de497(0x6d8)],
+            'books': [{
+                'title': _0x4de497(0x7f1),
+                'author': _0x4de497(0x444),
+                'reason': '你会在郝思嘉身上认出' + _0x4de497(0x576) + _0x4de497(0x68c) + _0x4de497(0x67c)
+            }, {
+                'title': _0x4de497(0x299),
+                'author': _0x4de497(0x24c),
+                'reason': _0x4de497(0x678) + _0x4de497(0x27a) + _0x4de497(0x2fd)
+            }, {
+                'title': '《愤怒的葡萄》',
+                'author': _0x4de497(0x6f0),
+                'reason': _0x4de497(0x27d) + '正的生存意志不只是一' + _0x4de497(0x7ec) + _0x4de497(0x521)
+            }]
+        },
+        'MERS': {
+            'code': _0x4de497(0x44c),
+            'name': '莫尔索',
+            'author': _0x4de497(0x7a3),
+            'source': _0x4de497(0x429),
+            'vec': [-0x2239 * -0x1 + 0x189 + -0xd * 0x2c0, -0x10 * -0xb2 + 0x6b1 + 0x11d1 * -0x1, -(-0x7 * 0x253 + -0xd99 + 0x1de0), -(0x22ab + 0x1 + 0x7d * -0x47), -0x1c5 * -0x13 + -0x789 * 0x3 + -0xb04],
+            'tags': [_0x4de497(0x40b), _0x4de497(0x5e7), _0x4de497(0x57b)],
+            'axis': _0x4de497(0x6ef),
+            'quote': _0x4de497(0x5ad) + _0x4de497(0x6cb),
+            'profile': [_0x4de497(0x4f3) + _0x4de497(0x242) + _0x4de497(0x68f) + _0x4de497(0x3bd) + _0x4de497(0x237), _0x4de497(0x2ef) + _0x4de497(0x306) + _0x4de497(0x52f) + _0x4de497(0x27b) + _0x4de497(0x3a7)],
+            'modern': _0x4de497(0x720) + _0x4de497(0x2dd) + _0x4de497(0x331) + _0x4de497(0x394) + _0x4de497(0x555) + _0x4de497(0x61c) + '绪作秀的耐受度很低，' + _0x4de497(0x27f) + _0x4de497(0x1e4) + '浪费在不真实的流程里' + '。',
+            'prescription': [_0x4de497(0x682) + _0x4de497(0x3dd), _0x4de497(0x22c) + _0x4de497(0x686) + _0x4de497(0x652) + '。', _0x4de497(0x1e3) + '时也别把所有连接都误' + _0x4de497(0x819)],
+            'books': [{
+                'title': '《局外人》',
+                'author': _0x4de497(0x7a3),
+                'reason': _0x4de497(0x31c) + _0x4de497(0x16b) + _0x4de497(0x5b0)
+            }, {
+                'title': '《西西弗神话》',
+                'author': _0x4de497(0x7a3),
+                'reason': '适合在你想把荒诞感从' + '一种情绪，变成一种立' + _0x4de497(0x7fd)
+            }, {
+                'title': _0x4de497(0x3dc),
+                'author': '弗兰茨·卡夫卡',
+                'reason': _0x4de497(0x1d3) + _0x4de497(0x545) + _0x4de497(0x320) + '层。'
+            }]
+        },
+        'ELIZ': {
+            'code': _0x4de497(0x78a),
+            'name': _0x4de497(0x829),
+            'author': _0x4de497(0x6b8),
+            'source': _0x4de497(0x522),
+            'vec': [-0x24c5 + -0x193a * 0x1 + 0x1 * 0x3dff, -0x57 * -0x47 + 0x3f1 + -0x1c10, -(-0x7 * -0x3e5 + 0x16ed * 0x1 + 0x1bb * -0x1d), 0x768 + -0x7bd * 0x3 + 0xb8 * 0x16, 0x5c * 0x67 + -0x3d * -0x67 + 0x1 * -0x3d8e],
+            'tags': [_0x4de497(0x550), _0x4de497(0x3eb), _0x4de497(0x3fb)],
+            'axis': _0x4de497(0x67a),
+            'quote': _0x4de497(0x530) + _0x4de497(0x1bd),
+            'profile': [_0x4de497(0x4de) + _0x4de497(0x1aa) + _0x4de497(0x388) + _0x4de497(0x2e5) + _0x4de497(0x7ea), _0x4de497(0x5fa) + _0x4de497(0x768) + '够帮你在复杂人情里保' + _0x4de497(0x440) + '卷进去。'],
+            'modern': _0x4de497(0x718) + '速活过来。你需要的是' + _0x4de497(0x23b) + _0x4de497(0x295) + _0x4de497(0x500) + '你看起来轻巧，其实非' + _0x4de497(0x623) + _0x4de497(0x44b) + _0x4de497(0x752) + '语言里的分寸和彼此都' + _0x4de497(0x3e9),
+            'prescription': ['继续相信你的判断力，' + _0x4de497(0x247) + '所有人和关系定性。', _0x4de497(0x31d) + '慢慢判断，不需要每次' + _0x4de497(0x1c7), '把锋利用在辨认真伪上' + _0x4de497(0x783) + _0x4de497(0x396)],
+            'books': [{
+                'title': _0x4de497(0x522),
+                'author': '简·奥斯汀',
+                'reason': _0x4de497(0x2b3) + _0x4de497(0x643) + '自尊，也需要被不断校' + '准。'
+            }, {
+                'title': _0x4de497(0x71e),
+                'author': _0x4de497(0x6b8),
+                'reason': _0x4de497(0x30f) + '感如何住进同一个人身' + '体里时阅读。'
+            }, {
+                'title': _0x4de497(0x6a5),
+                'author': _0x4de497(0x6b8),
+                'reason': _0x4de497(0x293) + _0x4de497(0x7c2) + '的观察，那很像你不断' + _0x4de497(0x1cb)
+            }]
+        },
+        'SIDD': {
+            'code': _0x4de497(0x6f8),
+            'name': '悉达多',
+            'author': _0x4de497(0x1e7),
+            'source': _0x4de497(0x578),
+            'vec': [0xa * 0x184 + -0x25b0 + -0x2 * -0xb45, -0x194 * -0xf + 0x2395 + -0xb * 0x563, -(0x66e + -0x1 * -0x1d86 + -0x23f3), -(-0x127a + -0x1ee9 + 0x3164), -0x12d2 + 0x1 * -0x44f + 0x1723],
+            'tags': [_0x4de497(0x3ed), '意义感', _0x4de497(0x33c)],
+            'axis': _0x4de497(0x536),
+            'quote': '“你不是逃离世界，你' + _0x4de497(0x150) + '。”',
+            'profile': [_0x4de497(0x181) + _0x4de497(0x7b1) + '高，而是你很难把那些' + _0x4de497(0x60c) + '成自己真正想活成的样' + '子。', _0x4de497(0x707) + _0x4de497(0x730) + _0x4de497(0x731) + _0x4de497(0x556) + _0x4de497(0x25b) + '。'],
+            'modern': _0x4de497(0x2e6) + '点飘，但那不是散漫，' + _0x4de497(0x15a) + _0x4de497(0x17f) + '核的路。你不愿被单一' + _0x4de497(0x658) + _0x4de497(0x4c1) + _0x4de497(0x4df) + '么值得真正进入你的生' + '命。',
+            'prescription': [_0x4de497(0x764) + _0x4de497(0x33b) + _0x4de497(0x65f) + '义。', '给自己保留独处和后撤' + _0x4de497(0x7c1) + _0x4de497(0x1be), _0x4de497(0x81e) + _0x4de497(0x825) + _0x4de497(0x7cf)],
+            'books': [{
+                'title': _0x4de497(0x578),
+                'author': _0x4de497(0x1e7),
+                'reason': _0x4de497(0x3d2) + _0x4de497(0x69a) + _0x4de497(0x565) + _0x4de497(0x456)
+            }, {
+                'title': _0x4de497(0x167),
+                'author': _0x4de497(0x163),
+                'reason': _0x4de497(0x4b2) + _0x4de497(0x1a9) + _0x4de497(0x778)
+            }, {
+                'title': _0x4de497(0x673),
+                'author': '赫尔曼·黑塞',
+                'reason': _0x4de497(0x3d9) + _0x4de497(0x1de) + _0x4de497(0x201) + _0x4de497(0x2b9)
+            }]
+        },
+        'ANNA': {
+            'code': _0x4de497(0x35d),
+            'name': '安娜·卡列尼娜',
+            'author': _0x4de497(0x674),
+            'source': _0x4de497(0x751),
+            'vec': [-(0xc * 0x12b + 0x4 * 0x688 + -0x2823), -(-0x940 + 0x6 * 0x3d9 + -0x1 * 0xdd5), -0x9ef * 0x2 + -0x5 * -0x689 + 0x71 * -0x1d, -0x30d * -0x1 + 0x2241 + -0x254d, -(0x5c5 * 0x5 + 0x100a + -0x2ce2)],
+            'tags': [_0x4de497(0x21c), _0x4de497(0x154), _0x4de497(0x40e)],
+            'axis': _0x4de497(0x3c7) + _0x4de497(0x79e),
+            'quote': _0x4de497(0x523) + _0x4de497(0x421) + _0x4de497(0x30b),
+            'profile': [_0x4de497(0x259) + _0x4de497(0x759) + '，而是你无法忍受一种' + _0x4de497(0x6b1) + _0x4de497(0x683), _0x4de497(0x6fe) + _0x4de497(0x7ac) + _0x4de497(0x6bb) + _0x4de497(0x7df)],
+            'modern': '你很容易在人群里显得' + '过于认真。别人可以用' + _0x4de497(0x81d) + '行。你要么投入，要么' + _0x4de497(0x4d4) + _0x4de497(0x7ad) + _0x4de497(0x47e) + '许多模棱两可的场面在' + _0x4de497(0x1d7),
+            'prescription': [_0x4de497(0x68b) + _0x4de497(0x6e7) + _0x4de497(0x715), _0x4de497(0x56a) + _0x4de497(0x2da) + '是立刻继续加码。', _0x4de497(0x79d) + _0x4de497(0x1c4) + _0x4de497(0x505) + '活。'],
+            'books': [{
+                'title': _0x4de497(0x751),
+                'author': '列夫·托尔斯泰',
+                'reason': _0x4de497(0x557) + _0x4de497(0x71b) + _0x4de497(0x5f5) + _0x4de497(0x18a)
+            }, {
+                'title': _0x4de497(0x828),
+                'author': _0x4de497(0x1c9),
+                'reason': _0x4de497(0x605) + _0x4de497(0x24e) + _0x4de497(0x65c)
+            }, {
+                'title': _0x4de497(0x6d7),
+                'author': _0x4de497(0x1a7),
+                'reason': _0x4de497(0x432) + _0x4de497(0x817) + '一个人会怎样一步步把' + _0x4de497(0x6bf) + '。'
+            }]
+        },
+        'ORLA': {
+            'code': _0x4de497(0x341),
+            'name': _0x4de497(0x78d),
+            'author': _0x4de497(0x389),
+            'source': _0x4de497(0x584),
+            'vec': [0x3 * 0xbd2 + -0x1 * -0x109d + -0x3412, -0x1 * -0x20dd + 0x2421 + 0x2 * -0x227f, -0xc81 + -0x1 * 0x623 + 0x3 * 0x637, -(-0x1 * 0x251e + -0x1308 + 0x3827), 0x3 * -0x7b8 + -0x2b0 + -0x3 * -0x89e],
+            'tags': [_0x4de497(0x36c), _0x4de497(0x45c), _0x4de497(0x425)],
+            'axis': _0x4de497(0x540) + '人',
+            'quote': _0x4de497(0x1cf) + _0x4de497(0x226) + '不止一种活法。”',
+            'profile': [_0x4de497(0x484) + _0x4de497(0x7ff) + _0x4de497(0x171) + _0x4de497(0x574) + _0x4de497(0x1a5), _0x4de497(0x240) + _0x4de497(0x1cd) + _0x4de497(0x472) + _0x4de497(0x31b) + '种人生同时存在。'],
+            'modern': '你容易被新世界、新经' + _0x4de497(0x260) + _0x4de497(0x1ac) + _0x4de497(0x3b4) + '此交错，但都通向你自' + '己。你在变化里通常比' + _0x4de497(0x616) + _0x4de497(0x82a) + '重新命名，都会让你更' + _0x4de497(0x5e2) + '。',
+            'prescription': [_0x4de497(0x7b9) + _0x4de497(0x5e8) + _0x4de497(0x1d2), _0x4de497(0x165) + _0x4de497(0x51a) + _0x4de497(0x496) + '经验真正沉淀下来。', '当新的可能性出现时，' + _0x4de497(0x3c6) + _0x4de497(0x53f) + _0x4de497(0x2a9)],
+            'books': [{
+                'title': _0x4de497(0x584),
+                'author': '弗吉尼亚·伍尔夫',
+                'reason': _0x4de497(0x514) + _0x4de497(0x660) + _0x4de497(0x262) + '。'
+            }, {
+                'title': _0x4de497(0x5e3),
+                'author': _0x4de497(0x1d6),
+                'reason': _0x4de497(0x708) + _0x4de497(0x5af) + _0x4de497(0x6ab) + '。'
+            }, {
+                'title': '《达洛维夫人》',
+                'author': '弗吉尼亚·伍尔夫',
+                'reason': '它会让你更细致地感受' + _0x4de497(0x378) + _0x4de497(0x434) + _0x4de497(0x3d0)
+            }]
+        },
+        'NORA': {
+            'code': _0x4de497(0x5db),
+            'name': '娜拉',
+            'author': '亨利克·易卜生',
+            'source': _0x4de497(0x483),
+            'vec': [-(-0x3f * 0xb + -0x2 * -0x295 + 0x13a * -0x2), -0x551 * -0x1 + -0x4f * -0x38 + -0x1697, 0xd * 0x265 + -0x1 * -0x125b + -0x317c, 0x27d * -0x5 + -0x342 * 0x3 + -0x1639 * -0x1, 0x73b * -0x5 + 0x216 + -0x2 * -0x1109],
+            'tags': ['觉醒出走', _0x4de497(0x7e5), _0x4de497(0x7e9)],
+            'axis': _0x4de497(0x59b),
+            'quote': '“你不是任性离开，你' + _0x4de497(0x442) + '。”',
+            'profile': ['你很难长期待在一段把' + _0x4de497(0x74a) + _0x4de497(0x328) + '里。别人以为你是突然' + _0x4de497(0x1a6) + _0x4de497(0x518) + '。', '你对“自我”这件事有' + '很深的执念。不是自我' + _0x4de497(0x1d9) + _0x4de497(0x5cf) + _0x4de497(0x439) + _0x4de497(0x1bf)],
+            'modern': _0x4de497(0x1f2) + _0x4de497(0x559) + _0x4de497(0x1c6) + _0x4de497(0x3f6) + _0x4de497(0x6fb) + '是立刻翻桌，但一旦意' + '识到自己被当成功能而' + _0x4de497(0x20d) + _0x4de497(0x4e5) + '。',
+            'prescription': [_0x4de497(0x217) + _0x4de497(0x19b) + _0x4de497(0x588), _0x4de497(0x3b2) + '先把边界说得更明白，' + _0x4de497(0x5b8) + _0x4de497(0x35a), '真正的出走不只是一扇' + _0x4de497(0x5c9) + _0x4de497(0x662)],
+            'books': [{
+                'title': '《玩偶之家》',
+                'author': _0x4de497(0x26b),
+                'reason': _0x4de497(0x3e8) + '个人为什么必须亲手把' + _0x4de497(0x4f8)
+            }, {
+                'title': '《一个自己的房间》',
+                'author': '弗吉尼亚·伍尔夫',
+                'reason': _0x4de497(0x2c8) + _0x4de497(0x15d) + '觉。'
+            }, {
+                'title': _0x4de497(0x5ab),
+                'author': _0x4de497(0x791),
+                'reason': _0x4de497(0x417) + '语言，让你的“不愿被' + _0x4de497(0x234)
+            }]
+        },
+        'HAML': {
+            'code': _0x4de497(0x4ca),
+            'name': _0x4de497(0x7d3),
+            'author': '威廉·莎士比亚',
+            'source': '《哈姆雷特》',
+            'vec': [0xaba + 0x9 * -0x452 + 0x1c2a, 0x2 * -0xf41 + -0x142a + 0x32ae, -0x1 * 0x1956 + 0x7c * 0x1f + 0xa52, -(0x1036 + 0x1808 + 0x1 * -0x283d), -0x3b * 0x97 + -0xf * 0x1e5 + 0x8 * 0x7e7],
+            'tags': [_0x4de497(0x3e2), _0x4de497(0x1c2), _0x4de497(0x4a1)],
+            'axis': _0x4de497(0x502) + _0x4de497(0x33d),
+            'quote': '“你不是优柔寡断，你' + '只是无法假装没看见复' + _0x4de497(0x587),
+            'profile': [_0x4de497(0x80b) + '立、但内部明显有裂缝' + '的世界视而不见。别人' + '能先过日子再说，你往' + _0x4de497(0x494) + _0x4de497(0x701), _0x4de497(0x509) + _0x4de497(0x72b) + _0x4de497(0x3e3) + _0x4de497(0x34d) + _0x4de497(0x794) + _0x4de497(0x40c)],
+            'modern': _0x4de497(0x384) + _0x4de497(0x6c9) + _0x4de497(0x594) + _0x4de497(0x688) + _0x4de497(0x449) + _0x4de497(0x498) + '“差不多就行”往前走' + _0x4de497(0x460) + _0x4de497(0x5a6) + _0x4de497(0x231),
+            'prescription': [_0x4de497(0x6ad) + '但别让分析永远比行动' + _0x4de497(0x604), _0x4de497(0x2ff) + '，允许自己用不那么完' + '美的方式开始，而不是' + _0x4de497(0x480), _0x4de497(0x6ec) + _0x4de497(0x37e) + _0x4de497(0x365) + '。'],
+            'books': [{
+                'title': _0x4de497(0x191),
+                'author': _0x4de497(0x39e),
+                'reason': '重读它时你会发现，复' + _0x4de497(0x49a) + _0x4de497(0x73f) + _0x4de497(0x62a)
+            }, {
+                'title': _0x4de497(0x636),
+                'author': _0x4de497(0x209),
+                'reason': _0x4de497(0x355) + _0x4de497(0x4b4) + _0x4de497(0x1a2) + '。'
+            }, {
+                'title': '《李尔王》',
+                'author': '威廉·莎士比亚',
+                'reason': _0x4de497(0x609) + '、亲密和认知失真的后' + _0x4de497(0x566) + '并不只发生在自己身上' + '。'
+            }]
+        },
+        'DULI': {
+            'code': 'DULI',
+            'name': '杜丽娘',
+            'author': '汤显祖',
+            'source': _0x4de497(0x696),
+            'vec': [-0x2347 + -0x4 * -0x389 + -0x1 * -0x1523, -(-0x21f0 + 0x39 * 0x9d + 0x82 * -0x2), 0x153d * 0x1 + -0xe42 + -0x6f9, -(0x9b * 0x22 + 0x4 * 0x923 + -0x3921), 0x683 * 0x2 + 0x2f * 0x3b + 0xb9 * -0x21],
+            'tags': ['梦中情真', _0x4de497(0x6a8), _0x4de497(0x6a0)],
+            'axis': '会因为一缕真情就越过' + '规训的人',
+            'quote': _0x4de497(0x2d6) + _0x4de497(0x2d1) + '穿透现实。”',
+            'profile': [_0x4de497(0x182) + _0x4de497(0x46b) + _0x4de497(0x4e7) + '梦里确认了一种现实里' + _0x4de497(0x431) + '。', _0x4de497(0x399) + _0x4de497(0x189) + '真正被触动，你就愿意' + _0x4de497(0x59c) + _0x4de497(0x744) + '。'],
+            'modern': _0x4de497(0x7db) + _0x4de497(0x25a) + _0x4de497(0x787) + '次偶遇或一段旋律长久' + '地击中。别人也许会劝' + _0x4de497(0x5eb) + _0x4de497(0x474) + _0x4de497(0x619) + _0x4de497(0x344) + '。',
+            'prescription': [_0x4de497(0x2e7) + _0x4de497(0x190) + _0x4de497(0x690) + '更久。', _0x4de497(0x798) + _0x4de497(0x221) + _0x4de497(0x76a), '把浓烈感受转成作品、' + _0x4de497(0x6d3) + _0x4de497(0x210)],
+            'books': [{
+                'title': _0x4de497(0x696),
+                'author': '汤显祖',
+                'reason': _0x4de497(0x475) + _0x4de497(0x552) + _0x4de497(0x291)
+            }, {
+                'title': '《聊斋志异》',
+                'author': '蒲松龄',
+                'reason': _0x4de497(0x1ff) + _0x4de497(0x2bf) + _0x4de497(0x159)
+            }, {
+                'title': _0x4de497(0x3cd),
+                'author': _0x4de497(0x512),
+                'reason': _0x4de497(0x52a) + _0x4de497(0x446) + _0x4de497(0x7d4) + _0x4de497(0x1a3)
+            }]
+        },
+        'JOSE': {
+            'code': 'JOSE',
+            'name': _0x4de497(0x402),
+            'author': _0x4de497(0x3ac),
+            'source': _0x4de497(0x3dc),
+            'vec': [-0x1663 + -0x136a + 0x29cf * 0x1, -0x10a5 * -0x1 + -0x498 * -0x4 + -0x2304, -(0x1fd + 0x2237 + -0x2433), -(0x1ca5 * 0x1 + 0x102 * 0x20 + -0x3ce3), -(0x1047 * 0x2 + -0x1d30 + -0x11f * 0x3)],
+            'tags': [_0x4de497(0x2a3), _0x4de497(0x779), _0x4de497(0x487)],
+            'axis': '总觉得自己正被看不见' + _0x4de497(0x671),
+            'quote': _0x4de497(0x618) + '比别人更早感到系统的' + _0x4de497(0x3f7),
+            'profile': ['你对规则、审视和无形' + '压力的感受非常敏锐。' + _0x4de497(0x635) + '、只是惯例，你却会很' + _0x4de497(0x667) + _0x4de497(0x4ea), _0x4de497(0x236) + _0x4de497(0x5da) + _0x4de497(0x459) + '序感拖住。你知道问题' + _0x4de497(0x808) + _0x4de497(0x222)],
+            'modern': _0x4de497(0x5b5) + '模糊标准和隐形评判里' + _0x4de497(0x1c3) + _0x4de497(0x175) + _0x4de497(0x583) + _0x4de497(0x174) + _0x4de497(0x54d) + _0x4de497(0x722) + _0x4de497(0x736) + _0x4de497(0x598) + '。',
+            'prescription': [_0x4de497(0x2e3) + _0x4de497(0x21e) + _0x4de497(0x503), _0x4de497(0x75b) + '具体的几个问题，一次' + '只处理一层，不要让系' + _0x4de497(0x7a7), _0x4de497(0x4c0) + _0x4de497(0x332) + _0x4de497(0x56f) + _0x4de497(0x77f)],
+            'books': [{
+                'title': _0x4de497(0x3dc),
+                'author': _0x4de497(0x3ac),
+                'reason': '它能替你把那种被看不' + '见的秩序持续包围的感' + '觉，完整地说出来。'
+            }, {
+                'title': _0x4de497(0x28a),
+                'author': _0x4de497(0x3ac),
+                'reason': _0x4de497(0x520) + _0x4de497(0x543) + _0x4de497(0x390)
+            }, {
+                'title': _0x4de497(0x158),
+                'author': '乔治·奥威尔',
+                'reason': _0x4de497(0x5dc) + _0x4de497(0x254) + '推到更清晰也更刺痛的' + _0x4de497(0x47d)
+            }]
+        },
+        'JOMA': {
+            'code': _0x4de497(0x411),
+            'name': '乔·马奇',
+            'author': _0x4de497(0x4ce),
+            'source': _0x4de497(0x3c3),
+            'vec': [-(-0x2b * -0xc7 + 0x65b * 0x2 + -0x2 * 0x1711), 0x470 + 0xd87 + -0x11f6, -0x205 + 0x2 * -0xe81 + 0x1f08, -0x2 * -0x45 + 0x28 * -0x33 + 0x76e * 0x1, 0xfa3 + -0x2dd * -0xd + -0x2 * 0x1a6d],
+            'tags': [_0x4de497(0x303), _0x4de497(0x4bb), _0x4de497(0x7f6)],
+            'axis': '总想把人生再写大一点' + '的人',
+            'quote': _0x4de497(0x17e) + '是总觉得生活还可以被' + _0x4de497(0x205),
+            'profile': [_0x4de497(0x233) + _0x4de497(0x3f4) + '活成一种现成模板，总' + _0x4de497(0x2f5) + _0x4de497(0x1eb), '你很重视热情，也很看' + _0x4de497(0x807) + _0x4de497(0x513) + _0x4de497(0x58c) + _0x4de497(0x1f9) + _0x4de497(0x308) + '。'],
+            'modern': _0x4de497(0x1ba) + _0x4de497(0x360) + _0x4de497(0x567) + _0x4de497(0x69b) + _0x4de497(0x7ed) + _0x4de497(0x6b9) + _0x4de497(0x3cb) + _0x4de497(0x5a8) + '的亮度。你需要空间去' + '试、去写、去变成新的' + _0x4de497(0x17b),
+            'prescription': [_0x4de497(0x454) + _0x4de497(0x7eb) + '停顿都理解成退步。', _0x4de497(0x716) + _0x4de497(0x19a) + _0x4de497(0x325), _0x4de497(0x79a) + _0x4de497(0x489) + _0x4de497(0x311)],
+            'books': [{
+                'title': _0x4de497(0x3c3),
+                'author': _0x4de497(0x4ce),
+                'reason': _0x4de497(0x2b3) + _0x4de497(0x81b) + _0x4de497(0x5cd)
+            }, {
+                'title': _0x4de497(0x479),
+                'author': _0x4de497(0x1ce),
+                'reason': _0x4de497(0x5df) + '想象、爱偏航、又总能' + _0x4de497(0x45a) + '。'
+            }, {
+                'title': _0x4de497(0x3fd),
+                'author': _0x4de497(0x389),
+                'reason': '它会帮你把创作冲动和' + _0x4de497(0x72c) + '看得更清楚也更长远。'
+            }]
+        },
+        'GATS': {
+            'code': _0x4de497(0x28e),
+            'name': _0x4de497(0x2ca),
+            'author': _0x4de497(0x19c) + '拉德',
+            'source': _0x4de497(0x73a),
+            'vec': [-0x1 * 0x11ec + -0xef3 + -0x5 * -0x693, 0x234d + 0x1b56 + 0x1 * -0x3ea2, -0x6c9 * -0x3 + -0x155d + 0x104, -0x641 * 0x1 + 0x1ed8 + -0x832 * 0x3, 0x1a17 * 0x1 + 0x1d * -0x67 + -0xe6c],
+            'tags': [_0x4de497(0x346), _0x4de497(0x492), _0x4de497(0x178)],
+            'axis': '把整个未来押给一个幻' + _0x4de497(0x564),
+            'quote': _0x4de497(0x7a0) + _0x4de497(0x3a8) + '来可以更好的过去。”',
+            'profile': [_0x4de497(0x471) + '认定的幻象，把现实重' + _0x4de497(0x4f1) + '是为了抵达未来，你努' + '力常常是为了证明某个' + '失去的瞬间并没有真正' + _0x4de497(0x4dc), _0x4de497(0x6ed) + '力。你不是被命运安排' + _0x4de497(0x3ff) + _0x4de497(0x554) + _0x4de497(0x80d) + _0x4de497(0x315)],
+            'modern': _0x4de497(0x2c4) + _0x4de497(0x48f) + _0x4de497(0x257) + '出来了”的错觉，但只' + '有你自己知道，心里一' + _0x4de497(0x704) + _0x4de497(0x482) + _0x4de497(0x153) + _0x4de497(0x415) + _0x4de497(0x725) + _0x4de497(0x287) + '头。',
+            'prescription': [_0x4de497(0x7b6) + _0x4de497(0x3ae) + _0x4de497(0x507) + '。', _0x4de497(0x41f) + '慢改写成“我现在真正' + '想创造什么”，这是你' + _0x4de497(0x70b), _0x4de497(0x4c3) + _0x4de497(0x728) + '楚承认，它就已经不再' + _0x4de497(0x333)],
+            'books': [{
+                'title': '《了不起的盖茨比》',
+                'author': _0x4de497(0x19c) + '拉德',
+                'reason': _0x4de497(0x6be) + '整个自我押给一个梦想' + '、一个人或一段过去的' + _0x4de497(0x1c1)
+            }, {
+                'title': _0x4de497(0x6f7),
+                'author': _0x4de497(0x1d8),
+                'reason': _0x4de497(0x699) + '理想到底该被爱到什么' + _0x4de497(0x6e0)
+            }, {
+                'title': _0x4de497(0x617),
+                'author': _0x4de497(0x235),
+                'reason': _0x4de497(0x2a6) + _0x4de497(0x575) + _0x4de497(0x33e) + _0x4de497(0x42a)
+            }]
+        },
+        'SANT': {
+            'code': _0x4de497(0x60b),
+            'name': _0x4de497(0x435),
+            'author': _0x4de497(0x24c),
+            'source': '《老人与海》',
+            'vec': [-0xd5b * -0x1 + -0x2d2 + -0xa88, 0xe * 0x57 + 0x181d + -0x1cde, -(0x2666 + 0x117a + -0x37df), 0x12de + -0xbe1 + -0x6fb, -(-0x21a9 + -0x708 + 0x28b2 * 0x1)],
+            'tags': [_0x4de497(0x6c0), '长期主义', _0x4de497(0x385)],
+            'axis': '明知要硬扛也还是会继' + _0x4de497(0x1b4),
+            'quote': '“输赢未定之前，你先' + _0x4de497(0x270) + '”',
+            'profile': [_0x4de497(0x34a) + _0x4de497(0x804) + '正支撑你的，往往是那' + '种日复一日继续做下去' + _0x4de497(0x7e0) + _0x4de497(0x323), _0x4de497(0x76b) + _0x4de497(0x3a0) + _0x4de497(0x26f) + _0x4de497(0x693) + _0x4de497(0x4d0) + '。'],
+            'modern': '你很像那种在行业低谷' + _0x4de497(0x4fa) + _0x4de497(0x5cc) + _0x4de497(0x4be) + _0x4de497(0x691) + _0x4de497(0x685) + '情绪收好，先回到节奏' + _0x4de497(0x4cb) + '，但也因此容易让人忘' + _0x4de497(0x7a5) + '只是太习惯一个人慢慢' + _0x4de497(0x4af),
+            'prescription': [_0x4de497(0x151) + _0x4de497(0x464) + _0x4de497(0x276), _0x4de497(0x6cc) + _0x4de497(0x1ef) + _0x4de497(0x414), '别总把尊严理解成独自' + _0x4de497(0x420) + _0x4de497(0x416) + _0x4de497(0x4d9)],
+            'books': [{
+                'title': _0x4de497(0x299),
+                'author': '欧内斯特·海明威',
+                'reason': _0x4de497(0x5d2) + _0x4de497(0x161) + _0x4de497(0x45b) + '。'
+            }, {
+                'title': _0x4de497(0x490),
+                'author': '约翰·威廉斯',
+                'reason': '适合你去看一种更安静' + _0x4de497(0x3bc) + '怎样的重量。'
+            }, {
+                'title': _0x4de497(0x334),
+                'author': _0x4de497(0x458),
+                'reason': _0x4de497(0x215) + '先把今天过好”的内在' + _0x4de497(0x6d4) + '。'
+            }]
+        },
+        'PRIN': {
+            'code': _0x4de497(0x4da),
+            'name': _0x4de497(0x61e),
+            'author': _0x4de497(0x302) + _0x4de497(0x168),
+            'source': _0x4de497(0x172),
+            'vec': [0x6c8 + -0x162a + 0xf63, -(0x59 * -0x19 + 0xe * 0x1c8 + -0x2b5 * 0x6), -0x20cd + -0x95f * -0x1 + 0x176f, -0xb * -0x1 + -0x1c7 * 0x3 + -0x2 * -0x2a5, 0xd * 0xa3 + -0x98 * -0x2e + -0x2395],
+            'tags': [_0x4de497(0x2b7), '反异化', '温柔守护'],
+            'axis': '仍愿意为无用之美停下' + _0x4de497(0x2bc),
+            'quote': _0x4de497(0x207) + '还没答应把灵魂交给庸' + _0x4de497(0x4eb),
+            'profile': ['你对很多人觉得不重要' + _0x4de497(0x815) + _0x4de497(0x49b) + _0x4de497(0x20f) + _0x4de497(0x60e) + _0x4de497(0x2a7) + _0x4de497(0x6f9), '你并不擅长用世俗效率' + '来衡量关系和价值。比' + _0x4de497(0x3ab) + _0x4de497(0x50a) + _0x4de497(0x391) + _0x4de497(0x4e1) + _0x4de497(0x20b)],
+            'modern': '你通常不会是最会卷、' + '最会算计、最会迎合规' + '则的那类人。你更在意' + _0x4de497(0x5f3) + '在听、一个关系有没有' + _0x4de497(0x626) + _0x4de497(0x3a3) + _0x4de497(0x46f) + '有，因为你还愿意认真' + '对待那些看起来不赚钱' + _0x4de497(0x68a) + _0x4de497(0x5a7),
+            'prescription': [_0x4de497(0x508) + _0x4de497(0x6e6) + _0x4de497(0x4f5) + '。', _0x4de497(0x183) + _0x4de497(0x3db) + _0x4de497(0x1d4) + _0x4de497(0x55e), _0x4de497(0x17d) + _0x4de497(0x2f6) + _0x4de497(0x2d3)],
+            'books': [{
+                'title': _0x4de497(0x172),
+                'author': _0x4de497(0x302) + _0x4de497(0x168),
+                'reason': _0x4de497(0x27c) + _0x4de497(0x398) + _0x4de497(0x646) + _0x4de497(0x2cc)
+            }, {
+                'title': _0x4de497(0x363),
+                'author': _0x4de497(0x28d),
+                'reason': _0x4de497(0x7b4) + _0x4de497(0x670) + _0x4de497(0x162)
+            }, {
+                'title': _0x4de497(0x633) + _0x4de497(0x37a),
+                'author': _0x4de497(0x517),
+                'reason': _0x4de497(0x15e) + _0x4de497(0x5e5) + '清澈的地方时阅读。'
+            }]
+        }
+    }
+      , PERSONALITY_NOTES = {
+        'DAIY': {
+            'armor': _0x4de497(0x49e) + _0x4de497(0x499) + _0x4de497(0x7bb) + _0x4de497(0x3e0) + _0x4de497(0x7c3) + '在事情已经坏掉之后才' + _0x4de497(0x1ea) + '能在最早的一丝异样里' + _0x4de497(0x1a4),
+            'weakness': _0x4de497(0x7b7) + _0x4de497(0x2b8) + _0x4de497(0x782) + '么，你已经先把自己耗' + _0x4de497(0x761) + _0x4de497(0x2dc) + '不是被现实击倒，而是' + _0x4de497(0x2c9) + _0x4de497(0x433)
+        },
+        'JANE': {
+            'armor': _0x4de497(0x4c7) + _0x4de497(0x70d) + '太可能为了换取安稳而' + _0x4de497(0x203) + _0x4de497(0x7a1) + _0x4de497(0x753) + _0x4de497(0x1a1) + _0x4de497(0x640) + '。',
+            'weakness': _0x4de497(0x5c6) + _0x4de497(0x7a6) + _0x4de497(0x473) + _0x4de497(0x74e) + _0x4de497(0x1b5) + _0x4de497(0x6e9) + _0x4de497(0x2ad) + '很久才肯慢慢放松。'
+        },
+        'SCAR': {
+            'armor': _0x4de497(0x2db) + _0x4de497(0x17a) + _0x4de497(0x43c) + _0x4de497(0x541) + '一步。很多人会在失控' + _0x4de497(0x5d3) + _0x4de497(0x395) + _0x4de497(0x69f) + '些东西。',
+            'weakness': _0x4de497(0x5f6) + _0x4de497(0x5a5) + '并不是靠更强、更快、' + _0x4de497(0x27e) + _0x4de497(0x48c) + _0x4de497(0x255) + _0x4de497(0x410) + _0x4de497(0x361) + _0x4de497(0x650)
+        },
+        'MERS': {
+            'armor': '你几乎不靠群体反馈来' + '确认自己，这让你在很' + _0x4de497(0x1ae) + _0x4de497(0x78b) + _0x4de497(0x29b) + '确认方向时，你往往只' + _0x4de497(0x3f9) + _0x4de497(0x694) + _0x4de497(0x358),
+            'weakness': '你太少给外界解释自己' + '，结果常常不是你不真' + '诚，而是别人完全读不' + '到你的频道。你省下了' + '很多表演成本，也因此' + _0x4de497(0x5ec) + '别人并不是不想靠近，' + _0x4de497(0x4fc) + '你。'
+        },
+        'ELIZ': {
+            'armor': _0x4de497(0x1a8) + _0x4de497(0x227) + _0x4de497(0x266) + _0x4de497(0x371) + '的关键点。你能在不失' + '礼的情况下保持锋利，' + _0x4de497(0x6af) + _0x4de497(0x36a) + '。',
+            'weakness': _0x4de497(0x4ae) + _0x4de497(0x3b8) + _0x4de497(0x2ea) + '去慢慢修正误会的耐心' + _0x4de497(0x5e9) + _0x4de497(0x3ad) + '对方还没真正展开之前' + _0x4de497(0x7c4) + _0x4de497(0x53a)
+        },
+        'SIDD': {
+            'armor': _0x4de497(0x680) + _0x4de497(0x4ad) + _0x4de497(0x3f1) + _0x4de497(0x2c7) + _0x4de497(0x470) + _0x4de497(0x5ae) + '能力，让你比很多人更' + _0x4de497(0x277) + '。',
+            'weakness': _0x4de497(0x252) + _0x4de497(0x800) + _0x4de497(0x56d) + _0x4de497(0x4b3) + '远。你太擅长从噪音里' + _0x4de497(0x3d1) + _0x4de497(0x436) + _0x4de497(0x2b1) + '担。'
+        },
+        'ANNA': {
+            'armor': '你不会用半颗心生活。' + _0x4de497(0x216) + '求很高，这让你的情感' + _0x4de497(0x664) + _0x4de497(0x608) + _0x4de497(0x6d0) + _0x4de497(0x244) + _0x4de497(0x3d6) + '。',
+            'weakness': _0x4de497(0x74c) + _0x4de497(0x534) + _0x4de497(0x6e3) + _0x4de497(0x48d) + _0x4de497(0x2ee) + _0x4de497(0x515) + _0x4de497(0x359) + _0x4de497(0x53e) + '把自己逼到更窄的位置' + '。'
+        },
+        'ORLA': {
+            'armor': _0x4de497(0x66b) + _0x4de497(0x47f) + _0x4de497(0x2d0) + _0x4de497(0x615) + _0x4de497(0x173) + '境就会失重，而你反而' + _0x4de497(0x41a) + _0x4de497(0x451) + '。',
+            'weakness': _0x4de497(0x6bc) + _0x4de497(0x771) + _0x4de497(0x558) + '迟不肯为任何阶段好好' + _0x4de497(0x67b) + _0x4de497(0x1fb) + '辽阔，也让你在需要停' + _0x4de497(0x41c) + '下。'
+        },
+        'NORA': {
+            'armor': '你有很强的主体意识，' + _0x4de497(0x212) + '种关系、角色或秩序悄' + _0x4de497(0x218) + _0x4de497(0x3fa) + _0x4de497(0x56b) + '对“我是不是还在为自' + _0x4de497(0x7ae) + _0x4de497(0x537),
+            'weakness': '你太害怕再次被安排，' + _0x4de497(0x65b) + '发生之前，就先进入撤' + '离状态。你的警觉能救' + _0x4de497(0x4c9) + _0x4de497(0x2a4) + _0x4de497(0x445) + '只剩下出走这一个选项' + '。'
+        },
+        'HAML': {
+            'armor': _0x4de497(0x1f3) + _0x4de497(0x733) + _0x4de497(0x199) + '人还停在情绪或结论层' + '面时，你往往已经把整' + _0x4de497(0x641) + _0x4de497(0x22e) + '服，也少被简单叙事拖' + '着走。',
+            'weakness': _0x4de497(0x3e6) + '都推演到尽头，于是行' + _0x4de497(0x20c) + '。你不是没有勇气，而' + _0x4de497(0x155) + _0x4de497(0x58e) + _0x4de497(0x2ed) + _0x4de497(0x822) + _0x4de497(0x40d)
+        },
+        'DULI': {
+            'armor': _0x4de497(0x579) + _0x4de497(0x2de) + _0x4de497(0x7c5) + _0x4de497(0x4fd) + _0x4de497(0x369) + _0x4de497(0x54c) + _0x4de497(0x31a) + '里会被真正看见并放大' + '。',
+            'weakness': _0x4de497(0x6bd) + '一个意象或一次心动投' + _0x4de497(0x3fc) + _0x4de497(0x1f6) + _0x4de497(0x6f4) + _0x4de497(0x437) + _0x4de497(0x7b3) + _0x4de497(0x187) + '外重。'
+        },
+        'JOSE': {
+            'armor': _0x4de497(0x78c) + '压迫和模糊评判的敏感' + '度很高，所以很少会被' + _0x4de497(0x6c8) + '抚。别人还在接受流程' + _0x4de497(0x6cd) + _0x4de497(0x79c) + _0x4de497(0x7ba) + _0x4de497(0x654),
+            'weakness': _0x4de497(0x2ec) + _0x4de497(0x6ac) + _0x4de497(0x6b2) + '落地，就先在心里扩大' + _0x4de497(0x4ab) + '那些隐形规则有多冷，' + _0x4de497(0x5c0) + _0x4de497(0x73e) + _0x4de497(0x72f)
+        },
+        'JOMA': {
+            'armor': _0x4de497(0x50e) + _0x4de497(0x43e) + _0x4de497(0x524) + _0x4de497(0x2a1) + _0x4de497(0x15f) + _0x4de497(0x450) + _0x4de497(0x274) + _0x4de497(0x4b6),
+            'weakness': _0x4de497(0x773) + '点亮，也可能因此不太' + _0x4de497(0x4fb) + _0x4de497(0x816) + _0x4de497(0x5e6) + _0x4de497(0x52c) + _0x4de497(0x6ce) + _0x4de497(0x570)
+        },
+        'GATS': {
+            'armor': _0x4de497(0x61d) + '，一旦认定某个方向，' + _0x4de497(0x709) + _0x4de497(0x7fb) + _0x4de497(0x1f8) + _0x4de497(0x651) + _0x4de497(0x6f6) + _0x4de497(0x46a),
+            'weakness': _0x4de497(0x186) + _0x4de497(0x6dc) + _0x4de497(0x6b3) + _0x4de497(0x28c) + _0x4de497(0x3c1) + _0x4de497(0x777) + '愿承认，那道绿光已经' + _0x4de497(0x81f) + '标。'
+        },
+        'SANT': {
+            'armor': '你最强的地方，是即使' + _0x4de497(0x16c) + _0x4de497(0x55c) + _0x4de497(0x368) + '过完、把船再划出去。' + '你的稳定不是表面坚强' + _0x4de497(0x6e4) + _0x4de497(0x340),
+            'weakness': '你太习惯沉默地扛事，' + _0x4de497(0x774) + '说得太顺，以至于连自' + '己都很难分辨什么时候' + _0x4de497(0x6b6) + '的耐力很珍贵，但如果' + _0x4de497(0x793) + _0x4de497(0x356) + '掉。'
+        },
+        'PRIN': {
+            'armor': _0x4de497(0x2a5) + '知力，能在噪音、功利' + _0x4de497(0x803) + _0x4de497(0x826) + _0x4de497(0x72d) + _0x4de497(0x603) + _0x4de497(0x54b) + _0x4de497(0x7e4),
+            'weakness': _0x4de497(0x7b2) + _0x4de497(0x627) + _0x4de497(0x772) + _0x4de497(0x625) + _0x4de497(0x3ea) + _0x4de497(0x76f) + _0x4de497(0x71c) + '就会特别想后退回一个' + _0x4de497(0x52b)
+        }
+    }
+      , QUESTIONS = [{
+        'section': '房间',
+        'note': _0x4de497(0x374) + _0x4de497(0x4e6),
+        'q': _0x4de497(0x802) + _0x4de497(0x232) + _0x4de497(0x3e7),
+        'options': [{
+            't': _0x4de497(0x3e5) + _0x4de497(0x2aa) + '。',
+            'd': [0x202c + 0x210a + -0x4134, 0x2 * 0x3ad + 0x2e7 * 0x4 + 0x1 * -0x12f5, 0x242c + 0xa * 0x2 + 0xa0 * -0x3a, 0x1 * 0x198f + 0x1031 * 0x1 + -0x29bf, 0xec8 + -0x2d0 + -0xbf8]
+        }, {
+            't': '坐下来列计划，把接下' + '来的生活重新安排清楚' + '。',
+            'd': [-0xe * -0x81 + 0x3 * 0x728 + 0x1c86 * -0x1, -0x15f9 * 0x1 + -0x1 * 0x28 + 0x1623, -(0x1 * 0x240b + -0xac1 * -0x2 + -0x398c), 0x234b + -0x23d5 + 0x8b, -0x13af * 0x1 + 0x11a3 + 0x20c]
+        }, {
+            't': _0x4de497(0x5f7) + '慢慢移动，确认自己终' + '于不用被打断。',
+            'd': [-0x60 * -0x12 + -0xa3f * 0x1 + -0xd * -0x45, -0x2 * 0x1309 + -0x2 * -0x1152 + -0x1 * -0x36e, 0x1d81 + 0x49c + -0x221c, 0x1f * -0x106 + 0x179 * 0x16 + 0x56 * -0x2, -0x4da + 0x1d9a + 0xb5 * -0x23]
+        }, {
+            't': _0x4de497(0x21d) + _0x4de497(0x610) + '房间。',
+            'd': [0x10a0 + 0x67 * 0x2f + -0x6 * 0x5ec, 0x1 * -0x1b5a + 0xcb1 + 0xea9, 0x17cc + 0x1909 + -0x30d3, -0xda9 + -0x1 * 0xcbf + 0x208 * 0xd, -0x2683 * 0x1 + -0x1905 + 0xcb5 * 0x5]
+        }]
+    }, {
+        'section': '关系',
+        'note': '你渴望的连接方式，常' + '常比你说出口的更诚实' + '。',
+        'q': _0x4de497(0x4a6) + _0x4de497(0x28f) + '态：',
+        'options': [{
+            't': _0x4de497(0x4b1) + _0x4de497(0x40f) + _0x4de497(0x632),
+            'd': [0x23f9 * -0x1 + 0x11 * 0x1a5 + -0x804 * -0x1, -0x105d + -0x9d8 + 0x1 * 0x1a37, -0x224f + 0x1ff2 + 0x25d, -0x3b * 0x55 + -0x11ae + -0x16f * -0x1a, 0x16e4 + -0x73 * 0x44 + -0x25 * -0x35]
+        }, {
+            't': _0x4de497(0x33a) + _0x4de497(0x780) + '天。',
+            'd': [-(0xb0 * -0x2b + -0x26e6 + -0x11 * -0x407), -0xdf * 0x27 + 0xd84 + 0x1475, -0x2468 + -0x4 * -0x349 + 0x1746, -0x96b * 0x2 + -0x19b0 + -0x2c87 * -0x1, -(-0x1c91 + 0x19 * -0x17 + 0x467 * 0x7)]
+        }, {
+            't': '沉默也成立，两个人各' + _0x4de497(0x689) + '。',
+            'd': [0x245f + 0x167a + -0x3ad7, -0x9ce + 0x4d * -0x64 + 0x27e3, -0x15b8 + -0x24d9 * 0x1 + 0x3a91, 0x19ee + -0x1 * 0x1d54 + 0x366, -0x115 * 0x1d + -0x1 * 0x469 + 0x23cc * 0x1]
+        }, {
+            't': _0x4de497(0x468) + _0x4de497(0x39a) + _0x4de497(0x1f4),
+            'd': [-0x1 * 0x755 + 0x17e7 + 0x7 * -0x25e, -0x231e + -0xc7 * 0xd + -0x33b * -0xe, -0x6ef + 0xe3f + -0x74f, -0x2 * -0xf29 + 0x4b * -0x1 + -0x1e05, 0x1 * 0x14f5 + -0x1 * -0x24ba + -0x39ad]
+        }]
+    }, {
+        'section': '不公',
+        'note': '面对失衡时，你靠什么' + '站稳。',
+        'q': _0x4de497(0x68d) + _0x4de497(0x327) + '能：',
+        'options': [{
+            't': _0x4de497(0x352) + _0x4de497(0x419),
+            'd': [0x1fa5 + 0x1 * 0x16bb + -0x3660, 0xe7 * -0xe + -0x45a * -0x5 + 0x185 * -0x6, -0x88e + -0x170 + 0x2 * 0x4ff, 0x26f8 + 0x86 * -0x18 + -0x2ef * 0x9, -0x1730 + -0x73 * 0x33 + 0x2e19]
+        }, {
+            't': _0x4de497(0x23c) + _0x4de497(0x6cf) + _0x4de497(0x6c3),
+            'd': [-0x1 * 0xc56 + -0x17e0 + 0x2436, -0x1d49 * 0x1 + -0xf6a + 0x1 * 0x2cb4, -0x1dcc + -0x20fd * -0x1 + -0x10 * 0x33, -0x1a67 + -0x53 * 0x4d + 0x3360, 0x15fc + 0x1f54 * 0x1 + -0x354e]
+        }, {
+            't': _0x4de497(0x3b7) + '后总会以自己的方式写' + _0x4de497(0x3b9),
+            'd': [0x11cb + 0x220e + 0x33d8 * -0x1, 0x98f + -0x1 * -0xbf + 0x125 * -0x9, -0x1 * -0x42d + 0x1f18 + -0xbc1 * 0x3, 0x2f5 + 0x1a3 * 0x4 + 0x1 * -0x980, -0x22d5 + 0xd * 0x24 + 0x2102]
+        }, {
+            't': _0x4de497(0x2f1) + _0x4de497(0x3ce) + _0x4de497(0x6ee),
+            'd': [-0x9d7 * -0x3 + 0x2 * 0x246 + -0x2210, 0x107 * 0x19 + -0x1750 * 0x1 + 0x79 * -0x5, 0x92 * -0x28 + 0x84f + 0xe81, 0x13c4 + 0x3 * -0xcc5 + -0x4a3 * -0x4, -(-0x190c * -0x1 + -0x213 + -0x16f8)]
+        }]
+    }, {
+        'section': '表达',
+        'note': _0x4de497(0x63d) + _0x4de497(0x461),
+        'q': _0x4de497(0x261) + '的表达方式，你会选：',
+        'options': [{
+            't': _0x4de497(0x767) + _0x4de497(0x637) + '来。',
+            'd': [-0x7 * 0x2f1 + 0x26c9 * -0x1 + 0x3b61, 0x1 * -0x120d + 0xb3e * 0x2 + -0x1 * 0x46f, -0x164f + -0x1 * -0xda3 + 0x8ad, 0x2377 + 0x2f * -0x94 + -0x84b, 0xa61 + 0x13 * 0x2f + -0x1 * 0xddc]
+        }, {
+            't': '话不多，但每句都有落' + '点，不喜欢绕弯子。',
+            'd': [0x1110 + 0x2e7 * 0x3 + 0x3 * -0x897, 0x308 + -0x242a + -0x6 * -0x586, -0x2 * -0xa53 + 0x1197 + 0x27 * -0xfb, -0x870 + 0x1096 * -0x2 + 0x35 * 0xc9, -(0xb7 + 0x1ccc + -0x1d82)]
+        }, {
+            't': _0x4de497(0x811) + _0x4de497(0x271),
+            'd': [-0x213e + -0x3 * -0xa09 + -0xc9 * -0x4, -0x65b * 0x1 + -0xc8 * 0x7 + -0x1 * -0xbd3, 0x25 * -0xb7 + 0x35 * 0x83 + -0x2 * 0x55, 0x1bf9 + -0x21b3 * 0x1 + 0x5ba * 0x1, -(-0x1486 + 0x272 + -0x1 * -0x1215)]
+        }, {
+            't': _0x4de497(0x265) + _0x4de497(0x743),
+            'd': [-0x1960 + 0x4 * -0x7a0 + 0x37e0, -0x4fe + -0x105 * 0x13 + 0x185f, -(-0x263d + 0x29c * 0x4 + -0x1bce * -0x1), 0xc * -0x19c + -0x255f + 0x277 * 0x17, 0x35 * 0x79 + 0x2 * 0x1169 + -0x3bdf]
+        }]
+    }, {
+        'section': '身体',
+        'note': _0x4de497(0x305) + '露了你如何感受命运。',
+        'q': _0x4de497(0x370) + _0x4de497(0x336),
+        'options': [{
+            't': _0x4de497(0x539) + _0x4de497(0x6a1) + _0x4de497(0x3d4) + '不清的不适已经到了。',
+            'd': [0x1e15 + -0x1e18 + 0x4, 0x1679 + 0x23da + -0xbd * 0x4f, 0x3a + 0x240f + -0xc18 * 0x3, 0xb18 + 0x1be9 + -0x2701, 0x23b7 + -0x1c1 + -0x1 * 0x21f5]
+        }, {
+            't': _0x4de497(0x202) + _0x4de497(0x4d8) + _0x4de497(0x5f4) + _0x4de497(0x3ca),
+            'd': [0x1d04 + -0xb0c + -0x11f8, 0xb55 + -0xa * -0x2b3 + -0x2651, -0x6 * -0x313 + -0xb10 + -0x5a * 0x15, 0x1 * 0x1d4b + -0x526 * -0x2 + -0x1 * 0x2795, 0x1437 + 0x1 * 0xd07 + 0x1 * -0x213e]
+        }, {
+            't': _0x4de497(0x4f0) + '下的压力不大，但它碰' + _0x4de497(0x406) + '就一下子放大了。',
+            'd': [0x1b32 + -0x21dc + -0x1 * -0x6aa, 0xe9d + 0xf4 * 0x1d + -0x152 * 0x20, -0x23d6 + 0x12fc + 0x1 * 0x10db, -0x949 + 0x166c + 0x1 * -0xd21, 0x71 * -0x2e + -0x1 * 0x1636 + 0x2a84]
+        }, {
+            't': _0x4de497(0x1dc) + _0x4de497(0x312) + _0x4de497(0x621) + _0x4de497(0x501),
+            'd': [0x1fe * 0x8 + 0xec2 + -0x1eb2 * 0x1, -0x2027 * 0x1 + 0x125 * 0x1b + 0x3 * 0x6b, 0xa0 * 0x4 + 0x1 * 0x1f7b + -0x10fd * 0x2, 0x196a + 0x43f * -0x1 + 0x102 * -0x15, 0x2 * -0x79c + 0x218f + -0x1255]
+        }]
+    }, {
+        'section': '记忆',
+        'note': _0x4de497(0x488) + '了你怎样面对未来。',
+        'q': _0x4de497(0x655) + _0x4de497(0x6a4) + '：',
+        'options': [{
+            't': '先去闻、去看、去摸，' + _0x4de497(0x75f) + '来。',
+            'd': [-0xec5 + 0xc54 + 0x272, 0x148a + -0x1403 * 0x1 + -0x3 * 0x2d, 0x4ab * -0x8 + -0x168c + 0x3 * 0x13f7, 0x2b6 * 0x1 + 0x493 * 0x4 + -0x1502 * 0x1, -0xef3 + 0xdc6 + -0x1 * -0x12e]
+        }, {
+            't': _0x4de497(0x298) + _0x4de497(0x7b0),
+            'd': [-0xd3f * 0x1 + -0xc7f + 0x293 * 0xa, -0xd66 + 0x1e9 + 0xb7f, 0xf8 * 0x9 + 0x259 * -0x1 + -0xe9 * 0x7, 0x19 * -0x49 + 0x1555 + -0xe34, -0x926 * 0x3 + -0x27 * -0x22 + 0x1644]
+        }, {
+            't': _0x4de497(0x413) + _0x4de497(0x4c5),
+            'd': [-0x2 * 0xf9 + 0x23ef + 0x91 * -0x3c, 0xde3 + 0x1e6a + -0x23 * 0x144, -0x1b * -0x45 + -0x7 * -0x11b + 0x781 * -0x2, 0x1d0a + -0x25cd + 0x8c3 * 0x1, 0x233c + 0x16b9 + -0x39f5]
+        }, {
+            't': _0x4de497(0x72e) + _0x4de497(0x713) + _0x4de497(0x2e8),
+            'd': [0xb54 + -0x1263 * 0x1 + -0x1 * -0x70f, -0x1cdd + 0xd * -0x64 + 0x21f2, 0xd39 + 0xe02 + -0x1b3a, -0x13cc + 0x1362 * 0x1 + 0x6b, -0x2313 + 0x3 * 0x52b + 0x1 * 0x1394]
+        }]
+    }, {
+        'section': '夜晚',
+        'note': _0x4de497(0x3d3) + _0x4de497(0x2b4),
+        'q': '当深夜终于安静下来，' + _0x4de497(0x6fc),
+        'options': [{
+            't': _0x4de497(0x2e0) + '身体一起慢慢降温。',
+            'd': [0x683 * -0x1 + 0x1d44 * -0x1 + 0x23c8, -0x4 * 0x8e0 + 0x2e7 + 0x2099, -0x1a * -0x29 + -0x1 * 0x1583 + 0x115a, -0x1ddb * 0x1 + 0x3a4 * 0x1 + 0x68e * 0x4, -0x7e8 + 0x13c3 * -0x1 + -0x142 * -0x16]
+        }, {
+            't': _0x4de497(0x491) + _0x4de497(0x5d4) + '的情绪。',
+            'd': [0x2 * -0x10b2 + 0x1 * 0x255a + -0x3f4, -0x1843 + 0x34 * 0x93 + -0x598, -0x1e * -0xe5 + 0x17b * 0x2 + -0x1dcb, 0x1 * -0x1349 + -0x3e1 + 0xb95 * 0x2, -0x13c + -0x371 * 0x3 + 0x250 * 0x5]
+        }, {
+            't': _0x4de497(0x571) + _0x4de497(0x60d),
+            'd': [-0x33e * 0x9 + 0x4 * 0x208 + 0x1 * 0x150f, 0x3 * 0x1f7 + 0x2 * -0x64d + 0x6b5 * 0x1, 0x1b0f * 0x1 + -0x1750 + -0x57 * 0xb, -0x1 * 0x23b1 + 0x1b9c + -0x815 * -0x1, -(-0x80f * -0x2 + -0xb9 * -0x3 + -0x492 * 0x4)]
+        }, {
+            't': '让自己彻底离线，不再' + _0x4de497(0x669) + _0x4de497(0x2e9),
+            'd': [-0x24bf + 0x13ee + 0x10d3, 0x1 * 0x2062 + 0x91 * 0x1f + -0x31f0, -0x60d + -0x52a * 0x3 + -0x44f * -0x5, -0x1870 + 0x1 * 0x15a9 + -0xb2 * -0x4, -(-0x946 + 0x1a2d + -0x10e6)]
+        }]
+    }, {
+        'section': '自由',
+        'note': _0x4de497(0x316) + _0x4de497(0x758),
+        'q': _0x4de497(0x351) + _0x4de497(0x412),
+        'options': [{
+            't': '谁也不能替我定义我，' + _0x4de497(0x467),
+            'd': [-0x4bf + 0x508 + 0x49 * -0x1, -0x1 * -0x8f8 + 0x2031 + 0x12d * -0x23, -0x21 * 0x30 + 0xf * -0x73 + 0x1 * 0xced, 0x49d * 0x7 + -0x14d4 + -0x7 * 0x1a3, -0x98e + 0x11c1 + -0x1 * 0x833]
+        }, {
+            't': _0x4de497(0x697) + _0x4de497(0x47b) + _0x4de497(0x36e),
+            'd': [-0x935 * 0x1 + 0xd1e + -0x3e8, -0x5e0 + 0xdcd + -0x1 * 0x7ed, -0x2062 + -0x2307 + -0x1 * -0x436a, -0x161d + 0x607 * 0x3 + -0x204 * -0x2, -0x2691 + 0x98d + 0x1d05]
+        }, {
+            't': _0x4de497(0x35e) + _0x4de497(0x453),
+            'd': [0x2418 + 0x1549 * 0x1 + 0x3961 * -0x1, 0xf2b + -0x217b + 0x1250, 0xd * 0x199 + -0x24b4 + 0xff0, -0xe56 + -0x648 * -0x4 + 0xb * -0xfb, -0xe6d + -0x7ad + -0x1 * -0x161b]
+        }, {
+            't': '我能替那些快被忽略、' + _0x4de497(0x799) + _0x4de497(0x64e),
+            'd': [0x1e8 * 0xa + -0x176b + -0xdf * -0x5, -0x15de + -0xf * -0x60 + 0x1 * 0x103f, 0xc41 + -0x8ad * 0x3 + 0xdc7, -0x18e9 + -0x12f0 + 0x2bdb, 0xd38 + -0x1 * 0x1dde + 0x10a8]
+        }]
+    }, {
+        'section': '失败',
+        'note': _0x4de497(0x6d5),
+        'q': _0x4de497(0x595) + '注定不会如愿，你更可' + '能：',
+        'options': [{
+            't': _0x4de497(0x485) + '部分继续做完。',
+            'd': [0x218 * -0x11 + 0x1db2 + 0x1 * 0x5e6, -0x843 * 0x3 + -0x1756 + -0x181 * -0x20, 0x3 * 0xb9b + -0xa81 * 0x1 + -0x1850, 0x545 + 0x23fd + -0x20 * 0x14a, 0x14e5 + 0x1 * -0x27 + -0x14be]
+        }, {
+            't': _0x4de497(0x430) + _0x4de497(0x44e),
+            'd': [0x146d + 0xfa2 + 0xb * -0x347, -0x1646 * 0x1 + 0x4a3 + 0x11a4, 0x1ae4 + 0x10e + -0x1bf2, 0x2dd + 0x19c + 0x1a * -0x2c, 0x1d85 + 0x113a + 0x1 * -0x2ebf]
+        }, {
+            't': '既然要输，宁可全力投' + _0x4de497(0x3f5) + _0x4de497(0x4d2),
+            'd': [0x1 * -0x2671 + -0xd * 0x8e + 0x2da7, 0x129a + 0x1 * 0x17fb + -0x2a95, -0x1e75 + 0x1ed3 + -0x5c, 0x25f4 + 0x1c31 + 0xb06 * -0x6, -(0x310 + 0x1c5b * -0x1 + 0x653 * 0x4)]
+        }, {
+            't': _0x4de497(0x676) + '及有没有什么还能被保' + '留下来。',
+            'd': [0xfeb + -0x327 + -0xcc4, -0xfd4 + 0x1151 + -0x26 * 0xa, -0x9de + -0x67 * -0x45 + 0xa * -0x1ca, 0x1596 + -0x1198 + -0x3fd, -0x18ce + -0x2 * -0xe9b + 0x2 * -0x233]
+        }]
+    }, {
+        'section': '工作',
+        'note': '你与世界协商的方式，' + _0x4de497(0x622) + '底。',
+        'q': '在长期工作中，什么最' + _0x4de497(0x41b) + '？',
+        'options': [{
+            't': '所有人都在表演热情，' + '却没人真正思考。',
+            'd': [0x12ce + -0x581 + -0x2a9 * 0x5, 0x5f9 + 0x2440 + -0x2a37, 0xca8 + 0x1d3 + -0xe7b, 0x3e6 + 0xffb + -0x60 * 0x35, -(-0xa5e + -0x1ee2 + 0x2941)]
+        }, {
+            't': '事情变得只有效率，没' + _0x4de497(0x805),
+            'd': [-0x1978 + 0xc9d + -0x1 * -0xcdc, -0x1 * -0xa81 + -0x482 * 0x4 + 0x787, 0x9 * -0x44d + 0xbed + -0x1ac9 * -0x1, 0x6 * 0x431 + -0x4 * -0x390 + -0x13b3 * 0x2, 0xa6a + -0x195 + -0x8d4]
+        }, {
+            't': '规则越来越多，可真正' + '被当作“人”来对待的' + _0x4de497(0x3c2),
+            'd': [0x1 * 0x74f + 0x2382 + -0x2ad1, 0x81b + 0x1 * 0x160f + -0x1e28, 0x2ba + 0xd * 0x49 + 0x3 * -0x225, 0x157e + -0x6d6 + -0xea6, -0x5 * -0x7f + 0x13ae + 0x763 * -0x3]
+        }, {
+            't': _0x4de497(0x6df) + '丢下别人的人，这让我' + _0x4de497(0x50d),
+            'd': [0xcf5 * -0x1 + 0x25eb + -0x18f6, 0x7e7 + -0x393 * -0x2 + 0x786 * -0x2, 0x11db + -0x1 * -0x859 + -0x1a33, -0x1e34 + -0xaad + 0x1471 * 0x2, 0x22a5 * -0x1 + 0x1 * 0x25c5 + -0x2 * 0x18f]
+        }]
+    }, {
+        'section': '爱',
+        'note': _0x4de497(0x665) + _0x4de497(0x5ff),
+        'q': _0x4de497(0x382) + _0x4de497(0x3aa),
+        'options': [{
+            't': _0x4de497(0x286) + '真给出平等与回应。',
+            'd': [-0x2382 + -0x106d + 0x33ef, -0x57 * -0x5e + 0x1c6 * -0x2 + -0x1c64, 0x1f47 + 0xfb2 + -0x2ef9, 0x1040 + 0xfe1 + -0x20 * 0x101, -0x1f1a + -0x21ff + 0xd * 0x502]
+        }, {
+            't': _0x4de497(0x2cd) + '给七分。',
+            'd': [-0x1e7c + 0x11f3 + 0xc89, 0x16e6 + 0x69b + -0x1d81, -0x1 * 0x5d1 + -0x86 * 0x3 + -0x277 * -0x3, 0x7 * 0x4be + 0x2 * -0xc77 + 0x2 * -0x422, -0x18 * -0x97 + 0xe75 + 0x4 * -0x727]
+        }, {
+            't': _0x4de497(0x4d1) + _0x4de497(0x5a0),
+            'd': [-0x2335 * 0x1 + 0x13d1 + 0xf65, -0x39 * -0x5d + 0x480 + -0x1935, -0x17fe + 0x1 * 0x17e1 + 0x1e, -0x1bf1 + 0x115 * 0x1d + -0x28 * 0x16, -0x9b3 + 0x1bb9 + 0x2 * -0x902]
+        }, {
+            't': _0x4de497(0x22b) + _0x4de497(0x46d),
+            'd': [0x1b07 + 0x174c + -0x3253 * 0x1, 0x66c * -0x6 + 0x1c2b + 0x2 * 0x52f, -0x239 * 0xc + -0x2512 * -0x1 + -0xa65, 0x1 * 0x3c7 + -0x1643 * -0x1 + -0x2b * 0x9b, -0x4 * 0x6f + 0x28d + -0xcf]
+        }]
+    }, {
+        'section': '结尾',
+        'note': _0x4de497(0x47c) + '，而是归位。',
+        'q': _0x4de497(0x562) + '句子给后来者，你更想' + _0x4de497(0x377),
+        'options': [{
+            't': _0x4de497(0x58f) + _0x4de497(0x648),
+            'd': [-0x1 * 0x1c01 + 0x19 + 0x1bea, 0x1669 + 0x26 * 0x3d + 0x2 * -0xfbb, -0x1af9 + 0x1 * 0x17d8 + 0x321, 0x5 * 0x180 + 0xe1e + -0x159d, -0x281 * -0x7 + 0x1045 + -0x21cc]
+        }, {
+            't': _0x4de497(0x57f) + _0x4de497(0x726),
+            'd': [0x3de + -0xb7 * 0x1d + 0x10dd, 0x5f8 * 0x2 + 0x2 * -0x416 + -0x1a * 0x25, 0x1b42 * -0x1 + 0x3 * 0x308 + 0x122a, -0x6 * -0x1e9 + -0x11ed * -0x2 + -0x976 * 0x5, -0x132f + -0x7f * 0x16 + 0x43 * 0x73]
+        }, {
+            't': _0x4de497(0x7f0) + _0x4de497(0x66f),
+            'd': [-0x26b0 + -0x2293 + 0x4944, 0x1 * -0x1777 + -0x1059 + -0x2 * -0x13e8, 0x1a * 0xc1 + -0xa21 * 0x3 + -0x1 * -0xacb, -0xef4 + -0x16f4 + 0x12f4 * 0x2, 0x19e7 + 0x1 * -0xa16 + 0x1 * -0xfd1]
+        }, {
+            't': _0x4de497(0x3be) + _0x4de497(0x580) + _0x4de497(0x1e8),
+            'd': [0x1beb + 0x149 + -0x7 * 0x42c, 0x1b8 * -0x7 + -0x16ad + 0x5c9 * 0x6, -0x16b7 + -0x1 * 0x132d + 0x41 * 0xa5, -0x1277 + 0x1ba1 + -0x929, -0x1 * -0x1bb7 + -0x13f7 + -0x7be]
+        }]
+    }, {
+        'section': '城市',
+        'note': '你在陌生城市里会暴露' + _0x4de497(0x338),
+        'q': _0x4de497(0x23a) + _0x4de497(0x22f) + '什么吸引过去：',
+        'options': [{
+            't': _0x4de497(0x34e) + _0x4de497(0x34f) + _0x4de497(0x2cf),
+            'd': [0x112c + -0x24dc + 0x13b1 * 0x1, -0x2547 + 0x3 * 0x17a + 0x20d9 * 0x1, -0x14c2 + -0x9 * 0xec + 0x1d0f, -0x561 + -0x1 * -0x634 + 0x1 * -0xd3, -0x13b6 + -0x62f * 0x5 + 0x10e1 * 0x3]
+        }, {
+            't': _0x4de497(0x35b) + _0x4de497(0x26a),
+            'd': [-0x23b1 + 0x2137 * 0x1 + 0x27a * 0x1, 0x1 * -0xa57 + -0x439 * 0x1 + 0xe92, -0xf46 + -0x47 * -0x7 + 0xd55, -0x2f * -0x63 + 0x625 + -0x1851, -0x1c1f * 0x1 + 0x70c * -0x2 + 0x2a38]
+        }, {
+            't': _0x4de497(0x3f3) + '不体面的那一层。',
+            'd': [-0x1 * 0x49d + 0x571 + -0xd4, -0xd * -0xf1 + -0x3 * 0x62b + -0x217 * -0x3, -0x58 * 0x6a + -0x1 * -0x5b0 + 0x1ec1 * 0x1, 0x218c + 0x15dc + 0x1bb3 * -0x2, 0x282 + 0x1 * -0x24f8 + -0x1 * -0x2277]
+        }, {
+            't': '找个角落坐着，看人来' + _0x4de497(0x7f2) + _0x4de497(0x5ce),
+            'd': [0x3 * 0x113 + -0x27b * 0x1 + -0xbc, 0xfcb * -0x2 + -0x1674 + 0x360a, -(0x1abe + -0x22a5 + 0x5c * 0x16), 0x153 * 0x14 + -0x1a7 * -0x9 + -0x295b * 0x1, -0x3e3 + -0x1 * 0x8a8 + 0xc8b]
+        }]
+    }, {
+        'section': '名字',
+        'note': _0x4de497(0x4dd) + _0x4de497(0x64b) + '感。',
+        'q': _0x4de497(0x38c) + _0x4de497(0x7d5) + _0x4de497(0x687) + _0x4de497(0x4ef),
+        'options': [{
+            't': _0x4de497(0x7ab) + _0x4de497(0x747),
+            'd': [0x13fd + 0xce1 + -0x20de, 0x1 * 0x24e5 + 0xfd7 + -0x22 * 0x18d, 0x1007 + -0x21f * 0x4 + -0x78b, -0x1 * 0xf4d + 0x182c + -0x8dd, 0x1fc6 + 0x2 * -0xa4e + -0xb2a]
+        }, {
+            't': _0x4de497(0x763) + _0x4de497(0x176),
+            'd': [0x15 * 0x13e + -0x7 * 0x2b9 + -0x2 * 0x383, 0x589 + -0x4 * -0x808 + 0x96a * -0x4, 0x14a1 * 0x1 + -0x3 * 0x301 + -0x1 * 0xb9d, 0x1a2e + -0x1555 * -0x1 + 0x1 * -0x2f83, -0x3b * 0xa6 + 0x1bd8 + 0xa6a]
+        }, {
+            't': _0x4de497(0x790) + _0x4de497(0x208) + _0x4de497(0x5ea),
+            'd': [-0xc5e * -0x1 + -0x2466 + 0x1808, 0xb4b + 0x88c + -0x13d7, -0xc04 + -0x727 * -0x1 + 0xe * 0x59, 0x1a2 + 0x34a + 0xb4 * -0x7, 0x3 * 0x931 + 0x7a + -0x1c0b]
+        }, {
+            't': _0x4de497(0x5ca) + '靠别人怎么叫我来确认' + _0x4de497(0x820),
+            'd': [0x73 * -0x35 + 0xd * 0x133 + 0x83a, 0x367 + -0x2df * 0x3 + 0x537, -(-0x192f + 0x61 * 0x49 + -0x3 * 0xd3), -0xf5c + 0x1f72 + -0x1016, 0x1c06 + 0x29e * 0x2 + 0x1 * -0x2141]
+        }]
+    }, {
+        'section': '舞台',
+        'note': '被众人注视时，你会本' + _0x4de497(0x711),
+        'q': _0x4de497(0x63b) + '发言，你第一反应更像' + '：',
+        'options': [{
+            't': _0x4de497(0x3c5) + _0x4de497(0x642) + '。',
+            'd': [0x1303 + 0x123 * -0x18 + -0x1 * -0x845, 0x1ab6 + 0x2492 + -0x4de * 0xd, -0x17bd + -0x8f9 * -0x1 + 0x21c * 0x7, -0x11e3 * -0x1 + 0x7f * -0x29 + -0x25 * -0x11, -0xa31 * -0x1 + -0x1331 + 0x120 * 0x8]
+        }, {
+            't': _0x4de497(0x285) + _0x4de497(0x48a),
+            'd': [-0x802 * 0x2 + -0x80e + -0x27 * -0x9e, 0xeef + 0x1 * -0xaae + -0x9 * 0x79, 0x4 * 0x2d7 + -0xe0c + 0x2b2, 0x1 * -0x1361 + -0x26f9 + -0x9a * -0x61, 0x45f * 0x5 + 0x229d * 0x1 + -0x3877 * 0x1]
+        }, {
+            't': _0x4de497(0x21b) + _0x4de497(0x321),
+            'd': [0x1 * -0x15ca + 0xe8a + 0x742, 0x24d6 + 0x14df + -0x39b4, -(-0x3 * 0x22 + -0x1580 * -0x1 + -0xb * 0x1eb), 0x985 + 0xb * -0xb7 + -0x1a8, -0xf50 + 0x1fbc + -0x836 * 0x2]
+        }, {
+            't': _0x4de497(0x156) + _0x4de497(0x706) + _0x4de497(0x1cc),
+            'd': [0x1705 + -0xce * -0x19 + -0x2b23, 0x202d * -0x1 + 0x1 * -0x41b + -0x7 * -0x52f, 0x1 * 0x121 + 0x1985 + 0x1 * -0x1aa5, 0x195e * 0x1 + 0x1bd * 0x6 + -0x23ca, -0x3 * -0xba + 0x3e1 * 0x1 + -0x60d]
+        }]
+    }, {
+        'section': '家庭',
+        'note': _0x4de497(0x734) + _0x4de497(0x1b7) + _0x4de497(0x7e6),
+        'q': '面对家人期待、传统角' + _0x4de497(0x4ec) + _0x4de497(0x310),
+        'options': [{
+            't': _0x4de497(0x495) + _0x4de497(0x256) + '。',
+            'd': [0x441 + -0x347 * 0x8 + 0x15f9, 0x2599 + 0x2 * -0x151 + 0x2 * -0x117b, -0x1 * 0x1fbf + -0x1718 + 0x36d7, 0x2b7 * 0xb + -0x1 * 0x1ded + 0x11, 0xe * -0x12 + -0xf04 + 0x1000]
+        }, {
+            't': _0x4de497(0x241) + '不合理的地方就重新谈' + '。',
+            'd': [0x1d83 + -0x83 * -0x2e + -0x350d, -0xa66 + 0x1dc5 + -0x1 * 0x135d, 0x26 * -0xfd + 0x1eed + 0x6a1, -0x1 * 0x2655 + -0xd15 * 0x1 + 0x336c, 0x1519 + -0x5 * -0x3f5 + -0x28e2]
+        }, {
+            't': _0x4de497(0x7a9) + _0x4de497(0x44d) + _0x4de497(0x272),
+            'd': [-0x761 * -0x1 + 0x21a7 + -0x1 * 0x2908, 0x13d1 + -0x1d * -0xb7 + 0x288b * -0x1, -0x1 * -0x685 + 0x7bb * 0x2 + 0xafd * -0x2, -0xc12 + 0x1 * -0x6da + 0x11d * 0x11, 0x170d + -0x1365 + -0x3a6 * 0x1]
+        }, {
+            't': '尽量把关系护住，哪怕' + _0x4de497(0x56c),
+            'd': [0x2148 + 0x2337 + -0x447f, 0x3d * 0x2c + -0x1 * -0x1889 + 0xf9 * -0x24, 0xc * -0x105 + -0xca9 * -0x3 + -0x19be * 0x1, 0x1c8a + 0x1 * 0x1d03 + -0x1 * 0x398b, 0x213 * 0x3 + 0x25 * 0x4d + -0x1159]
+        }]
+    }, {
+        'section': '羞耻',
+        'note': _0x4de497(0x569) + '通常会暴露最深的防御' + _0x4de497(0x572),
+        'q': _0x4de497(0x3c9) + _0x4de497(0x45d) + '：',
+        'options': [{
+            't': '把它翻译成一句锋利的' + '话，先让自己重新站稳' + '。',
+            'd': [-0x14ed + -0x1 * 0x1ad2 + 0x2fc0, -0x5f4 + 0x1b36 + -0x1540, -0x237c + -0x74a + 0x2ac7, 0x1e60 + 0x175 * 0x2 + -0x10a5 * 0x2, 0x1 * 0x187d + -0x128 * -0x5 + -0x1e45 * 0x1]
+        }, {
+            't': '脸在发烫，但紧跟着有' + _0x4de497(0x17c) + _0x4de497(0x373) + '。',
+            'd': [0xa85 * -0x1 + -0x190f + 0x2395, 0x25 * 0x3 + -0x596 + 0x527, 0x1fe1 + 0x20be + 0x11 * -0x3cd, -0x5 * 0x3bf + -0x7c0 + 0x1a7b, -0x571 * -0x5 + 0x1cd * 0x9 + -0x2b69]
+        }, {
+            't': '追问是谁教我为这件事' + '羞耻。',
+            'd': [-0x1aa3 + 0x1ab * 0x3 + 0x15a2, 0x1995 + -0xe5 * -0xb + 0x11b5 * -0x2, 0x1 * 0x1981 + -0x1d0 * -0x4 + -0x20c1, 0x305 + 0xc75 * -0x3 + -0x1 * -0x225c, -0xffa + 0x4 * -0xd3 + 0x2f * 0x69]
+        }, {
+            't': _0x4de497(0x29f) + _0x4de497(0x73d) + '己。',
+            'd': [0x3 * -0x549 + 0x2625 + -0xf8 * 0x17, 0x193a + 0x1293 * -0x1 + -0x6a7, -(-0x7a * 0x2b + 0x7b * 0x29 + 0xcc), 0x23ad + -0x267f + 0x1 * 0x2d2, 0x146d + 0x1b * 0x15e + -0x3957]
+        }]
+    }, {
+        'section': '旅行',
+        'note': '旅行并不只是移动，它' + '更像是你如何安放自己' + '的一次外显。',
+        'q': _0x4de497(0x193) + '行时间，结束后你最想' + _0x4de497(0x2bd),
+        'options': [{
+            't': _0x4de497(0x698) + _0x4de497(0x661) + _0x4de497(0x61b),
+            'd': [0x449 * -0x8 + -0x13f * -0x17 + 0x59f, 0x1072 + 0x2226 + -0x3296, -0x2610 + 0x1 * 0x221c + 0x3f4, 0x1391 * 0x1 + 0xa79 + 0x1 * -0x1e09, 0x2059 + -0x1 * 0x26fa + 0x3 * 0x236]
+        }, {
+            't': '那些突如其来的光线、' + '陌生感和意料之外的心' + _0x4de497(0x354),
+            'd': [-0xf35 * -0x1 + 0x4e + -0xf83, -0xe * -0xf9 + 0x1 * 0x38d + -0x112b, -0x1c4f + -0x2193 + 0x3de3, -0x16d2 * 0x1 + 0x23 * -0xdb + 0x1 * 0x34c4, -0x89b + -0xc5 * -0x5 + 0xf4 * 0x5]
+        }, {
+            't': _0x4de497(0x4c4) + _0x4de497(0x326) + _0x4de497(0x25d),
+            'd': [0x26bf + -0x2 * 0x371 + -0x1fdc, 0x661 + 0x1 * 0x15e6 + 0xe * -0x205, -0xaa2 * -0x1 + -0x162f + -0x2 * -0x5c7, -0xb8 * -0x1a + -0x10 * -0x1f3 + -0x31de, 0x884 * 0x1 + -0x83f * 0x1 + -0x44]
+        }, {
+            't': '一段谁也找不到我的时' + '间，好像暂时从原来的' + _0x4de497(0x15b),
+            'd': [-0x183b + -0x632 * -0x5 + -0x6bd, -0x2664 + -0x1450 + 0x3ab4, -0xcaa + -0x1025 + -0x1 * -0x1ccf, 0x61 * 0x4 + -0x15fe + 0x147a, -0x4 * 0x391 + -0x1 * -0x223d + 0x13 * -0x10d]
+        }]
+    }, {
+        'section': '群体',
+        'note': _0x4de497(0x322) + _0x4de497(0x781) + '诚实。',
+        'q': _0x4de497(0x1e0) + _0x4de497(0x66a) + _0x4de497(0x6d6),
+        'options': [{
+            't': _0x4de497(0x5cb) + _0x4de497(0x712),
+            'd': [-0x208d + -0x3d * 0x83 + 0x3fc4, -0x1 * 0x205b + 0x15ed + -0x2 * -0x538, 0x1 * 0x1df1 + 0x1375 + -0x3166 * 0x1, 0xd * 0x106 + 0x979 + -0x16c6, -0x24e1 + 0x1261 * -0x1 + 0x3742]
+        }, {
+            't': _0x4de497(0x79b) + _0x4de497(0x1c0),
+            'd': [0x1389 * 0x1 + -0x1d0a + 0x981, -0x2203 * -0x1 + -0x1 * 0x287 + -0x1f7a, -0x38 * -0x3 + 0x7 * 0x2e1 + 0x14cf * -0x1, -0x269 + -0x1303 * 0x2 + -0x1438 * -0x2, -0x2d5 + 0x4 * -0x80 + 0x4d6]
+        }, {
+            't': _0x4de497(0x455) + _0x4de497(0x700) + '人。',
+            'd': [0x7 * -0x4d + -0x53a + -0x757 * -0x1, 0xca3 * -0x3 + -0x1433 + 0x3a1d, 0x2b * -0xd0 + 0x2 * 0xb8a + 0xbdc, -0x22eb * 0x1 + 0xd62 + 0x1589, 0x98 + -0xf * -0x3 + -0xc5]
+        }, {
+            't': _0x4de497(0x786) + _0x4de497(0x30c) + _0x4de497(0x738),
+            'd': [0x2 * -0x365 + -0x2099 + 0x2763, 0x3e * 0x13 + 0x1f * 0x85 + -0x14b4, -0xd41 + -0x12de + -0x2020 * -0x1, -0xb18 + 0x589 * -0x3 + -0x1 * -0x1bb5, 0x309 * 0x2 + -0xa63 + 0x453]
+        }]
+    }, {
+        'section': '欲望',
+        'note': _0x4de497(0x5ee) + _0x4de497(0x51e) + _0x4de497(0x2c3),
+        'q': '当一个很强烈的欲望出' + _0x4de497(0x297) + '：',
+        'options': [{
+            't': '先看它会不会伤到我的' + '主权和边界。',
+            'd': [-0x1d0f + -0x2299 + -0x15 * -0x308, 0xd * -0xec + -0x105 + 0xd03 * 0x1, 0xbec + 0x1 * 0x9a3 + -0x158f, 0x2f * 0x17 + 0x3f7 + -0x82e, -0xf9d + 0x2014 + -0x1077]
+        }, {
+            't': '让它先烧，至少别活得' + _0x4de497(0x7e7),
+            'd': [-0x7 * -0x2b4 + -0x7 * 0x146 + -0x356 * 0x3, -(-0xe95 * 0x1 + 0x47 * -0x40 + 0x2056), 0x20 * 0x2f + 0x1a1e + -0x1ffc, -0x25fb + -0x1 * -0x8df + -0x1d1d * -0x1, -0x1 * 0x4af + 0x44a + 0x65]
+        }, {
+            't': _0x4de497(0x438) + '是我想要的吗？',
+            'd': [0x2 * -0x12f4 + -0x180a + 0x3df4, 0x211 + -0x1c4f + -0xe * -0x1e0, 0x10 * -0x1e9 + 0x10c3 * -0x2 + 0x4016, -0x62 * 0x1 + 0x1201 * -0x1 + 0x1263, 0x897 + -0x1 * -0x1f62 + -0x27f9]
+        }, {
+            't': _0x4de497(0x4ba) + _0x4de497(0x78f) + _0x4de497(0x39b),
+            'd': [-0x200c + 0x2484 + -0x1 * 0x477, 0x13ca * -0x1 + -0x14b0 + 0x3 * 0xd7e, 0x32 * 0xc1 + -0x8fa + -0x1cb7, -0x30 * -0x96 + 0x2357 + -0x911 * 0x7, -0x1 * 0x1ae7 + 0x1b57 + 0x37 * -0x2]
+        }]
+    }, {
+        'section': '规则',
+        'note': _0x4de497(0x57e) + '人的真实立场会迅速显' + '形。',
+        'q': _0x4de497(0x2cb) + '谬、却仍要求所有人服' + _0x4de497(0x73b),
+        'options': [{
+            't': _0x4de497(0x532) + _0x4de497(0x649) + _0x4de497(0x4ac),
+            'd': [-0xb1b + 0x877 * -0x3 + 0x2481, -0x451 * -0x2 + 0x757 + -0x1ff * 0x8, -0x97 * 0x33 + -0x1 * -0x14e3 + 0x933, -0x72a + 0x1228 + -0xafe, -0x1620 + -0x289 * 0xe + 0x399f]
+        }, {
+            't': _0x4de497(0x6aa) + _0x4de497(0x75a),
+            'd': [0x641 + -0x2e * 0x2f + 0x33 * 0xb, 0x2b * 0x48 + -0x49c + -0x77b, -0x2013 + -0x17ce + 0x37e1, 0x1 * 0x23e8 + -0x1 * -0xa + -0x23f0, 0x53b + 0x103f + -0x157a]
+        }, {
+            't': _0x4de497(0x3a6) + _0x4de497(0x43a),
+            'd': [-0x1f2b + -0x6f0 + 0x261d, -0x1478 + 0x1 * -0xc92 + 0x210a, -(0x1f42 + -0x995 * -0x1 + -0x28d6 * 0x1), -0x1ad5 * -0x1 + 0x40f * -0x7 + 0x194, 0x1 * 0x9b7 + -0x2033 + 0x167c]
+        }, {
+            't': '先把它当一出戏来看，' + _0x4de497(0x6c4) + '的相信这套东西。',
+            'd': [0x30 * 0xf + 0x100a * -0x2 + 0x1d44, 0x4 * -0x8c3 + 0x744 + 0x1bc9, 0x16a5 + 0x150d + -0x2bb1 * 0x1, 0x1dd1 * -0x1 + 0x28 * 0xd + -0xde5 * -0x2, 0x56 + -0x225a * 0x1 + 0x2206]
+        }]
+    }, {
+        'section': '告别',
+        'note': _0x4de497(0x7ce) + '常比你处理开始的方式' + _0x4de497(0x638),
+        'q': _0x4de497(0x39d) + _0x4de497(0x1b2) + _0x4de497(0x41e) + _0x4de497(0x55b),
+        'options': [{
+            't': _0x4de497(0x547) + _0x4de497(0x675),
+            'd': [-0x223f + -0x21a9 + 0x43e9, 0x1 * 0x78a + -0xbb5 + -0x59 * -0xc, -0x1224 + -0x17d7 + -0x29fd * -0x1, -0xef7 * 0x2 + -0x2387 + 0x1 * 0x4175, 0x1f * 0x25 + 0x11 * 0x245 + -0x2b10]
+        }, {
+            't': '切得干净一点，因为对' + '我来说尊严比拖着更重' + '要。',
+            'd': [0x9d7 * -0x2 + 0x1 * -0x23d1 + -0x1 * -0x377f, -0x1 * -0x1409 + 0x4ef * -0x1 + -0xf18, -0x1 * 0x1811 + -0xd1 + 0x5b * 0x46, -0x12b9 * -0x2 + 0x2023 + -0x1 * 0x4593, -0xcfc * 0x1 + -0x1943 + -0x1 * -0x263f]
+        }, {
+            't': _0x4de497(0x66c) + '慢消化。',
+            'd': [0x1e4f + 0xf2b + -0x1 * 0x2d7a, 0x1 * 0x25d6 + -0x1f2e + -0x6a7 * 0x1, -0x2270 + 0xffc + 0x1274, -0x7b * -0x49 + 0x1489 + -0x379a, 0x2 * 0x606 + 0x24ef + -0x30fa]
+        }, {
+            't': _0x4de497(0x5d5) + _0x4de497(0x679),
+            'd': [-0xa4f + -0x1147 + 0x1b98, 0xa0 * 0x8 + -0x1f65 + 0x1d * 0xe9, 0x1b81 + 0x16 * 0x13 + -0x1d22, -0x163a + -0x1643 + 0x2c7d, -0x7ae + 0xf94 + -0x7e4]
+        }]
+    }, {
+        'section': '时代',
+        'note': _0x4de497(0x5ef) + _0x4de497(0x7b8) + _0x4de497(0x3ef),
+        'q': _0x4de497(0x18f) + '救一件东西，你最想留' + _0x4de497(0x7a8),
+        'options': [{
+            't': _0x4de497(0x366) + _0x4de497(0x22a),
+            'd': [0x18ca * 0x1 + 0x3 * 0x87f + -0x3247 * 0x1, -0x1936 + 0x25 * 0x5b + -0x1 * -0xc11, 0x54f * -0x5 + -0x9b * -0x4 + 0x181f * 0x1, 0x1610 + -0xdcc + -0x2c1 * 0x3, -0x1 * 0x1cb2 + -0x59f + -0x6dd * -0x5]
+        }, {
+            't': '那些还没有被消耗干净' + _0x4de497(0x7dd),
+            'd': [0x4 * 0x406 + -0xfca + -0x4d, 0x1367 + 0x15a + -0x4d * 0x45, 0x1294 + -0x336 + -0xcf * 0x13, 0x2429 * -0x1 + -0x1 * 0xa85 + -0x1de * -0x19, 0xecf + -0x1 * 0x26dd + 0x180f]
+        }, {
+            't': _0x4de497(0x5dd) + '证词，以及他们真实活' + _0x4de497(0x5d8),
+            'd': [-0x2 * -0x191 + -0x1105 + 0xde3, -0x1 * 0x1f12 + 0x7 * -0x42 + -0x1bb * -0x13, 0x26f * 0x5 + 0xf79 * 0x1 + -0x5 * 0x587, 0x44a + -0x21f + -0x229, 0x6 * 0x2f2 + -0x20c * -0xb + 0x116 * -0x25]
+        }, {
+            't': '每个人都还能重新定义' + _0x4de497(0x275),
+            'd': [-0x227 + 0x828 + -0xc0 * 0x8, -0x1880 + -0x1 * -0x1d09 + -0x489 * 0x1, 0x1cae + -0x125f + -0xcb * 0xd, 0x1 * 0xb4e + -0x221b + -0x79a * -0x3, -0x15 * -0x171 + -0xab8 + -0x1 * 0x138b]
+        }]
+    }, {
+        'section': '清晨',
+        'note': _0x4de497(0x64f) + '交给什么，往往最能说' + '明你到底靠什么活着。',
+        'q': _0x4de497(0x70a) + _0x4de497(0x592) + _0x4de497(0x573),
+        'options': [{
+            't': '计划、清单和一件马上' + '就能推进的事。',
+            'd': [-0x3 * 0x7bb + -0x11 * -0x116 + -0x4bb * -0x1, -0xdb7 + -0x829 + 0x15e2, -0x200e + 0x5d6 * 0x4 + 0x8b6, -0x2f * -0xa6 + -0xcc0 * 0x2 + -0x4f9, -0x8d1 + 0x1 * 0xe02 + 0x531 * -0x1]
+        }, {
+            't': '把夜里剩下的梦和余温' + '先写下来。',
+            'd': [0x933 + 0x1212 + -0x2 * 0xda2, -0x1f55 + 0x3 * -0x271 + 0x26a8, -0x823 * 0x1 + -0x1 * 0x1a73 + 0x2298, -0x2 * -0xf20 + -0x1 * 0x1c73 + -0x1cd, -0x70e + 0x11ee + 0xb * -0xfd]
+        }, {
+            't': _0x4de497(0x393) + _0x4de497(0x624),
+            'd': [-0x1 * 0x18d6 + -0x53 * -0x29 + 0xb8d * 0x1, -0x156b * -0x1 + -0x812 + 0x1 * -0xd59, 0x1 * 0x15d + 0x1ca1 + -0x2ba * 0xb, 0x11b6 + 0x249c + -0x3652, 0x69 * -0x35 + -0x1 * 0x23c6 + 0x3984]
+        }, {
+            't': _0x4de497(0x81c) + _0x4de497(0x597) + _0x4de497(0x5f2),
+            'd': [-0x13f0 + -0x350 + 0x8 * 0x2e8, -0x1810 + 0x1942 + 0x11 * -0x12, -0xf43 + -0x1 * 0x23fc + 0xa * 0x520, 0x1561 * 0x1 + -0xbe5 + -0x97b, 0x21ad * 0x1 + -0x114c + -0x105f]
+        }]
+    }]
+      , QUESTION_BASELINES = QUESTIONS[_0x4de497(0x6eb)](_0x22205d => _0x22205d[_0x4de497(0x44a)][-0x3 * -0x6f0 + 0x226 * -0x7 + 0x2e3 * -0x2]['d'][_0x4de497(0x6eb)]( (_0x474ac7, _0x237332) => _0x22205d['options'][_0x4de497(0x6c5)]( (_0x1fe0df, _0x17f2eb) => _0x1fe0df + _0x17f2eb['d'][_0x237332], 0x2 * -0x937 + 0x1 * -0x293 + -0x11b * -0x13) / _0x22205d['options'][_0x4de497(0x788)]));
+    let currentQ = -0x5 * 0x33d + -0x94a * 0x4 + 0x3559
+      , answers = new Array(QUESTIONS['length'])['fill'](null)
+      , userVec = [0x2 * -0x27a + 0x90 * 0x43 + -0x20bc, 0x1b23 * 0x1 + -0x24d8 + -0x5 * -0x1f1, 0xb8d + -0x1 * 0x12bf + 0x732, -0xc * 0x21d + -0x1a * -0xe3 + -0x24e * -0x1, -0x15 * 0xcb + 0x167b * 0x1 + 0x1 * -0x5d4];
+    function startQuiz() {
+        const _0x33ae9c = {
+            _0x5ec864: 0x5be,
+            _0x488694: 0x66e
+        }
+          , _0x5a2da5 = _0x4de497;
+        currentQ = 0x3bb + -0x699 + 0x2 * 0x16f,
+        answers = new Array(QUESTIONS[_0x5a2da5(0x788)])[_0x5a2da5(_0x33ae9c._0x5ec864)](null),
+        userVec = [-0x1a1f + -0x1 * 0x9bc + -0x43 * -0x89, 0x1970 + -0x4ef * 0x4 + -0x5b4, -0x26ed + -0x1 * 0x21fa + 0x48e7 * 0x1, -0x16 * 0x49 + 0x15a1 + 0xf5b * -0x1, 0x6f * -0x9 + -0x14 * 0x8e + 0x1 * 0xeff],
+        switchScreen(_0x5a2da5(_0x33ae9c._0x488694)),
+        renderQuestion();
+    }
+    function switchScreen(_0x4a4127) {
+        const _0xd52105 = {
+            _0x780ab9: 0x5a4,
+            _0xcd84be: 0x741,
+            _0x12d7c4: 0x60f,
+            _0x260c4d: 0x4e9,
+            _0x336057: 0x29c,
+            _0x47afa7: 0x253,
+            _0x5b84fc: 0x20e,
+            _0x3abdf1: 0x63c,
+            _0x29c58c: 0x253,
+            _0x4bc81e: 0x20e,
+            _0x284f6f: 0x347
+        }
+          , _0x311b38 = {
+            _0x565591: 0x70c,
+            _0x2214dc: 0x20e
+        }
+          , _0x3a1880 = _0x4de497;
+        [_0x3a1880(_0xd52105._0x780ab9), _0x3a1880(0x66e), _0x3a1880(_0xd52105._0xcd84be), _0x3a1880(_0xd52105._0x12d7c4)][_0x3a1880(0x213)](_0x57579e => {
+            const _0x14cde7 = _0x3a1880;
+            document[_0x14cde7(0x52d) + _0x14cde7(_0x311b38._0x565591)](_0x57579e)[_0x14cde7(0x253)][_0x14cde7(_0x311b38._0x2214dc)]('active', _0x57579e === _0x4a4127);
+        }
+        );
+        const _0x4ef835 = _0x4a4127 === _0x3a1880(_0xd52105._0x780ab9);
+        document[_0x3a1880(_0xd52105._0x260c4d) + _0x3a1880(_0xd52105._0x336057)][_0x3a1880(_0xd52105._0x47afa7)][_0x3a1880(_0xd52105._0x5b84fc)](_0x3a1880(0x63e) + 'ed', _0x4ef835),
+        document[_0x3a1880(_0xd52105._0x3abdf1)][_0x3a1880(_0xd52105._0x29c58c)][_0x3a1880(_0xd52105._0x4bc81e)](_0x3a1880(0x63e) + 'ed', _0x4ef835),
+        document['getElement' + 'ById'](_0x3a1880(0x76e))[_0x3a1880(0x253)][_0x3a1880(0x20e)](_0x3a1880(0x63e) + 'ed', _0x4ef835),
+        window[_0x3a1880(_0xd52105._0x284f6f)]({
+            'top': 0x0,
+            'behavior': _0x3a1880(0x631)
+        });
+    }
+    function renderQuestion() {
+        const _0x2a3540 = {
+            _0x20240f: 0x6b5,
+            _0x442f50: 0x46c,
+            _0x5b746c: 0x6f3,
+            _0x247110: 0x52d,
+            _0x59bb4e: 0x69e,
+            _0x79f8b4: 0x70c,
+            _0x57e6ee: 0x204,
+            _0x2d12a9: 0x6eb,
+            _0x1b0df1: 0x24b,
+            _0x26e256: 0x52d,
+            _0x4a7e69: 0x69e
+        }
+          , _0x301629 = _0x4de497
+          , _0x22455c = QUESTIONS[currentQ];
+        document['getElement' + _0x301629(0x70c)](_0x301629(_0x2a3540._0x20240f) + 'n')['textConten' + 't'] = _0x22455c[_0x301629(_0x2a3540._0x442f50)],
+        document[_0x301629(0x52d) + 'ById'](_0x301629(0x7f8) + 'ss')[_0x301629(0x204) + 't'] = String(currentQ + (-0xca0 + -0x1fa8 + 0x2c49))[_0x301629(0x6ff)](0x878 + 0x12 * 0xd3 + -0x174c, '0') + _0x301629(_0x2a3540._0x5b746c) + String(QUESTIONS['length'])[_0x301629(0x6ff)](-0x1 * 0x127f + -0x739 * 0x1 + 0x59 * 0x4a, '0'),
+        document[_0x301629(_0x2a3540._0x247110) + _0x301629(0x70c)](_0x301629(0x516) + 'll')[_0x301629(_0x2a3540._0x59bb4e)][_0x301629(0x757)] = (currentQ + (-0x2 * 0x6bb + -0x2452 * -0x1 + -0x16db * 0x1)) / QUESTIONS['length'] * (0x4 * 0x42 + 0x1 * 0x29d + -0x1 * 0x341) + '%',
+        document[_0x301629(0x52d) + _0x301629(_0x2a3540._0x79f8b4)]('questionTe' + 'xt')[_0x301629(_0x2a3540._0x57e6ee) + 't'] = _0x22455c['q'];
+        const _0x3075db = document[_0x301629(0x52d) + _0x301629(_0x2a3540._0x79f8b4)](_0x301629(0x44a));
+        _0x3075db['innerHTML'] = _0x22455c[_0x301629(0x44a)][_0x301629(_0x2a3540._0x2d12a9)]( (_0x991517, _0xf36899) => _0x301629(0x77b) + _0x301629(0x6de) + _0x301629(0x4f2) + _0x301629(0x192) + _0x301629(0x7e8) + _0x301629(0x2e2) + _0xf36899 + (_0x301629(0x324) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x301629(0x5f1) + _0x301629(0x3e1) + _0x301629(0x1e9)) + String[_0x301629(0x7a2) + 'de'](0xdc3 + -0x900 + 0x1 * -0x482 + _0xf36899) + (_0x301629(0x821) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + '\x20\x20\x20\x20<div\x20c' + _0x301629(0x157) + _0x301629(0x7c7)) + _0x991517['t'] + (_0x301629(0x2af) + _0x301629(0x58b) + '\x20</div>\x0a\x20\x20' + _0x301629(0x58b)))[_0x301629(_0x2a3540._0x1b0df1)](''),
+        document[_0x301629(_0x2a3540._0x26e256) + _0x301629(0x70c)](_0x301629(0x55d))[_0x301629(_0x2a3540._0x4a7e69)][_0x301629(0x593)] = currentQ === 0x17aa * -0x1 + -0x99d + 0x2147 ? _0x301629(0x72a) : 'visible';
+    }
+    function pickOption(_0x5f3a26) {
+        const _0x11d9da = _0x4de497;
+        answers[currentQ] = _0x5f3a26,
+        currentQ >= QUESTIONS[_0x11d9da(0x788)] - (-0x19cc + 0x2505 + -0xb38 * 0x1) ? finishQuiz() : (currentQ += 0x1678 * -0x1 + -0x20e4 + 0x375d,
+        renderQuestion());
+    }
+    function goBack() {
+        currentQ > 0x7 * -0xb5 + -0xd * -0x68 + 0x1 * -0x55 && (currentQ -= -0x189 * -0x12 + 0x5 * 0x355 + 0x2 * -0x1625,
+        renderQuestion());
+    }
+    function finishQuiz() {
+        const _0x764db6 = {
+            _0x3e8e89: 0x741
+        }
+          , _0x4e9420 = {
+            _0x10be15: 0x44a
+        }
+          , _0x5a4136 = _0x4de497;
+        userVec = [0x18ef + -0x1cc3 + 0x3d4, -0x246b + 0x1099 * 0x1 + 0x76 * 0x2b, 0x9d * 0x2e + -0x10 * 0x46 + -0x17d6, -0xf43 * -0x1 + 0x1cdf + -0x10d * 0x2a, -0x1a * -0xf8 + 0xecb + -0x27fb],
+        answers[_0x5a4136(0x213)]( (_0x359e37, _0x5d5682) => {
+            const _0x4cea9f = _0x5a4136;
+            if (_0x359e37 === null)
+                return;
+            const _0x4187fa = QUESTIONS[_0x5d5682][_0x4cea9f(_0x4e9420._0x10be15)][_0x359e37]['d']
+              , _0x35eda1 = QUESTION_BASELINES[_0x5d5682];
+            _0x4187fa[_0x4cea9f(0x213)]( (_0x5c1ce9, _0x42da6c) => {
+                userVec[_0x42da6c] += _0x5c1ce9 - _0x35eda1[_0x42da6c];
+            }
+            );
+        }
+        ),
+        switchScreen(_0x5a4136(_0x764db6._0x3e8e89)),
+        setTimeout( () => {
+            const _0x45141d = _0x5a4136
+              , _0x57006b = matchArchetype();
+            renderResult(_0x57006b),
+            switchScreen(_0x45141d(0x60f));
+        }
+        , -0x14e * 0x1 + -0x18af + -0x6b * -0x4f);
+    }
+    function normalizeVector(_0x4cc001) {
+        const _0x297331 = {
+            _0x129a99: 0x18b
+        }
+          , _0x56f1dd = _0x4de497
+          , _0x4236fb = Math[_0x56f1dd(_0x297331._0x129a99)](..._0x4cc001[_0x56f1dd(0x6eb)](_0x497df3 => Math[_0x56f1dd(0x7c6)](_0x497df3)));
+        if (!_0x4236fb)
+            return _0x4cc001['slice']();
+        return _0x4cc001['map'](_0x1f1d5a => _0x1f1d5a * (0x1667 + -0x2517 + 0x13 * 0xc6) / _0x4236fb);
+    }
+    function euclidean(_0x10e251, _0x2d9990) {
+        const _0x1aa192 = {
+            _0x26c6f1: 0x6c5
+        }
+          , _0x111b24 = _0x4de497;
+        return Math[_0x111b24(0x81a)](_0x10e251[_0x111b24(_0x1aa192._0x26c6f1)]( (_0x29813a, _0x11a56b, _0x164fcb) => _0x29813a + Math[_0x111b24(0x710)](_0x11a56b - _0x2d9990[_0x164fcb], 0x1615 * -0x1 + 0x1 * -0x19dd + 0x2ff4), 0x2 * 0x5a7 + -0x14a6 + 0x4 * 0x256));
+    }
+    function cosineSimilarity(_0x476ecc, _0x433fcb) {
+        const _0x1d5fda = {
+            _0x11e80c: 0x6c5,
+            _0x1f513e: 0x81a
+        }
+          , _0x2d3bbf = _0x4de497
+          , _0xc95d89 = _0x476ecc[_0x2d3bbf(_0x1d5fda._0x11e80c)]( (_0x6ce0cc, _0x91f367, _0x54f6b3) => _0x6ce0cc + _0x91f367 * _0x433fcb[_0x54f6b3], -0x1175 * 0x2 + 0x6ad * -0x1 + 0x27 * 0x111)
+          , _0x2bc57b = Math[_0x2d3bbf(_0x1d5fda._0x1f513e)](_0x476ecc[_0x2d3bbf(0x6c5)]( (_0x185441, _0x2a841b) => _0x185441 + _0x2a841b * _0x2a841b, -0xcca + 0x1 * 0x2533 + -0x1869))
+          , _0x3d940e = Math['sqrt'](_0x433fcb[_0x2d3bbf(_0x1d5fda._0x11e80c)]( (_0x268e20, _0x257bbd) => _0x268e20 + _0x257bbd * _0x257bbd, -0x1871 + -0x473 * 0x5 + 0x2eb0));
+        if (!_0x2bc57b || !_0x3d940e)
+            return -0x9f + 0x47b * 0x1 + 0x4 * -0xf7;
+        return _0xc95d89 / (_0x2bc57b * _0x3d940e);
+    }
+    function _0x5850() {
+        const _0x44852e = ['6l+y5RkH5A6m5ywO5yE6546W5yMn77Ym5BcX5ywi', '77Ym5lMF5PIV5lIa56En5P6b6AUy55Qe55YF5lYQ', '5AsQ5PIo55M95AAc5P6C6iEQ5BEX5lIn5PU/6iEQ', 'Bg9HzgLUzW', '5lUL5PIV5lIa56En5P6b5PYj5RIP5BQM55Qe55sF', '5Bgc5lIa5Bgc6k6Y5PIo55M944cc', '5Ocv5A6d55Yl6lw35P2L5BM25lIn5zci5PE25A6C', 'C2nYB2XSv2LKDa', 'icaGicaGpgrPDG', '5PYj5lI75P2d44cc', 'lJvmos4WnJeWnW', 'zwn0Aw9UlwTPyW', '5l2G5A6j5O6s5B6x5PIo5PIo55M955M944cb5y20', 'qZeWlJe5ndCGmW', '5l2G5A655PIt5OQk6AUy54oi5BQM6k+V6k6K5OIq', 'ideUodC5mdyGmq', '5ywi57Up6l+h5lIa6l2U5A6H5P+L44cc5l2G55Qe', 'CZ0IDgL0BguTAq', 'i2zHzJDMmq', '44ck5A6j5AICWRFLJAhLIjFLSlZLQjZJGiS', '77Ym6icm5PIV5PM66k+g5lIk55Qe5P2L5zUE44cb', '5PIV5l2G55+L6ygt5lIa5lIQ5lQ65lIa5PEM5lMG', 'ywjLBciGEd0I', 'B24+cIaGicaGia', 'icaGicaG', 'D2LKDgG', '5OUS5lIn6kkR5y+z6l+W44cc', '6z2E5BI46AUy44cc5lIn5PIV6kAb5OIp5yMN5OcN', '5O6L6Ag25zUE5y6744cc', '5OQk6ykJ5lQB5OQ96lgH5y6l6l+R5OUg5OIq5PU0', 'wK01idvwmtLimq', 'l3n2zZ4', 'lJC3odjdms44nW', '6k6P6k6W5B+g6iEQ5BEX5lUo5OsF5A6y6yEm5zUE', 'idXKAxyGy2XHCW', '5Bc95lQg44cc5l2G5A+55AsX55YF5zkm5yA35REH', 'mJeGmtLimJnwmG', '6kgO6z2I56Yr5lIa5lIl77Ym5B+d6yEm5y205BEY', '57UN57UT5ywb6k646iEQ5BEX5OwI5lIa54k544cb', 'CMvIyxrLtw9Kyq', '77Ym6icm5lIn5PIV6kkR5Pwi546h55Uw6l+h5y67', '5lIn5OcL552a5lIl57Ut6k6677Ym6z2G5RcB5zU0', '5A6d5lIn5lIa5A6A5Oc75yE66z6y77Ym5l2g6lAZ', '5yE65y6777Ym5l2G5PU06zYa6kAb6kkR55cg6kEJ', '5BcX5BEY57Up6lAZ5AsF6yEn6kAb44cc', '5l2G5A+55zUW6zQ+5PYj5B6i5BY655Qe6icq5y+x', 'nc4ZntqXoemXmG', 'mtuUote4nsa3lG', 'yxbW', '5OsF5y+x6zkD5yYw77Ym5OMa5lUL5lIa5PEM546W', 'BI1RAwnRzxiIpG', '5y+V6io95zUG5Q2K5yIg5PwJ5B6x5AsQ5BYa77Ym', '6k+05y+Q5PIV4OcC566x5lQg5zcN4OcD55Qe5lQl', '5l2G5AsQ5A655PIt6kkR5PAW55Qe5y+V6io95OcN', '5lMf5lQg5lYA5OQk4OcC5OIr6l+y6io95Pkr4OcD', '55wm56EP5BQp55Qe6io95yQB44cc', 'idqUnJa3mdeGmq', '5l2p5lQg5l2G77Ym6icm5PIV5l2G6l+F6l+F5lIn', '55Qe5lIC6kw/4OcD5PE26k+744cc', '5A2y5zYO5y6l6l+R', 'qZiYidiWlJu1mG', 'cIaGicaGicaGia', 'mJmYqZiWlJm5mW', 'l2rPDJ4kicaGia', '5l615ywL77Ym5Pw05lIQ5lQ655Qe56Ul5zY65lYA', '5OQt5OMl44cc', '77Ym5yop5lIa5zY65lYA54g85lYK5lQ655Qe5Asp', '54s25y2G5O2U55Qe5l2n572U5B6a5B6a6z2E5BI4', '5zco5yIR5lQ66l+y5RkH5P2L5B6x5y+k5ygA5lUa', '77Ym6icm5lIn5PIV5O+q5yMn5yIh5PAT5lIa5yIh', '5lIa54k577Ym5lIn5B+f5Q+p5lIa5yI76yo95Ase', 'C3m9iNjLC3rHCG', '5Oc75lYA5ywi5RoO5Osp5yIW6lcb5PYa5A655PIt', '6kkR5lIa5y+L6k+D44cb5lIa5BYG6is444cb5lIa', 'BgvUz3rO', 'ouW1idqUnJa0mW', 'ruXjwG', '5l+D5OYb5RIf6yAs77Ym5Bcr6kkR6ko55OYF44cc', '5l2G5A+557o757UF5OcN5AsX55YF44cb5PEG5B2I', '5AwL5ywW5AsA', 'BMqTzgvZyYi+', '5OoZ5ywi5zkm6l+z56En5OsF6kEj5AsA55U45Ase', '5lYA5yAs5yE65lIa5lIQ5B+15As077YA5lMF6k64', '6kw/6jkz5AICWRFLVRFcT+AZOUs8J+wOGW', 'CMfKyxiTBgvNzq', '5Oc75lIn6ikV5ygC5lIl5P2L77Ym5lMF5lYA5OwI', '77Ym5A6E6zMf5lIk5y+Q5PIV5l2G55Qe5Osp6k+g', 'y2fYzci+cIaGia', 'mYa1lJy2ndiXia', 'refjwq', '5yIR5OcL552a6k+b5PIo5l2G55Qe5REX5Oof5PIV', '5B+R6kkR5OQ55O6j55Qe5lQ655wz5lIl5AoW6z+Z', '5ywb6k646iEQ5BEX5zcm5PE25OUL5PYj5OIq6zw/', '55sO5lIa5lIQ57k+5yEg55Qe546P56Yr77Ym5OIZ', '6yEm5lIn5A+577Ym6l+z56En6k2M6kEj5lYA5BIU', '5OQk5lIa6yoO5yIg55sF5zg95yQB55wz57Uz6iEQ', '5ygh55Qe5lQ6', '5ywS5BYa6k+05yE655Qe57Ug56ko5yAf5B+d5A6j', '4OcC5l2G5lIn5PIV5y+Q5lYA5Oca5PEN77Ym5l2G', '5BY655Qe5zYW5PA55lIn5PIV5BY656gS77Ym6icm', 'zNjVBunOyxjdBW', '6zI/5Bcu6lsDWRFLIQdNVkO', 'icaGicaGica8za', '5lQg77Ym5l2G5BM25lIn5PIV5lIn5lYA57sV77Ym', '5OMa5lUL5PYj5PE25lYA5Q+u5y2X6zMP5PU05PEP', '57UF55Qe6zU+5zcE5O6j5l2G44cc', '5lIl55Qe5PIV77YA', '5OoZ55+L6ygt6ykJ5lQB5Rkj6BUy6iom5zco77Ym', 'y29VCMrPBMf0zq', '56Ul5yI757QG5Q2J77Ym5zUG5lI65zcn5A2x6yEm', '5y+Q5PIV5l2G5A+555YF5A6E55Qe5RI05PYB77Ym', '5BIM44cc5l2G6lQR5lIk55Qe5Rwt5BQM5lYA6k6P', '5BEX5Rs74OcD6l+z5lU25lQl5PYj6z2E5BI45RIf', 'mYaYms41ntiZia', '77Ym6icm5lIn5PIV56Ul5yI76zM36l+B5y6744cc', '5AsP54s257Y65Bcr5l+H5lUW44cc5lIn5PIV5RIf', '5l2G5AsQ5A655PIt6kkR57kx57kD5lIw55wm5yI6', '5PYj5OM/5OMy77Ym5A6d5lMF5lYA6k6P5l2G5zYO', '5A6d5lYA5O6L5l2p5l2G5A+557QV55YF44cb5BYc', 'zt0I', '5OM/6k6K5l2G5B+d6yEm56gU5A6E5PYj5lIa6ygt', '5l2G5AsQ5A655PIt5OQk5lIa54k554k55lIn5A+5', '5lUa5lMi77Ym5yw25A6E5BcX5PIV5l2G5PYa5lIn', '57UN57UT5ywb6k646iEQ5BEX5Rwb5yQO77Ym5lIn', '5l2G5PU05PEP55Yl6kEb6zEU6Aky55Qe55YF5Q2J', '5A+F6kEj5ywZ57o76yEm55Qe57Ug5Bcp6koc57Q5', 'mtuUmti2mYa1lG', 'idmUndq3nZiGmq', '5PIV6kkR5BMZ562j5A+55B6f44cc5lU75l2v5OQR', 'BgvNzw5KiJ4kia', 'lJaWmJyXide3lG', '55Qe56M66zE077Ym5zcm5PE25lMF6k6+5lIl5lIa', '44cb6igQ5PIo6iEQ6lsF5zkm5ywZ57o75l+U5Q2J', '6ls155Qe5OsF5y+x44cc5B6i5AsA5lQ65y+Q6io9', '77Ym5l2G5BEY57Up5ywi5PU/6l+z5Q615ywZ57o7', '5PYO55Qe5lIw55wm6yEn5PAW55sF5yE65ywj5Ro9', 'ywjZ', 'Dgv4Dci+', 'ndC3mIaYmsaYia', 'y3rPB24TA2LJAW', 'idKUodC3otHmnq', 'zgLZywjSzwq', 'idiZtduUnJCXoa', 'CZ0ICMfKyxiTBa', '5l2G5Ase55cg57Ut5P2F55Qe5PA55BYp77Ym5BI4', '5lMF5OUL5PYj6jc96isA6z2I44cc', 'mc44odmGnc4WmG', '57k+56wE6AoF57kU', 'mtGUoti4nsaXna', '5zoi5AEg6zU354M5', '5zYO5lIa6lw377Ym5B2I5OIq5lIa56En5PU057U1', '5zcn5A2x77Ym5OIw5Oc755sO5lIa5lIQ5l2G5lIn', 'AwqIpGOGicaGia', 'CZ0IC2HHCMuTyG', 'idXWignSyxnZpq', 'idiUmZa4ndKGmq', 'phnWyw4Gy2XHCW', '5l2G6ycA5BI45A+55Oof57UQ44cb5Osp6lgH5zkm', 'osa3lJiXnti0ta', '55Qe5RIP5P+u44cc', 'CMvHC29UiJ4', '5ywO5PU05PYj5zc45BYv5yQB44cc', '55Qe6AQO5As05OsF77Ym6icm5lIn5PIV5lIa5lIK', 'mZK1ideYlJCWnW', 'Aw5KzxHpzG', 'z2vUzc1Uyw1LiG', '5Bcr6kEb55Qe6kkR55Yl6kEb5OsF44cc', '5lI75l2t5Osp6k+g', '55Qe5BQv5Bgc5OcN5Qc844cc', '5AsQ5y2k5B+d5y2k5Osp44cc', 'y2S9iNbPy2TpCa', '6yEn5PAW5zg95zcn', '5AoW5yQ/55Qe5lQ655YF5Q2J6k+05PYn44cc', '6kgm5yQO5yQB77Ym5l2g5yIR5OQk5Q+p5lIa5QYH', '5lIQ5lQ656gS5OMB77Ym5lMF5PIV5BIM552a5yIR', '6kEj5B6x5l2G5OoZ5Rov5AsA77Ym5l2g5l2G5yw2', 'mtGUmZy0mYa1lG', 'otC2ideYlJuZoa', '5OIr5OQk5y+x6l+h55Qe5lYK77Ym5OwI5OwI5yAz', '44ck6Aoy44cl', '5lQ65B6a77Ym5yop55Yl5lIa6yoO5PQc5PE25zkm', 'y2XHC3m9iMjVBW', 'iMLTzYi+cIaGia', '5l2G6z2I5A+55AsX6kgH44cb5zg96l+q5zkm6kEe', '5OIq6zw/5z6l54oT5Oof', 'DMfSDwu', 'CxvPELbYB2DYzq', 'mZeYide3lJuGnq', '5lQ65y+Q6kEj5B6x5zoQ6yEm5PYj54k55lIn5A+5', '57Ue57Uh5OIq5lIa5P2H5zcr5yMn55Qe57Q/44cc', 'mIaXnc4WmZi4wG', '5zY65PE26zIf6k+744cc', 'C2LU', '562+5zkm5y2v5lIa6lEV57Q/5AsP54s257Y65Bcr', '77Ym5OQk5lIn5y+c5lIo5B2t5OIq6lAf6isX77Ym', 'lJaZmJHdnI43ma', '5AAc5P6C57Ui5lQo5B6x5yIW5lIa6zE05A6m5ywO', '5zkm6kgO5RYu5lMl5Asw77Ym5lIa55Y855Yl6kEb', '56gU6k6K6iEQ5BEX5yc85lIn5yc85B6x44cc55YF', '5PYj5RIP5BQM5zkm5Osp5lMj44cc', 'lJq0mZaXidiXlG', '6yEn5l2C5zob5OsF44cc5zoQ5Ocv6l+y5RkH5A6m', '5lIn5y+Q5zYO5lIQ5lQ677Ym6icm5zYO5lIa5Pw0', '5OQk57k+5yQB55wz57Uz55YF5Q2J5lYA5zUE5BQu', 'mJe3idyUnty0oq', '5l2G5B6i6zQ+5A+55lIa5lIQ6kgO6z2I5lIk5OIq', 'Dg9gAxHLza', '6ykJ6ikH5yQB6yEp5B6a5B6a5lYA6kkR5l2G5OU/', 'phbHDgGGzd0Itq', 'nca0lJu3nZG0ia', 'ouWXoca5lJK5nG', '6k+06k+D5BIM5RIP5BQM77Ym5PwI5OQk5PYa55YF', '5y+x5BM25lIn5y+Q5PIV5lYK5OsF77Ym5lMF5y+V', 'nI45mZKXmIaXna', 'iIb0zxH0lwfUyW', '55Qe5lIC6kw/6z2E5BI46k6K55YF44cc5lIa5PY1', '6iQc5Awp6yEm44cc5l2G55Qe54oT5Oof5lYA5BIM', '44cb5l2t6z2I5zkm546W5A6E6zsz5l2n5PE277Ym', 'C2nYB2XSsgvPzW', '5yIK5OIq5zMQ6z+Z44cc', 'C3fYDa', '6k6K5yE66ykJ56En5PEI5OoZ6kkR54IX44cb5y+i', '55U05O6L5yE66zEO6lwW6lwW77Ym6k6P5RIf5PMO', '5lIa5y2k5Oof57UQ55sF5Rs777Ym5l2G5lIn5AsQ', '55YF5Q2J55Qe6iEQ55sX5lIn5PIV5Rc46l+C5RYc', '5lIn6ycc5zci57UN57UT5B2t5l2C5ywO6yoO5z2q', '6iEQ5BEX5PIV6lcb44cc', 'lJWVzgL2pGOGia', '5OQk6iEQ5BEX5zUW5zYO4OcC6l+y5lIn5AsF56gU', '6AUy5Pwp5OsF5l2t6lsO', 'Bwf4v2LKDgG', '552a77Ym6icm5PIV6io95zYO5OoZ5ygC5lIl5PE2', '55YF5Q2J6yEn6kAb55Qe5lIC6kw/44cc5l2G6k6K', 'CM91BMq', '44ck5zg85zw45BgX5BQe44cl', '5lYk5lI96i6o55M9WRFNJ63LHOxNIBK', '5lI65Q+p5lIa5QYH5ygp6iIQ44cb6l2S5O2I5zkm', 'BwLKzgXL', '5PIV5zYO562B5O6j5lIn5B+f6kAb55Qe5lIw55wm', '57UN57UT54+n5OoC5l2G6lQR5lIk55Qe56gS6AQO', 'yxnZpsjLCgLNCG', '54oT5PYB5yYf6kof5OIq55UU5Qch44cb5OQk5OcD', '6AUy54oi5BQM', '5PIV55+L6ygt5B6x5AsQ5AsA77Ym57Ut5P6C5Q+p', '5ycF6l+z5lIQ5PY65lYA77Ym5OQk6ykJ5lQB5y6F', 'BgfZCZ0IB3b0lq', '44ckmtK4nooaIW', '5PAh5A2M5Rcu5ycz6yEm44cc', '6icm5PIV5l2G5AEl57Ui5zYO57Uz6iEQ5BEX55wz', '6lQR5lU96yEm6isX6lQR44cc', 'icaGpgrPDIbJBa', '44cb5lI75l2t5zkm54US56Ul55sF5Rs755Qe55U0', '6ycc5zci5zYO5l2G5OoZ5PU05A6j6z2z5zYW5A6i', '44cb6l655ygA6l655A2M77Ym5B6i5AsA5yIR5lQ6', 'nKWXmY40nJK1ia', '55Qe5BY65lIn5PIV5Rc46l+C6lwI77Ym6icm5PIV', '5Qc355Qe5AsN5lQ64OcD55Qe5Pwp5OsF44cc', '5lQO5yIPWRFMIltNU7tcT+AIREE9LW', 'iNjLC3vSDc1WiG', '57Uz5Q+p5lIQ6zI25Q6155wz5lIl5lIa54k55Bcp', 'ntCGmI40otmXnq', '44ck55oM5Bcu55M75RMw44cl', '6iUp5l2P6yEm', 'nca1ideZiduUoa', 'pc9WpG', '5OoZ6ywn5zci6ykJ5Awx6kgO5RYu4OcD6l+z5lU2', '5RkH5PYj5O6m5AoW44cb5RkH5PYj6Ag66Aoo44cb', 'yxnZpsjYywrHCG', 'mtiUnta2nsaZlG', 'nZfmmtiUnZa3nq', 'ndq5mIaYlJG5mW', '5B+G6k+A44cc5l2G5PU06ycc5zci5zYO5y+y5yYw', '44ck5Bcp546l5A2q44cl', '5PA55zcr44cc5B6i5AsA5lQ65lIa5PEM5O2I546V', '6kkR5OYb57UT55Qe5PEG5yQB5OsF5RAi6icx44cc', '5RYG5Qc85Asw6k2M5Oov44cc5l2G5lIa6l655OoZ', '57Up5OQk6l+z5QYH6l275OwI6k6W5l2p44cc', 'mZa5ody5mgnpB0fsyW', '5y2o5lI96iEQ6ycG', 'idyUnteWmZiGmq', '5B6i5BY644cc6lAk5PIV6Aoo5PQ05lIT5B+d77Ym', '6iEQ5BEX44cc', '5lIa56En5Awh5OcQ55Qe6kEM5yQO77Ym5Aw95yop', '6k6W5B6x5OQk5l2G57Uz5yIR5lQ655Qe6icq5B+d', '4OcC5l2G5lIn5PIV5z2q5lIn5l2p77Ym5l2G5y+Q', '5lIa5P2H6yca5yE65zMQ6z+Z44cb5zUE5yIW5yAf', '5lQ654MP5y6F5z6l5PIVpc9KAxy', '5l2G5A+55B6i5AsA5lIw5l+x6k+e5lU357o757UF', '5l2G5A+5576o44cb54IX5zkm5OoZ6lgH5yQB55Qe', '5zcm5PE25lMF57Uz6iEQ5BEX6zw/5lIa54k555Uu', 'yuv4Cg9YDa', 'yxv0Ag9Y', '5l2G5AsQ5A655PIt5OQk5OMN5B+16k+V6k6K5OIq', '5zUE5yIW546W5A6E55Qe5PE25ycz5Pgu5B6x5Qc8', '5lU75l2v6yEn6kAb5ywZ57o76yEm6kkR6zMn5Qc8', '5lIQ5B6Q6kEe6lMi55+P55Qe5lQ644cc5y+Q6kAb', '55Qe6l6557Yy44cc', 'Bwf4', 'idiXidKUndq3nW', 'nZiGmtqUnJu2mW', '5lUo5zoQ5lIa5A+45BYa5AEl5yE6546W44cc', '5AAc5P6C5B+f6Ag75PU/6l+z5lIQ5PE25lUJ5OQI', '5ywL77Ym5l2g5lMF57Uz546W5A6E55wz5lIa54k5', '44ck5zoi5AEg6zU354M544cl', 'Aw9UiIbVBMnSAq', '5AAc5P6C5PYj5lIa5Q615lIn6k6+6zMq55Qe5PEf', '5OQk5A6j5ywO5OsF55Qe5lIa6yoO5yIg5lQK6l+y', 'u0nbuG', 'DMCGy2XHC3m9iG', 'mc4ZnJqZidiYlG', 'nYa2lJy3nta2ia', '5PQx5Rwb44cb5yQO5PY65zkm5zco5P6C44cc5yIR', '6zI25Q6177Ym6k6P54oT5Oof5lIn5y+Q6z2G5yAY', '5Pwp5OsF77Ym5l2g5yIR5OQk5Q+p5lIa5QYH5y2p', 'rI4G5PAV56Er54M5WRFOJ7lOJkJMNBa', 'zMLSDgvY', 'zgvMAwfUy2u', 'pgXPBMuGy2XHCW', '5PYj6l+r5lMo6l+h5BQM55Qe5OsF5BQu44cc5yIR', '5OoV5AEu5Bgi6iEQ5BEX77Ym5zco6z2I5B6i5AsA', '5y+n6l+h5P2L5OUw5OwI55sF5Rs75PE26zIf6k+7', '6zw/55Qe5Oof55YF44cc', '5A6i5l2p6iEQ5BEX55Qe5B+d44cc', '6kEJ6iEQ5BEX44cc', '5RIf6yAs77Ym5yw25A6E5l2G5y+Q5PIV57Ui5lQo', '5Bgf5PAV5Agu5AsRWRFNPO/MPBZMI5W', '5l2G6z2G5yIK5PAT5yQB44cb6k+T6kIa5OsF5zkm', '5lUa5lMi5PIV55sF5Rs76yEm55YF5Q2J5B+f6kAb', '77Ym5PU06z2G5yIK5PAT44cb6k+T5OsF5zkm5yIg', 'ywrK', '5lQ655sF5lIn5yop55U057Q/77Ym5PU05yop5yEG', 'pc9ZCgfUpG', '5AsA5zAN5zox5zkm5Pon5O6N6z2I5yMn6yo96io9', '6zYa5Rgc77Ym5yIR5Oc7562j5yIR5lQ65ywi6k+b', 'osaYlJGYntK4qW', 'iIb4mJ0I', '44cb5lIa5Q615ywZ57o75OIw5lIa5lIQ5PEN54Mi', 'imk3ia', '57UT5yE65Rw355Qe5lQ6', '6zIY57Q/6io95l+D5OQK5l2G5lIn6kkR6l275OwI', 'DIbJBgfZCZ0ICW', '55Qe5PA55BYp77Ym5lMF5PYa6io95PQ06zYY5l2G', 'y2XHCML0Eq', 'icaGpc9KAxy+cG', '5l2G5B6i5yop6ykJ56En5lIa6l655zYO546W5A6E', '6ls55Bcu5y2x5AsAWRFKVANNTklPMl8', 'iokaLdWVzgL2pGOG', '5lIn5B+f5zUG5Q2K5Ps+5BYd5yIK5PAT44cc4OcD', '5lIK5lIQ56IZ5A6A55Qe55sF5Rs76zsA54k544cc', '5lYA6Ag65yQ/5PU/5l2G5yAz5A6m44cc', '56c06jMA5BYG5AoW5yQ/55Qe5lQ644cc', '5B+d6lEZ5PA55BYp44cc', '55YF5lYQ6zU36l6+', '55sF5Rs777Ym5OMa5lUL5A+55yI25BQM5OcN5yA3', '5BEX77Ym6k6P54oT5Oof5lIn5y+Q5Rwb5zcr5yIR', 'mumYms41ntiZia', '6lw35P2L5RIP5zkm55Qe5PE25ycz77Ym5l2G5lMF', '6yo95OQk5OsF5y+x56Ul5yI76l+h5A6H44cc', 'nti0idiXlJyYmW', '6iM+57gZ6i6jWRFLI4pMNjFNIBK', 'ocaYlJq5idiWlG', '5QcH5yEg6iEQ5BEX55Qe6l+h56Il44cc', '5yE65P2L44cc', '5yAf6yoO5A656yEp5B6i5AsN44cc5B6i5AsA5lQ6', '6zYY6kw/WRFOJQVLVRFcT+IsMEwtPEMPRowiQq', '4OcC5l2G5lIn5PIV5Pgh5Pgg77Ym5l2G5y+Q5PIV', 'mti3mdGWmePeswHdsW', 'CxvVDgu', '5zU65A6A5lIl5P2L44cc', '5A6d5lYA5OQk5l2G54AF5Okj55Qe55Ap56A744cb', '5Rs75B6x5PU05lMf77Ym6icm5lIn5PIV5Oc76kkR', '6k+A44cb5lIn576o44cb5lMF5lIn5A+5562j55Qe', '5lYk5Agu5RsBWRFLJAhLSjtNU7tOR7O', '5l2G6l+z6yEm5AsX5y675A656lQR5lMl5zYW44cc', '5AIb5BUjWRFOKkJPU5JLOz7NIBNcT+AVM+wNHG', '5lIT5B+d77Ym6icm5PIV5l2G55+L6ygt5AAc5P6C', 'nJLdmtCGmtiUoq', 'otK0odqGoc41ma', '6isr5A2q5BYa5AEl6iEQ5yQO5zUE5RQV44cc5lYA', '5P6x6BUB546j', '5Asn5P2c44cb5PU05yIg6koc55Qe5zYW5PA56lwW', 'nfyXouGXmvOIlW', '5B2t5lIa576K5lQ65zU05z2q6k6O6k665lIa5lU2', 'mZqYmJa5tfb5Ce9p', 'lJK3nZq2tdeYia', '57UN57UT6l+C56A76jMA5ygh6kgO5RYu77Ym5zcm', '5yw25A6E5l2G5y+Q5PIV5OUs57UD5OQk55sF5zg9', 'phn2zYb2Awv3qG', 'nZiGmJiGnfyYma', '6lwR5Bcu5PU8WRFPU5hLOz4', '5QYH5OQ55O6j44cc', 'Eci+', '5Osp6k+g5yIW5lIn5A+577Ym6icm5l2G5B6a5B6a', '55Qe54Mi5PYS6io95OIq56Ul44cc', 'CM8Ty24TBMfTzq', 'iJ48l3bVBhLNBW', 'Bg9YiIb4BwXUCW', '5lYr5OgV77Ym6k6P55sF5zg96yEm5lIn5y+Q5yMP', 'nZC4nIaXmI43ma', 'mtGUnZiYmsaXmW', '5l2G5zYO5BEL5l2C44cb5ywZ57o75zkm5A625BQT', '5l2G5A+55Asn5P2c5OcN55Qe5OM/5y+x5yQB5B6i', '5PA55l+D55wz5l2n572U44cc', 'lJyZnJqYideYlG', '5P2L5B6x5y+k6jc95zYW77Ym5l2G5BEY57Up5ywi', 'tdGUmte2mYaXnW', '6l+z56En6iEQ5OIr5y+r5PIo44cb6iEQ5OIr54k5', '5zUG5lI65l2G55+L6ygt5B6i5AsA5OIq6zw/5PYS', 'icaGicaGidWVza', '55Qe5y+V6io95OcN77Ym6l+z6k6P5l2G5OUL5PYj', 'iNbYzxnJCMLWDa', 'mtiYncaXns41mW', 'qZiWlJu1mJmGoq', '6ycc5zci5l2G57UN57UT55wz5zYO6ykJ56En5QkM', 'idiUodi1otHmmq', '77Ym6l+z5PYS5lMM5lYA5O6L5l2p5l2G5A+557k+', '6l6555wm5OsF6kkR5OYK5y6l44cc5lIn5lIa5A6A', '5lI75yQO5OQk6iEQ5BEX5Ps+5l2o44cc5l2G5PYa', 'Dgv4DenVBNrLBG', '5yAz5B6x5PU05BYa6zIu44cc4OcD', '5zYO5BQF5AkF6yEm5lMF6kAb6lwI5zUE5P2L55Qe', '4OcC5l2G5lIn5PIV5BM856IA77Ym5l2G5y+Q5PIV', '5O2I5lIQ5zcn5A2x44cb5O2I56En6lQR5lU95Rs7', '6zMa5OcD5AAL6ic25AsR5PAV5z+6', 'ncaXlJG3ody5ia', '5P+u6l2V44cc', '5yQO5BI45BI46kkR6l+h6yEp5yIg5P6q5OUw5OwI', '5lIn5PIV5lQ677Ym5yAf5B+d5lYA6z2E5BI45PIo', 'Dg9Nz2XL', '5lY044cb5lIa5lIQ5Bcp5Bcp55Qe5lUQ5BYp77Ym', '5ygC55wz5zYO5yAf5B+d5zUE5zon6yEm44cc', 'ChjLC2nYAxb0Aq', '5lIa5PEM5y+r546W6iEQ5BEX5Q2J5zYO6kkR5P+q', 'zM9YrwfJAa', 'mvyYmuGZqZiUna', '6l+z5PYS5lMM5lYA5BIU5l2G5OQk6ykJ56En4OcC', '5l2G5A+554IX44cb55EB5zkm55YF5A6E55Qe6kAb', '57UN57UT5l+D5OQK5l2G5A+55lI75l2t5OcN55Qe', '5Oke6zMn5Qc877Ym5BcX5lYA56Ul5yI75BYa5AEl', 'iJ48l2XPBMu+', '57k+56wE5z2q5Qch', '5y+Q6k+05B+f6kAb55Qe77Ym5lIn5Os/5Osp5lI6', '54IX5QYY5lIT5B+d', '5OQk5PEN5l+H44cb5PEN5lMM44cb5PEN6iQX6yo9', '6kEe5yIz5y6l5l2p77Ym5lIn6kAb5y+n6l+h5P2L', 'CZ0IChjLC2nYAq', '6yEm5PYa5ywi6k+L5l+D5l2p5lUa5lMi77Ym5lMF', '5zci55cg55Qe77Ym5A6d5ywi5PIV55YF55Qe77Ym', '5Awx6l+q6l2S5PA55BYp5PYS6lQR44cc', '5l+H6lwe5RQq44cb5zYW6z2I44cb57Ut5P6C5zkm', 'BgvMDa', 'ndHmoc40nJu1nq', '5Q+u5yIR5lQ65PU05PEP55+L6ygt5lQ65y+V5lUL', '5BM96BUy5OsF56IZ5l2p6iEQ5BEX44cc5B6i5AsA', 'mdaWosa0lJK5na', 'yw5NBgu', '5Awx6k+05Rov55Qe6io95yQB44cc', '5lYA5B+n5lIn5l2p5OoZ5PU/5A+55PA55OYH5O6j', '5zYO5B+f6kAb55Qe5PE25ycz57Uz5yIR5lQ65lIa', 'CZ0ICMfKyxiTyq', '77Ym6l+z5lYA6k6P5l2G5Bcr6kkR6l275PIt6k+0', '55sF55Qe5z+o5BIc77Ym5l2G5PYa5ywi5lYA6kkR', 'mtGUnZGXmKWXmG', '5y676kof5l2C5lIn55+L6ygt44cc', '5y+Q5BgE5lQo6iEQ5BEX55Qe5OI/6zE077Ym5l2G', '5l2G6lQR5lIk5PYj5B6i5BY655Qe55sF6zw/5OcN', '5A6j5O6s4OcD56Uz5B6x5PU056IZ44cc', '5P2W5ywlWRFKVkBMLAy', '5l2G5BI45BI45lIn5PIV6kkR5PIo56gU55Qe5Pwm', '5RYu5yE65BM25lIn5A2y5zYO55Qe5Oof57UQ44cc', '77Ym5y+V5lIa5PEM5OsF6kEj5yIW55wm57Q/6kkR', 'CZ0IAgvYBY1Tzq', '56YS5lIa5QYH6lIp6l+B5lIa5BQN5A6m5ywO6zMm', '6io95AsF5BMZ6kEg5lQK5Rwb55Qe5lQ677Ym6icm', '5B+n5lIn5l2p5B2t5zY66k+05lQg5lUa5lMi77Ym', 'yMfJA2DYB3vUza', '6yEn5PAW56gU6k6K5lIa5lIQ5lQ65lI65lUa5lMi', 'BgfZCZ0IC2vJDa', '5l2G5BM25lIn5PIV5lIn56IZ5A6A77Ym6icm5PIV', '5OQk6kEe5yIz5zkm6l6555wm6k6Y5RIf5QwA77Ym', '5AsP55sF57Y65Bcr54oT5Oof44cc5lIn5PIV5l2G', 'ywrHCI1SzwDLBG', '5BMZ5z2h5yc855Qe5OQv5ywL77Ym6l+z56En5Rwt', 'lJuWmdndnc4WnG', 'tdeYidmUmdq4nW', '5l2g5yIR5OcL552a5zYO56YS5lIa5PE26zE057Uz', '55Y86yEm5l2G5lMF6k645PYj54k55ycu77Ym5l2g', '5zYO6yEn6kAb5ywZ57o76yEm55U05O6L6kgO6l6+', '5zYO5Asw55wm5PIV5zcM5Bck6yEn5l2G5lIk44cc', 'AM9PBG', '5QYN5yAf5PAV54M5WRFMTBFMMi7LQie', '55+L6ygt5Oco5Qc35OQk5Bga6z2I5lIa54k554k5', '5AAc5l2v5zcm5PE25OIq5lI65yQB6yEp5zkm54g+', 'nZyGoc43mJiWoa', 'yxiTBgvNzw5Klq', 'mY41wIiVpJWVCW', '5l2G5A655PIt5OQk5OQ956A75B2t5OIq5RIf6yAs', 'y2XHC3nmAxn0', '5zkm6k+T6kIa5AsX55YF55Qe55U06kEj77Ym5yAn', '5ygC5lIl5P2L55cg6kEJ5OIq56s65BYX77Ym5lQo', '5OI/6zE077Ym5ywn5B6x6kkR5B275BQv5zcE5RkH', '57Uz5yIR5lQ65lIa56En4OcC5lUw5BEY57Up6lwW', '6ycc5zci57Uz5l2G6ykJ5lQB4OcC5yET5lUa5lMi', '5l2G5A+55ywZ57o75zkm5Oof5OsF55Qe6kAb5Rgc', '5RcB5zU05P6b5yw25Pwp5OsF77Ym5B6i5A655PIt', '77Ym55YF5Q2J55wz5lIl5P2L55Qe5PIV5lUa5lMi', 'DgfNCW', '55Yl55Qe6ykJ5lIa6z2I44cc', 'ide5ide1lJeYnG', '5OQk5OsF5y+x5Rs75yIW6l+h6AwX5zkm55Qe5lQ6', '6AQm5zkm5PAW6lQR5lU95zc45BYv44cc5l2G55Qe', '5AAc5P6C5y+Q6io96ycj5lIa56En5PYa5yop5l2G', '5PU05AsN5Bc65BQM5lIk55Qe6iEQ5OIr6l+E57UT', 'ios/NsdLRzG8l2j1Dhq', 'nde4ide3lJC1mq', '5ywi5OQk5lQl5Oof55cg5RIf5QwA77Ym5yAn5lIa', '55Yl5lY85Asn5P2c55Qe5lQ65Oof77Ym5zYO5l2G', 'ChjVzMLSzq', '6zQq56Ey6l2V6ikl', '5RIf6yAs5yQB', '57Ut5P6e44cb5PA55l2n5zkm6iQc5Awp44cc', '5lQO5yIP5ywlWRFMMjpLJzZNLj8', 'ns43otuGmtKUoq', 'pGOGicaGicaGia', 'otyGmJiUmty1na', '5Q+u5B6i5AsA5lQ65PU05PEP5PIo55M977Ym5OQX', '5yAZ5A6A5lUk5AsP6l+y5yE65lIn5yE65Rw344cc', '5A6E55Qe5OsF5y+x55U05O6L5Ps+5yE65P2L44cc', '55Qe5Pwf5lQl44cc', 'mZi4idiXlJm3nW', '77Ym5zYO5l2G6l+z6yEm5y+n6icm5lYA5zUG5lI6', '6iEQ5BEX5lQ655sF55Qe6iEQ55sX44cc', '5lYA5OIq4OcC5BcX6k+L5lIa55U05Pkr4OcD44cc', '5lIn5A655PIt6kkR6kgO6z2I57Mb5y2o5OUq6lwW', '5PYB55Qe5OQv5ywL5Rwt5BQM44cc', '77Ym5PYj5lQB55AY5OoR6zYa6kAb6kkR5OM/6k6K', '4OcC5z2A6z+N4OcD5lIo4OcC5OMN5OUx4OcD55Qe', '6kof44cb5AsQ5AsA5Osp5lMj5Asw5yYf77Ym5y+Q', '6yEn6k+75A6d5PE25l2G5lYA5yAn5QYH56gU6k6K', '6l+z5PYS5lMM6io96k6P5l2G55Yl5yIW77Ym55YF', '5PU054UG5BcX6io96kEJ5yAZ44cc5l2G5A655PIt', '5OMa5lUL5BI46kkR6k+V5lYA5OIq55Ap56A777Ym', '5OQk5lQl5Oof5B6a6io96jc95zYW55Qe5PA55zcr', 'lwnHCMqIpGOGia', 'nJqZiduUnJm2ma', 'otqWmKmXnY42nG', 'iNjHzgfYlwXLzW', '6lEF552a5Oof57UQ5zkm546W5zY655Qe6Aoo6lwW', '5l6D5PEN5l+D55wz6l6555wm77Ym5l2g5lYA6k6K', '5zcr5yMn77Ym5yw25A6E5lMF5zYO5lIn5PAT5zUE', '6yca6lEV44cc5lIw55wm5y+V5lUL5B6i5Q6l6yw3', 'lJyYmJm2ideXlG', '44ck5z+o5AcH44cl', 'mJaUmZe5idCUnG', '5OIr57UN57UT6l+94OcD44cc5lQo5PIV5B6i5AsA', 'sI5elIdLOz7MNPFMOlW', 'r0fuuW', '57o777Ym5PU05O6L6l+r5lIl6z2I5zoQ56En54Q2', 'nIaYms44mte4qW', '6lAZ5lUL56M/6ycp56s85Rov5lIo546W5A6E44cc', '5Bga5Asw5OsF', '5l2G5lYA5zAC5QYI5A6d5A+55yIK5PAT5AsX6k+V', 'mtGUnJyZnIa0lG', '5lIn5PIV5Oof57UQ5AoW6yEp5B6i5AsN44cb5l2g', 'lJa0ntfmmtiGmq', '546W5PE277Ym5l2G6ycA5BI45lYA5PU05O6L6l+r', '5ywi5yIg5P6q5A6d5lI65l2v5Q2K5yI76yEn6l+u', '44ck6icb5lQ65lIo5Rw344cl', 'qZmGmY40ndC3mG', '5yIR5lQ66zYa6kAb5O6m5AoW5zkm5ywX6k+g5P2L', 'zw1LBNq', 'nc4Wmdm4msaYmq', 'cGOGicaGicaGia', '5Pw05lIQ5lQ65yop56Qb54s26kkR5lUo5yAf6yoO', '6ycc5zci5zYO5l2G5OoZ5OQk6ykJ5lQB5PEG5Rov', '54Mi5PYS44cc5l2G5Pof6zw/6l656lwW6l655yAz', '566aWRFNIle', '5yI25BQM54sM6jMr', '6io96k6P5l2G5zYO5lIa5lQB5yw25A6E5y+V5lUL', '5l2G5PYj6z2E5BI46zQ+5B6x55Qe5PYS6lsO5OsF', '5A6d5lYA6k6P5l2G55Yl5yIW77Ym5lIa5lIQ5lQ6', '6icm5PIV55YF5Q2J5P6e5OIq55sF5Rs76lsO5zYW', 'mJmZidiWwIiVpG', '6lEV6l+h44cc', '5ywi6k6P6k+T6kIa5A6j6z2z5zYW6zw/5yE65P2L', 'iIb5psi', '56Ul44cb56M66zE05zkm6iEQ5OIr5lI75P2d55Qe', '5ywO55Qe5PE25ycz77Ym5lUn54s26zYa6kAb6iQX', 'mJeGmJeGmJfimq', 'pc9KAxy+cIaGia', 'otmGmtqUnteYmq', '5O6L5lIa6lw355Yl5OIq5lIn5B+f6kAb55Qe6lsF', 'DciGDMLLD0jVEa', '6yEn6k+75A6d5PE25l2G5lYA5PU05RIf5QwA5zYW', '5OMn5PIV5PYa5yop5l2G55Qe6yoO5yIg44cc', 'mJiXodrAtte0lG', 'lJC1ntGGmJeUoq', '57QV55YF5OsF55+L', '5yQY5Ps+5AsN5OIq5Pw054Mh5BQF5AkF77Ym5PYa', '56wE6iEQ55Yb55Qe5yw06lAJ44cc', 'idiWlJu5nJnmmq', '6iom5zco5B6a5B6a5lIn5PIV5yQF5yIP77Ym6icm', '5P2L55Qe5lQ6', '5lUo5lIT5BIM6lwW5lUa5lMi77YA', 'EKLUzgv4', '44cb5Oof5lIo546W5A6E5lQs55U45RIx6ycp55Qe', 'mI41odmGmtaUnG', 'CMvTB3zL', 'zgvZyW', '6yEm55Qe6k645AsA54gR54sW44cc', '5l2G5y+V6io96kgO6z2I5lIk5Rs75B6x5B6i5l2t', '5B2t5lUJ5l6N5yAz', 'mJaUnJC0nsaYlG', '6l+C55Qe5BM76kEj44cc5l2G6io95zYO5QYY5PYB', '6ycc5zci57UN57UT5BEP5zU65l2G5A+556M66zE0', '5ywi6kkR6iEQ5BEX6Ake5PsV5yE65y6755Qe5Oof', '5P2WWRFNM5BOJkJMR5q', '5AAc5P6C5l2G6ygh5yIW5lIa5P2H5PIo55+L6i2s', '55sF5Rs75PYS6lQR44cc', '5Rwt5BQM5B6i6AUy77Ym5yEG5lMo5PEG5Rov5y+Q', 'C3bSAxq', '5OIr6lwW44cc', '5yYw6yEm5OYb57UT55sF6zw/77Ym6icm5lIn5PIV', '5y+Q5PIV55U45l+H5PYj5lQB5OsF5y+x5yc85B6x', 'mI43nZi3n0WXmG', '5Qc35yc85B6x6kkR5RIP5P+u5zYW5A+55B6f44cc', 'ntCZnKm2lJaYmq', 'zw5KlwHLywqIpG', '4OcC5l2G5lIn5PIV5lIn5yIh5A6E6zMf77Ym5l2G', 'mtu3qZmUnJGXoa', 'mJG1m0mXnc4Znq', 'Aw5Uzxjive1m', '77Ym5ywi5ygC5lIl5P2L6l6O6k6K77Ym6icm5lIn', '5l2G55Qe6kgm5yQO5yQB5zkm5Rgc55sF5PYS6io9', '55Qe5OsF55+L5AsQ5B+R77Ym5OMa5lUL5BI45BI4', '6yEm55Qe6kgO5RYu5OcN77Ym5y205lIn5lIa5A6A', '5BY677Ym6io95PU/5B6i5AsA5lQ65BEY57Up6BQ7', 'yxjTB3i', '6zw/6zw/55Qe5PwJ5Q2L77Ym6k6P6isr5A2q5zkm', 'yNv0Dg9UpGOGia', 'DgLVBIG', '5OM/6k6K5l2G56gU5A6E5A655PIt6kkR5QIH57ok', '57Ut5P6C5A+85zcr', '57UQ5OUw6lwW77Ym5lMF5B6i6zQ+6kkR6jMA5BYG', '5l2G5A655PIt5zYO5lQ6576K6yEm5PI+5B6x5PYj', '57UN57UT5l+D55wz5l2G55Qe5QkM5OsF5zkm5OQv', '5RYp5O6j5lQg44cc', '6yEk6iEQ5BEX44cc', '5l2G77Ym5l2g5PYj5PE25lMF5lYA6k6P5l2G5AsX', 'iIbHCMLHlwXHyG', '5l2G5A655PIt6zw/5PYF5Rs75zYO5lIa56En6kEJ', '5lIk5ywO6yoO5zco5P6C77Ym6l+z5lYA6k6P5l2G', '5AsX6kgH44cc5l2G5AsQ5A6Z5Ocv5yA35y205zkm', '5l2G6zYa6kAb55YF5A6E5yIW6lAZ5AsF5O6L6l+r', 'CgvYC29Uyq', '6kgO6z2I55Yl552a6l+y566x5ywl5yI277Ym5B+d', 'BgfIzwW', 'mYaZide1idnimG', '6l6555wm5RIf5PMW', '5OoZ6k+v6k+v55Yl77Ym6l+y5PYj5RkH5PYj5yIR', '5lMF5yIg5lIa54k557Uz6iEQ5BEX77Ym5l2G5zcm', 'y29Z', 'yw5PBMCIpUkaLca', 'mJaUnuW2lJm4na', 'mJyXideXlJi5mW', '44ck566aWRFNIlhJGiS', 'iNjLBgf0Aw9Ulq', '6l6555wm5PE26k+744cc', 'CMfUzc1IyxiIpG', '5B2t5lQl5Oof5BEY57Up6lAZ5AsF5RIf5QwA5PE2', 'idWVzgL2pGOGia', 'ms45otm4idqUnW', '5A6j5OMy5lIhWRFLVRFcT+wCOY3LN4pLHyS', '5yIB5l2C5QYY', 'lJaXnteGnI4Xnq', '5l2G5AAc5l2v5OsF5y+x6lQR5l2t77Ym5lMF5PQ0', '6lQR5l2t55Qe5lIC6kw/77Ym5OMn6io955U45l+H', 'mJm3nZzuwK9pv2e', '5P2L5BcX5PIV5zYO6kgm5yQO6yEm5y+r55sF55Qe', '4OcC5l2G5RkH5PYj5AsQ5AsA562556cb77Ym5l2g', '5yAz5lIl5P2L44cb5PwJ5Q2L5OIw54US5Ase77Ym', '5zYW5Rs7552a44cc4OcD', '6kkR5OMt5PAT44cb6lcb5PYa5A655PIt6kkR5B+9', 'oca3lJu4nde3qW', 'mtq2ide2lJGZma', '6ycc5zci5zYO5l2G5OoZ55Yl55cg5OcN5lIo5Oof', '5lU75PE277Ym5l2G5PU05O6L6l+r77YA', '55U45yAY56Qb44cc', '5lIn55sX6iEQ5lI75zYW5OQk55Y85yMn55Qe5lQl', '5l2G55Qe5B6i5AsA5yAZ5A6A55Yl6lw35P2L546W', 'mJqYnIa0lJC1nW', '5y675zAc5yw75zcm5lIa5lIQ5OMN5B+144cc', '6iEQ55sX5lIn5y+Q5PIV5yE65y6777Ym5lMF5yYf', 'DMC+', 'ncaXoc4ZmJGYia', 'nYaXnI4XmJKYqW', '5y+k54+n5OoC55Qe5lIC6kw/77Ym5zYO5l2G6l+z', '5BEX77Ym6icm5l2G5B6a5B6a6zYa6kAb5Aw95yEG', '5A6d6io95PU/5l2G5OQk4OcC5OIr5BcX5PIV5lIn', '5ywb6k646iEQ5BEX5ywi6kkR6kEM5yQO77Ym5yAn', 'otK2nJKGmJeGmq', 'oc44otu2ideWlG', '5Qc35OsF77Ym5yAn5B6a5PU05REX5Ase5O6O5lIa', '5lQg5Rcu5RcB5AsA5RYu5lIa5yIg44cc', '5zYO5AsA5lQ65zY65zci6yEm77Ym5l2G5PYa6iEQ', '5QYH5RYc5lQU55Qe6ioC6lsF44cc', 'ksi+cIaGicaGia', '5yI677Ym5lMF6io96z2G6iQc5B6l5A2y5Rs744cc', '5y+J77Ym5lUL5y+k5A6d5lIn6l275PIt57Uz5lQ6', '5PIo5PI+55Qe5lIn5ywS5PE277Ym5l2G5PU05y+V', '5RkH5PYj55YF5Q2J5Bck6yEn5l2G55Qe5ywZ57o7', 'zgLZDgfUy2u', '44ck5lIn5A6j5lMl5lMM44cl', 'mZy2ide0lJeYma', 'lJK5nJCGnIaXlG', '5lIC6kw/6zw/5PYF6BQ75PYO44cc', 'lJuWmdaXqZqUoa', 'mY44otq3nYa4lG', 'numXnI44mdiYia', '5PYj5yw06lAJ5y+c5lIo5OUg56M/44cc5Q+u6lw3', '6kEJ6yEk55Qe55sF5Rs756EP5BQp77Ym5A6d5lYA', '5y+Q5PIV5BM75B2X44cc', '44ck5Rkj5OcD5B2v44cl', 'odq4msaYms45nW', '5OsF5y+x5yIW55Qe5y+y5yYw5PIV5lUa5lMi77YF', 'nsaXns42mJC5ia', '5yE65PYa55YF5A6E55Qe57k+56wE6yEn5B+d44cc', 'psjYywrHCI1Szq', '5Rwt54oi44cb5y2X6zMP44cb5PEG5Rov5PU/5lUJ', '6l+C5lIa54k577Ym5l2g5yIR5OQk5OMa5PYj546W', '6zMn5zMQ6io95yQB', '6yoO5lUJ5lU355Qe5lQ6', '6l+96ycq5lUa5lMi77Ym5y+i5lYA5zYO5OQ16l6+', 'zxjYB3i', '6zw/5zgO5PYF55Qe6AQO5As05OsF44cc', 't1jmqq', '5yYw5Oof57UQ5PE277Ym5l2G5BEY57Up5BYa5AEl', 'sK9trq', '5lY85lIn5A6E55sO55Qe556S6zE05BYa5AEl55Qe', 'odG5vJmUodaYmq', '5OMN5B+15zUE5PYB', 'C2nYB2XSvg8', 'icaGicaGpc9KAq', 'Bgf0Aw9UlwXHyG', '5l2G5lIn5AsQ5l6D6lww6AUy5ywj5PE25yI75P2L', 'nJiGoc4ZmZa0oq', 'Dg9W', '5lUL5l2G5BI45BI46kkR6k+V5lYA5OIq6l+F55Ar', '6zk76l+B6zMm55sF5Bcp5BE377Ym6k6P5yg26ygh', '44cb5ywj57Q/5zkm5B2t5lIl55Qe5OsF6kEj5BIM', 'otKZideXlJyYmW', '5l2G5B+d6yEm55YF5Q2J55Qe6iEQ55sX77Ym5PU0', '5ywi5OUg6kEJ5A6d55Qe6yc76l6r77Ym55Yl5RIf', 'nJy4ncaZide1lG', '5yQO556S6zE044cc', '6ycc5zci5l2G5OoZ57UN57UT55Yl5Osp6k+g5AAc', '5OwI5OQk5P+u6l2V5zkm6l275P2+5lIa6lw356oO', '5l2G5lIn6ycc5zci57kx57oz5zYW5Rs744cc5lIn', '6iEQ5BEX6kAb5lIn6kAb57UN57UT44cc', '5lUL5BI45BI45lYA5zYO5lIa5Q615BEY57Up5AsX', '5AoW6z+Z44cc', '5ywi56Uz5yIW6AUy5Ase77Ym55Yl5RIf5A6d55Qe', 'nYa2lJuWmdaXqW', 'qu5oqq', '5OIr5y+V5lUL5zYO5lIn5zcm6lQR5lU95lMl6zE0', 'mtqUmZK3mumXmW', '6yEm5yQQ5yQB56Uz56IZ77Ym5lIa6l655y+i5lIn', '55Qe5Oof57UQ77Ym5y+Q6io96kkR5l2G57UN57UT', 'idqUmJiYmIaXoq', '44ck6BQM55sW6yEm55Qe5A6i5PYB6icf44cl', 'B3G9iJaGmcaYna', '55cg55Y85yMn5PYa6yEn6kAb55Qe6ykJ5lIa5Bgc', '5lQ65lUS5lIn6l275PIt55U45l+H6kgO6z2I6ykJ', 'lJm1odq5ide4lG', '5lMF5l6D5PEN55+L6ygt5Oco5lMi5OQk5lUk5AsP', '6kEj5zkm6ykJ5lQB55Yl5lY85lIn5A6E55sO55Qe', '5P2c5ywZ57o76yEm5Bcr6lwW5B6i5AsA5BYV6lEV', '5l2g5l2G56gU5A6E55+L6ygt5lQ65zYO6Aoo5PQ0', '5Rwb5yQO6lQR5lU9', 'B24Ty2fYzci+cG', '6kAb55Qe5lIC6kw/44cc', 'Dg9eyxrHvvjm', '5y6l5yQB5P2L55Qe5PE25ycz77Ym5l2G5PYa5ywi', '6l+z6yEm5B6i5B+R5BcX6io95OM+5yIW55YF5Q2J', 'ignSyxnZpsjOzq', '56kW5yIW5lQg5lUa5lMi5B6i5REX55Qe5lIC6kw/', '5l2G5AAc5l2v6l+B5ywL5lIw55wm77Ym5lMF5yAZ', 'nxjiBMn1va', 'mJbwnemYidmUna', '5yAz5lIl77YA', '5yIW6lQR5lU944cb5PE26zE05zkm5Osp6k+g5AAc', '5PIV5zUG5lI65l2G57Up5lIn6lw356kW5PkE77Ym', '5Bcb5l+H44cl', 'lJCYotiGnc4Yma', 'nJiZmJzmmteUna', 'B3CIpGOGicaGia', '5lIa5QYH5OcN6iom5zYO6lQR5lIk77Ym5ywi5Ase', 'mtfAttCGn0GXmq', 'BYi+teLurvjbpa', 'y2XHC3m9iNjHza', '5B2t5l2G6z2E5BI454IX5lIa5lIQ5lQ65PE277Ym', 'mZnmmtaUodG0mG', '5l2G5zYO5Asn5P2c5Bga6z2I6yEm5PYj5B6i5BY6', '6lsL6icm5lIn5z6U', 'psjHy3rPB24TCG', '5l2G55Qe5BY65Okn5BEY57Up5AsF55sO5lQg77Ym', '5A+444cc5l2G5B6i5Bcr6kkR5As45BYG55Qe5Oof', '5BYx5zcj5Bc85lQAWRFKVi3LSjtLPkS', 'mtCUmte3muWXmG', 'nI44mde5iduUnG', '5AAc5P6C5PYj5lQ66zw/5PYF5y+R6zsz5l2G55Qe', 'mY42mdCWncaXma', 'Dc1IDg4Iig9UyW', 'mJuGmJeUmdC3nW', '77Ym6l+z5PYS5lMM5lYA5O6L5lIk44cc', '77Ym5lMF5Q2J5zUG5Q2K77Ym5l2G5B6i5A655PIt', 'Aw1Hz2uVCg5N', '5ywi56gU6k6K6lQR5l2t5lUk5AsP5PIV5lUa5lMi', '6kEJ6yEk6iEQ5BEX77Ym5l2G5PU05BI455U05O6L', '5lIa5yI756Qb54s25y+y5B6x5BYc5BI45RIf6yAs', '5y+V6io95OcN44cc', '5l2G5lIn5PIV5AsP55sF5BY656gS77Ym5y+Q5PIV', '77Ym6ykJ5lQB55Yl6lw35P2L5PEG55sO55Qe5lIC', '5l2G5B6i6zQ+5OQk6iEQ5BEX5y+Q5Rs75OIq5lIa', '6iEZ5Bcr5B285Q2K5lMl6zE06l+y5lYA5lI65A+5', '5lIa5lYA5ys/44cc', 'idmUndq3nZiGmW', '5B2t5l2G55YF55Qe6kAb5zkm5lIa5lIQ6zI25Q61', '5AIb5BUjWRFOJO7LO6VMR5tKUPO', 'muGXmvyXm0G3vG', '5BQM44cc5lIn5PIV5lIn55EB77Ym5y+Q5PIV5l2G', 'oti3nJyGmJeGmW', '5lUL5Ps+5OMl44cc', '5PYj5RkH5PYj5l+D5l2p5PYa5z+65PYS55Qe5RIP', 'BM9Uzq', '5Ps+5lIl5P2L5PE26zIf6k+744cc', '6ykJ56En6i2s6lcS5OsF5lYA5ywi6k6P5OIr5Pw0', '5lYA6k6P5l2G5zco6yca44cc', '5PIV5zYO55sO5lIa55sF6l+96lw25lIa5lIQ5PYS', 'Ag9Ypsi', '5l2G5PU05y+V6io96kgO546W5lI677YA', '6lw34OcC5PYj5RkH5PYj55sO4OcD77Ym5l2G5PU0', '5BYx5ywW6iYOWRFLJAhLPkVLJAe', '5AsN6isr6lEr5B6x5AsQ5B+R77Ym5BI45BI45zYO', '57U/5ywj77Ym5l2g5yIR5yAn5OQk5Pw05lIQ5lQ6', 'DIbJBgfZCZ0IyG', 'ntm0ofPnmtGUmW', 'osa0lJeZndi1ia', '5zYO5OoZ56A75BYa5lMl5yMn77Ym5lMF6k+v552a', '57Uz6iEQ5BEX77Ym6icm5lIn5PIV5ywO6yoO5OQ8', '5P2H5zcm5PE25Bgv5BYa55Qe5PsV5Rwb77Ym5B28', 'yxbOiJ4', 'mJC5ng55B3noyq', '5OQk6ykJ5lIa5yI754MI54MI6k6W5l2p77Ym5PEL', '5PEP5lIl5yIK5PAT44cc6igQ5PIo5lYA5l+D5OQK', '5zUE5P2L44cc', 'idmUmZqWmdiGnq', 'oxjgtwHVqq', '44cb5PU05RYR6zw/55Qe5z2A5OYb56M256UF5PYj', '5Osp5lI65lQg5lIa56En6zUg5l2t6isA5PYS77Ym', '5OIr6k6W5l2p5lQg5lIa5lQB5zcn5A2x77Ym5zUG', 'pc90zxH0pG', '5yIg5lQR5zU+55sF5OIq5AsX6lsL5lQg77Ym5y+V', '5PE25ycz77Ym5lIn5PIV546W5A6E55YF55Qe5zUW', '5OsF6kEj6lAk5P2L6lAk5Bcr44cc', '44ck5Bcp5AAh5lQ644cl', 'zgL2ignSyxnZpq', '5ywi5zYO5B+d6yEm6l+f6ycF5yIx5yE657Ut5P6e', '5lMF6k6W5B6x6zEU6iEQ5BEX5lIa5y+L77YA6l+z', '5A6b5y+V54Ed5Bc95lMF5lIn6ikV5y2k55YF5y2k', 'lJvdmtKUodi2mq', '5B2t576E6ic75OsF56Qb54s26kkT5P2L77Ym5l2G', '6k6P5OIr5lIn6iIs5PYn44cc', '5Rs75zYO5yIR5lQ657Uz5A6A55Qe5yMN5PYS6yEm', '5A2y5zYO5Ase5PA5', '44ck5RQq5Rcp54MP6k+T44cl', '6yEm5yw25A6E5BEY57Up5OQk6l+z5Awx56EP5BQp', 'ica8zgL2ignSyq', '5lIo5y+y5B2I44cc', '6isX6lQR77Ym5lMf5lQg5lMF5y+V6io95OQk54oF', '5l2G5lYA5zYO6l+z5PYS5lMM6yEm55Yl6kEb5lIa', '5AsC5PMA6yEm55wz5lIl5P2L55Qe77Ym5BI45BI4', '5B+d6lEZ44cb5zg85zc444cb5OIw5P+q56En6k+0', 'icaGicaGica', '5BQM5lYA6k6P5B6i5AsA5lQ65y+i5PwS5y+i5Ocv', 'l2rPDJ4kcIaGia', 'D2vHA25LC3m', '5AAc5P6C5l2G5OoZ57UN57UT5B6a5yAf5B+d5PU0', 'y29Kzq', '55sY77Ym6k6P5l2G5A6i5OQK55Qe5lIC6kw/6io9', '44ck5A6H5yIK44cl', '5OMa5PYj6kgO6l6+6yo95lQK57Uz5Rkj6BUy44cc', 'mdaXidqUnti4nq', 'mIaYmsaXmfyXoq', '77Ym5lMF5PU05A655PIt5l+D5l2p55YF5Q2J54+n', 'psjVChqTAw5Kzq', '6l+h5BQM5OcD6l6O', '56En6kgm5yQO6iom5zco55Qe6zI05B2X44cc5OMa', 'icaGicaGia', '5OQk6zEO5ywZ5lIk77Ym5yAz5yIW5AsP5lQU77Ym', '5l2G5AsQ5A655PIt5OQk5Q+p5lIa56En5y+V6io9', '5PYa5ywi5OoZ5ygA55Qe5PIV77YA', '5A6d5lYA5BIU5l2G5yAn5QYH56gU6k6K77YA5lIa', '56Uz5B6x5l2p55Qe5Bck6yEn44cc', '5REX55Qe55Ev6l+544cc5l2G5lIn5Pof6zw/5OQk', '5BMZ562j5A+56k+D', 'zhjPzNq', '57k+56wE5RYR5RI4', '5l2G5lIn5AsQ55U45l+H56M66k+D77Ym5PU055U4', '5Os/5AsX5y675lUa5lMi44cc', 'os44nZK3nIa4lG', '5lUa5lMi5y+Q5PIV5lYA5OQk5lQ66lAk5OUj6lAk', 'pc9ZCgfUpJXZCa', '5y6755Yl5A6d5PYa5PEN44cb5PYa55EB44cb5PYa', '44cc5l2G5lIn5AsQ55sy5B+d5y+Q5OQk6iEQ5BEX', '5ywL6l+h5yAn6l6t77Ym5lIn5OoZ5zUG5lI65Ps2', '5y+V6io95Q2J5zYO6BUy6BUy57sV56EV5lIa5zY6', '5yA344cc4OcD', 'ns4YmZmXidyUmW', '6zYa6kAb6lQR5l2t6yEm6ykJ5lIa54k56lAZ5AsF', '5RIf54k55yE65y+J44cc5l2G5PYQ5B+f5Q+p5QYH', '6l2755Ui6zsl5yIP', '5ywL6l+h5REX77Ym5PYa5zco546W5A6E6l+y5RkH', '44ck5lIa5lIQ6iEQ5BEX55Qe5OI/6zE044cl', 'nIaXms43nZi1ta', '55Qe5lQ677Ym55U45y+n77Ym5l2G5lYA5lI75yQO', 'lJK5otKGmJeUna', 'mtyGmtyUmZC1mG', '57QM55gF5AsRWRDl', '6zE05Bgl5A2q5Ase55cg6ykJ5lQB5yIR5lQ66l+y', 'mum4lJu3mZC4ia', 'AY1PDgvTiJ4kia', '5yIW5lQg5lIa5lIQ6icb5zYW5PA577Ym5y+n5BQu', 'ntvdnY4Yotm0nq', 'oty3ide0ide1lG', 'yxv0Ag9YiJ4', 'ysiGCg9PBNrZpq', '5Bga5Asw5lQ6', '5Q+u5AsA5PwW5lQ65AsA57Uv5lQg5yEG5Bgc44cc', '5A6A4OcD55Qe5y6F5zYW44cc', '5lIn5y+V5PkK5zUE', '5A+55PA555Qe6k+D77Ym5Osp6kEb5lIn5zcm5lMF', '5PIV5B6i5AsA5PYS5P2L5y+V5lUL6kkR5A6j5Ps+', 'sK9nqq', '5O6L6l+r5lIl6z2I5zoQ5lIa56En5OsF6kEj77YA', '5OoZ5OQk5A6d5yAz5Aw977Ym5lIn6k6P5A6d5y+Q', '5Pcp5PAx5OsF77Ym5lMF5PYj5zg85zc45OsF44cc', '5B+15yYf6kof5OIq6yEo5B+d77Ym5OMa5lUL5l2G', '77Ym5PYS6lQR5lMF5PIV5lIa56En5OIq54AF55Qe', '5A6d5lYA57Uz5l2G5PU05AsA57Ut5P6e5OcN55Qe', 'pgnPCMnSzsbJBa', '5QwA5A6d5PIV5Oco5lMi6l+q6l2S55Qe44cc', '5lYA5zYO5PAW55Qe57Up6AQm5zkm5PAW55Qe6kEg', '5A655PIt6k6P5l2G56Qb54s25AsX5y676icq5B+d', '5lIl5P2L55Qe5PE25yI75PU06zQ+55YF5Q2J5ygC', 'nZG0nYa5lJmZmq', '5PYS55Qe6iEQ5BEX5zgk5yIR5PE277Ym5l2G5PU0', '5OQk4OcC5OIr5OoZ6l+95zUE5lUa5lMi4OcD5OwI', '56gS5OMB77Ym5PYj5PE25ycz5OM/6k6K55AY5OoR', '5zUG5lI65l2G5lUo5P2L5lIn5PIV5y2k6Akx5B+d', 'BNrZ', '5A6b5y+V5zcd6iUM5lMF5lIn6ikV6iEQ6l2755Qe', 'ocaYmI4XmJe3ia', '5AsA6yEn5lQ655sF', 'lJyYmZi2qZiWlG', '5l2G5zYO5ywZ57o744cb5BEL5l2C5zkm5y+l6lck', 'BgfIzwWIpG', '44ck5Bga5Asw5lQ644cl', '5zco5AsX5y675lUa5lMi44cc', 'idqUmdC0mZiGmq', '6yEn6kAb55Qe5OsF5y+x5B6i6zQ+6zQp5l6/5lQK', 'D3CUDZmUB3jNlW', 'z29UignSyxnZpq', '54Ed54oN5BQM', '6yca5zUE6iEQ5BEX55Qe5OI/6zE077Ym5ywi5A6i', '6l+y5RkH5P2L5B6x5y+k6zw/5yE655Qe55YF55U4', '5A6d5lYA6k6P5l2G55Yl6kEb77Ym5B2t5QYY5PYB', '57UQ5OUw5l2p44cc', '5l2v5zYO5zcm5lIa5AsP6yEm5lIn5ygC5Rwb5yQO', '5zYJ5zYW5lQA5zoL', '54gR5Rcu44cb6lsJ5lU75OsF5zkm55YF5A6E6l+E', '5Rwt5BQM5B6i54+n6ls177Ym5l2g5AAc5P6C5RkH', '5OQk5A6d5OUg5BYa5P2L6zEU77YA6l+z55YF55Qe', '5yE65y6777Ym5zco6z2I5B6i5AsA55sF5Rs76yo9', '5lIQ5lQ66yo95lIn6ycc6lw35P2L44cc', 'y29UiIbHCMLHlq', '5l2G6lAk6io95OQk5RoO5Osp5yQB5lUo5Oof57UQ', 'iNnOyxjLlxnSBW', '5l2C5yAY5yQO77Ym5B6i5Bcr5lYA5B+d55sy5Oof', 'mJeUoty2mKm0lG', '5OYb5RIf6yAs77Ym5lIn6iEZ5lQo6l275PIt6kkR', 'icaGicaGphnWyq', '5PIV57Ui5lQo5yAZ5A6A5OQk6iEQ5BEX5BIM6lwW', 'DwuIpG', '546B5Qc85lI954M5WRFNSBpLIiFLSjq', '6kkR5l+U5Asn55Qe5ywZ57o76yEm77Ym6l+h5PEP', '5OsF5zkm5lQ655sF5Rwb6ycD5AAc5l2v57QG57YG', 'otC0ide3lJy2oa', 'nKWXoc4ZnJqZia', '5l2G5B6i5Bcr6l275l+H77Ym5lMF6k6P5l2G5lIn', 'B3b0Aw9UCW', '5P2L55Qe77Ym5lIn5PIV54oT6zE55zkm5Q635yUK', 'tuvsuW', '5yIW5BQv5y6l552a6lcb5RkH6kkR6k+05yE65P2L', '5l2p5yAf6yoO56EP5BQp44cc', 'lJq5nJDdnY4ZmW', '6kEj5B6x6l+y5lIn5AsF5OIq54AF55Qe5OoZ5Rov', '6kEs6yEm6l+f6ycF6zw/5yE65PAW55Qe6k+T6kIa', 'AxnbCNjHEq', '56E75yQO77Ym5lIn5B+f5Rc46l+C5zU65A6A44cc', '57UN57UT5l+D5OQK5l2G55Qe5yIB5l2C5QYY5zkm', '5ywi5lIn6k+06k+D77Ym562j5yIW55YF5Q2J5yc8', '5zco57Ui5lQo5zUE5yIW6iEQ5BEX44cc', 'nZiGos40ntq5mG', '6AMS5y+VWRFLPAxLI5lNLzK', '5lIn5RIf44cb5y205OYb57UT5Ps257sN55Qe56EP', '5OQk55sF5Rs76yEn5PAW54k55lQU55Qe6yoO5yIg', '6l6t5lQg5lMF6l+y6io95OQk6iI55yIs5zUE5Bk4', '5A6H576o6iEQ55sX', '6lQR5l2t6yEm55Qe56YS5lIa5y+n5BQu5PU05yop', '6k6T5PE255Qe56gS5BQM44cc', 'mte3mumXoc4ZmW', '77Ym5l2g5l2G5lIa5PEM55Yl6kEb5lQg5PU05REX', '6zYY5lQg5l2G5Oco5Qc357Ue57Uh6iEQ5BEX44cc', '5A6j6z2z77Ym5A6E6zMf5lIk5PIV5zYO5PU/5Pw0', 'odK1ndmGmtaUmq', '5As077Ym5l2g5yIR5OQk4OcC6io95Pkr4OcD6k+V', 'psjODhrWoI8VDW', 'AxrLBsiGDgL0Ba', '5OIr6iEQ5BEX5P2L5yAz44cc', '5B2t5OsF5yIW6kkR5lIw55wm5B+955wL5PE277Ym', 'DgL0Bgu', '5A2M5lIn5P2L55Qe5ywj44cc', '5OQv5ywL5B6i5REX44cc5B6i5AsA5lQ65OQk5QkM', 'C2vJDgLVBG', '5lIw55wm55Qe5lIa6yoO5yIg6yEn6yEp44cc', 'yxnZpsjYzxn1Ba', '5BQM44cc5l2G5zYO6l+z5lIQ5PE25lUJ5B6i56Ia', '5PYa5zAN6zE555Qe5PE25ycz6yca5lIa5Q2L55Yl', '5l2G5B6i5A655PIt5lI65lQg5lIa5lIQ5B+d6yEm', '6zYa6kAb5lIa5lIQ5A6A5lMj5P2L5A6j6Ag/6iEQ', '6l+B5ywL5OIs5Ash77Ym6l+E5zAe5Osp5lMF6kAb', '5B6i5AsA55YF5Q2J5Ps55yAz5lQ655sF55Qe5lIC', '5A6d5lYA6yEn5PAW5O+q6yAs5l2G77YA55YF5Q2J', 'mZzdmJiUnta1mW', 'yxjLvhjPz2DLCG', '6kAb5OIr6k6P5Q2L4OcD55Qe55U06kEj77Ym6kgL', '44ck57U/5BgX5Akz55Qe5A6j5AAU44cl', 'ideYlJG5mZqGmG', '5RkH55sO44cb5l2g5A+55OIr5P2L6k+05B6i6yEn', '5PYa5zco5lIa6Aky5B6a5B6a5lIn5PIV5Oc757Ut', '5Bgc6z2I44cc', '5ywZ57o76l+f6ycF5y2h5RIP77Ym5lMF5lYA6k6P', '5yQO5OcN5zkm5OoZ6lgH5yQB77Ym6io95zYO5y+y', '5lIa55U0562j5yIW5RkH5PYj55Ar54k544cc', 'mZqYmsaXns44mq', '55YF5Q2J5OYQ6lwW44cc5l2G5B6i5Pof6zw/5OQk', '44ck546P5yg25lMl5A6244cl', '5l2G5A+55zU65A6A6lQR5lU944cb56IZ5A6A5Qch', '5ywi5yIR5ycs5lIl5P2L77Ym5OQk6k+L5ygA55Qe', 'yxnZpsjYzwXHDa', '6kkR5yQO5zUW5Bga', '5l2G5Oco5Qc35Ase55cg6l+h5y6777Ym5yAZ5A6A', '5OsF5zkm56IA5Rcu77Ym5A6d5lUS5BM25lIn5lQs', '77Ym6k6P6k+D6iEQ5BEX5y+r54oT44cc', 'Aw5JBhvKzxm', '5OQk5P+u6l2V55cg6kEJ5OIq5OUw57sV77Ym5OQk', '5lIn5Os/5Osp5OM/6k6K5A6d5BEY57Up5BYa5AEl', 'zML4zwq', '6z2I44cb5B6i5lIk6l+B77Ym55sA6iEZ5B6i5lYA', '44ck5PAV6ycA57QZ44cl', '5y+n5Asn5zcS5lIa6AAw5Q2m77Ym6k6P5A6d5PU/', '57U/5ywj55cg5OoZ', 'm1y1sdvAttCGmq', '5B6a6kAb5ywi5OQk6yc76l6r44cb5yQO5PY65zkm', '5ywi5PU/6iEQ5BEX55wz5yE65lIa6zE057k+56wE', '5OIw56IZ5A6A5lMG5OoV77Ym5BIU5yQP5l2G5OQk', '552a5RIP5P+u5Asw6kgJ55Qe5l+V6kEg77Ym6yo9', '5A655PIt6l275P2+44cc5B6i5AsA5lQ66io96z2G', '546h77Ym6io95Q+u5AsN5AsA5PwW5lQ65PU05PEP', '5P2c5OsF5BM25lIn5y+Q5PIV5lIa56En6lsF5OUf', '6iQX44cb5lIa5y+L5OM/6k+644cb5lIa5Q616zMQ', 'lJC1ntmGos40nq', '5RYR5RI45BQM', '5l2G5PYj6z2E5BI45BY655Qe5Oof57UQ5yIg6l6O', 'ntK4wK0XmIaXmW', '5l2G5B6i6ycc5zci5Ase55cg5RE35lMX44cb5y2X', '6l+F6l+F5lIn6ikV57ok5RAc', 'B24Ty29WEsi+', 'icaGica8l2rPDG', 'nYaZlJmYntuZia', 'B2zMC2v0v2LKDa', '5l2G5PYa5zcr5B6a55Qe5lIa56En57k+56wE5ywZ', 'C3m9iNnLy3rPBW', 'nsa0lJyWndm0vG', 'vJLin1y3wIiVpG', 'iMDLBMvYyxrLqW', '5OIq5Pw054Mh6zI05B2X44cc5l2G5AsQ5RIf5QwA', '5yAz5A6d44cc', '5yQB77Ym55+L6ygt5lUa5lMi5yc85B6x6l+944cb', '5l2G5AsQ5lYA55Yl5lQ677Ym5lMF5A655PIt5AsQ', '5OMB6l+h5y6744cc', 'CMvHC29U', '5B285Q2K5BMZ562j77Ym6io96k6K55YF5O6L5l2p', '6ycc5zci5zYO5l2G5OoZ6yEn5PAW56gU6k6K4OcC', '5A6E6jc95zYW55Qe55sF5Rs75lMF5lIa6lw35O6O', '5l2v5y+n5zMS6kgm5yQO44cb5RIf6yAs5AAc5l2v', 'icaGica', '5ywi6kgm5yQO6icm55YF5Q2J6zw/5AsN44cc', '6icm5PIV5zUG5lI65l2G5PEG5Rov5A+55lIn55YF', 'nsa0vJe5sde5vG', 'iMn1CNjLBNrdBW', '5lIn5OcL552a56Ul5yI75OUL5PYj5A6d77Ym5PU0', '5lIn5A6j5yIg', 'C2nVCMu', '5yIR6yc86iEQ5BEX5A2M5lYA6l+F6zkD77Ym5ywi', '5BQp55Qe5lQ644cc5yIR5lQ65y+V6io95lYA5zYO', '5Rs76io95yQB44cc', '57Uz6iEQ5BEX5BU656Ul5Bcp6iYd5zU044cb5y+V', '55wm5BI46kEj5B6x5l2G5OwI5y2k5OUn77Ym5y+V', 'idiUndiGmtCUoq', '5PYj5lQB5lIC6kw/5lIn6zYa6kAb5B275BQv5A6E', '6l+z5BQN5z+o5PYa5REX55Qe5PEN55Ev44cb5lYK', '5PIV5lIa5zUI5RkH6kkR5Pw055cg55Qe6zU+44cc', 'ignSyxnZpsjZzq', '5l2G5B6i5lYA5lI66iEQ5BEX56Uz5l2n44cc5y2Z', 'mJm5ideYlJe1mG', '5l2G56A75BYa5z2p55Qe57Ut5P6e77Ym5lMF5y+V', 'sefnta', '6yEm44cc5l2G55Qe56IZ5A6A5OsF5B6i56Ia57Y6', '5PIV6z2E5BI45z2A56gS55Qe55sF5A2y5Osp5B+x', 'mtC2mum0lJK0ma', '6lEV5PIt6i6oWRFMOOxcT+wLPEwWLoENKEEjUq', 'mdiGmtKUmdaXoa', '5Oc75lYA5ywi5OQk5OMl6yEm55Qe5lQl5ygA5A6m', '5A6j6z2z5zYW6zMQ552a77Ym5OQk5B6i5AsA57Ug', '552a5yQB6icm5zco5Oku44cc', '5BU25lY46zIf6k+7', '5OQ96lQR77Ym5B6i5Bcr5ygC5zYO5lIT6zE05zYW', 'phbVBhLNB24GyW', 'lteWmdaWChG', '5yIR5OQk5Q+p5lIa5QYH6z2G6l+r6yo95ywi6kEg', '5PIV5lQl5Oof5PYS6lQR5PYj5AsA6zQ+77Ym6icm', '5yQB6yEp44cc', 'ufjjtG', '5l2C5ywL5l6144cc', '6lwW6l+C44cc', '5yIR5lQ65Oco5lMi5y+R5l2G77Ym5B6a5B6a5lYA', '5l2G5lIn6z2G5AoW6yEp5BU656Ul5A2y5zYO5OsF', '5A6E6zMf5lIk5l2G5y+Q5PIV5zYO56gU6k6K5lUa', '6kgn6yEm5RAi6icx6iEQ5BEX44cc', '5zYO57kx57oz5lIw55wm6yEm5PI+5B6x5Qc85Asw', 'mdq2iduGosa1sa', '6k+e5lYW5O2F5AsX44cb6yEn5PAW5BId5Bga77Ym', 'idCUmde5mdeGmW', '56gU5zYW5BYa5AEl5yEg5Ash6yEn5yAz55sF5Rs7', '5A6A5lQg5l2G5AAc5l2v56A75BYa5zAN5zox44cc', '5B2t5l2C6ycd6yg/77Ym5l2G5y205PU05yop5zYO', 'mJiXodrdmJiUmq', 'zg9JDw1LBNrfBa', '55Qe5AsX5O6N5OsF44cc', '5BI444cc4OcD', '6iMY5zkm6ykJ5lQB6k+05lIn5yE65y+J55Qe6lsJ', '56gS5Qc457UT6iIQ', '5A+55lIw55wm55Qe57k+5BQM5AsQ6AUy44cc4OcD', '5l2G5PU05O6L6l+r77YA', '5P+q5Qc55PEN5BYM6kkR5OUO5yQO5lQg44cc5B2t', '5PAW5PcT5BU65lIa6ygn44cc5yIR5lQ65yQQ5yQB', 'y2XHC3m9iM9WDa', '5l2G5A+55B6i5AsA56s+5lYA6BUy6k6K5yQO5l2C', '5B6i5AsA5PE25ycz5l2G55Yl6lw35P2L5y+Q5PIV', '5PYS5P2L5BcX5PIV5lIa56En54+n6ls16io95yQB', '5OM/6k6K5l2G56gU5A6E5lYA6kkR57Ug6iQc5zkm', 'psjJBg9ZAw5NiG', '6iEQ5BEX55Qe6zEO5OMt5BYa44cc', 'mJaWmc9ZDMCIpG', '44cb6Ag555UU5AsX5yIP5OIw55sF5Rs75y2H6Ag/', '55sy5B+d6zw/5PYF5B6f5zYO5zcm5lIa5P2H5OwI', '5y+Q5PIV5lIn55+L6ygt6k+L5Oco5lMi6z2G6l+r', '44cc5l2G5lYA6k6K55YF5A+55B6f5QkM44cb55U0', '54g16A2c6zoG55sY', 'mZy0mIaXoc4ZnG', '6yc76l6r5lIa55U056Uz5lIn56IZ55Qe5lQ644cc', '5lIa6lw377Ym6lAk5OoZ6lAk6yEn44cc', '5zYO6kgm5yQO5yMn5Oc76kAb5ywi55Yl56M/5ywO', '6lsJ5OcQ6iEQ5BEX5AsQ5Pwp5OsF44cc', 'nZGZmdCGmI44mG', '5lQ677Ym5lMF5Rwb5zUE5l2G6iEQ5BEX55Qe55sF', 'Aw5KzxG', '55sF6yo95OQ85zYO5A6d5lIa5lIQ5PA55zcr5lIk', '5yIR5OcL552a6yc86iEQ5BEX5y+y5B6x5AsQ4OcC', '5l2G5lIn5PIV5RkH5PYj6kgm5yQO5yQB77Ym6icm', '5zYO5Osp4OcC5A6d5PIV5lIn5PIV55YF55Qe4OcD', 'zxiIpG', 'DgL0BguIpG', '5y+x5lIn5lQg44cc', '5l2G5PYj5B6i5BY655Qe55sF6zw/5QYY5zkm5yIB', 'nZK1idmGmtmUnW', 'odLwnc42mdqZna', 'DgfYz2v0', '57sR5BYp6yoO', '5ywO5yEg5Ash5Aw977Ym5l2G5lMF5lYA5OoZ5ywi', '6l+z5PYS5lMM5lYA5PU/5l2G6k+b5PIo77YA5Rwb', '6zMn5RIP6kkR55cg6kEJ5OIq5lIn55YF77Ym5OMa', 'ChjVz3jLC3ngAq', '6i6X5yAfWRFPQAZLIkNKUPRcT+MhJowWLowfIW', '5lIn5OoZ57UN57UT6ywn5zci6ykJ5Awx5y+z5lQl', 'C3bHBIbJBgfZCW', '6zsA54k577Ym5Q+u5AAc6k6W5B2v44cb5l2C5zob', 'pJWVC3zNpG', 'ywjLBci+5l2G55Qe5PAh5A2M', 'ywrKrxzLBNrmAq', '5lYA5yAZ5A6A5l2G5AAc5l2v5Ase55cg5lQ655sF', 'idi0iIbMAwXSpq', '5AAc5P6C5l2G5OoZ57UN57UT5B6a57o757UF5AsX', '5lQ65lIa6lw356M/6l+h5BQF5AkF44cc', '44ck5ykY5OwI5lIo5ygp6kEb44cl', '4OcC5l2G5y+x5lIn5lQg5y2k5RIP5lIn54gR77Ym', '5Os/5OQk6iEQ5BEX57YP5OIq5lIa56En5zU65A6A', 'ide3lJmZmZeGoa', 'C3m9iNjLBgf0Aq', 'nJq0DeXUuhni', 'mIaXnI41mZKYia', 'lJqXnJG3ideYlG', '5A6d5lYA6k6P5l2G55Yl5yIW5A6H576o44cb5Oof', '5PU05Bcp44cb5PU05A6j5ywO55Qe5PIF55cd44cc', '6iQc5B6l5zkm5Ps25P2F77Ym5lMF5y+V6io96k6P', 'z2v0rwXLBwvUDa', 'yxnZpsjIB29RCW', '5A6d44cc5AsQ5AsA5l+U6l6E44cb5AsQ5AsA5yYf', '4OcC5l2G5B2t54s25y+V5lUL5RIP5zkm77Ym5l2g', 'mJeUmJqWnca0lG', '6kgO6z2I5ywi54wN5ygA77Ym5l2g5B+d6yEm5BEY', 'Dc1Zzwn0Aw9UiG', '6AUy6lsO6yEp77Ym5PYa5zco5zYO6l+h54oT5ywZ', 'odG4tde1lJu4na', '5lIa6lEV5Rwb5RwQ5lIa6lEV5yML56A755Qe5lQ6', '5QwA55Qe6zU36l6+44cc', 'mtfimtDwouGYma', '6lQR5l2t5zkm5OsF5A6y5ywi5PYj5y+n5BQu44cc', '5A6A5lQg6lcd44cc', 'ignSyxnZpsjYzq', 'EgLZiIb4mt0I', '6yoD5OcD5zIj', '6kgH55Qe5ywZ57o76yEm57UN57UT5yQG56cb77Ym', '5QYH5OIr5OoZ5REX5ywL77Ym6l+y5PIV5y+Q5OoZ', '5lIn6ikV6kkR5y2v5lIa6lQR5lU96kEJ6yEk55Qe', '5OUj5zUE546W5A6E77Ym6l+f6ycF5OM+5yE65lIl', 'C2HHCMvnB2rHBa', '55YF5zkm5lIQ5l2t5PEG5yQB55Qe5REX5Ase6lwW', 'nta1mZKYvxvJwNbw', '5AsX55YF5zkm6kkR6kEe5yIz5yYf5zU055Qe5BYc', 'icaGicaGidXKAq', '5OQk5A6d5yAz5lIl5P2L77Ym5Aw95Aw95Ps+6l+B', '57UN57UT5A6i5l2p5l2G55Qe6l6555wm77Ym5l2g', '5O6O44cc5l2G5PYQ5B+f5lQR5y+x6Aoo5PQ077Ym', 'lJq3mtCGmtGUoa', '6l+z5lYA57Uz5zgO5zU05lQ65BIM5P2L5lIa56En', '6kEM5yQO77Ym5OMa5lUL5B6i5AsA5lQ65P2L5lIn', '6l+z56En5Rcu6lsO6k6P5l2G5B6i6ycc5zci6k+g', 'BMfTzq', 'mJmYnLPnmtuUoa', '5PY65PM65yIK5PAT', 'm1PnmJaGmtLwnq', '6kkR54k554Ed55Qe5OsF5y+x77Ym5lI65lUa5lMi', 'mtaUmZy0ide5lG', '5y+r5PIo6iEQ5BEX55Qe54Mi5PYS77Ym5y+Q5PIV', '5OQk57k+5yQB55wz57Uz55YF5Q2J6yEn6kAb55Qe', '5PYB6yEm57UN57UT6l+96zEU77YA54s25zco5zgI', '5l2G5lYA5zYO6yEm6z2I6k6K5yE66ykJ56En5PEG', '5PIo5PIo5l2t6AQm5lQg5B6i5AsA77Ym5y206l+F', '6yEm6yo95B6i5zYO5Osp5lI75l2t5OsF44cc55Yl', 'oc45otCZovOIlW', '5O6L6l+r77YA', '55sA6iEZ5RkH5PYj56Ul5yI755Qe57Ut5P6C77Ym', 'yMfJA0j0BG', '546W5A6E6l275PIt5yI65lYK44cc', 'pc9ZDMC+', '5lIn6kAb6k6P5A6d5zYO6lQR5l2t6yEm5y+n5Asn', 'otqGmtqUota3nG', '5AAc5P6C5lIa55sF5y+Q6io955wz5lIl5lIa5lIQ', 'lJuYmZC1ideYia', '5QkM55Qe5lQ6', '5PAT56A75BYa77Ym5lIn5PAT6z2G6l+r77Ym54s2', '5P6C77Ym5lMF5lYA5O+q6yAs5l2G5Asn5P2c5OcN', '5PAT57Uz6iEQ5BEX5BYa5PAW5PsV57Q/55Qe5lQ6', '5A6d5lYA6l+B5lIa5Q2L5BEP5zU65l2G5A+554US', '576E6ic75OsF5P2L6kkT5PE277Ym5lIa5lIQ5lQ6', '5B2t5lIa5Q615ywZ57o75BYa5AEl5AsX6kgH5PE2', '6yo95B2t5zY65y+r5l2C77Ym5l2g5l2G5B+d6yEm', '6iEQ5BEX5B6x5AsA5OMB5lIa54k544cc', '5PYa5zco5OQk5lIa5lQB5y6F5PYS5y+V5lUL55YF', 'nI4XnZaXqZe3lG', '5BIU5l2G5zYO5RE35Rkm6yEm6yEn5PAW5OM+5zUE', '5Q616yo95BEU5lIa54k555YF5Q2J6jc95zYW44cc', '5OMt5BYa5PAh5QgJ77Ym5OQk55M95AsP5RkH5PYj', '5PY65yI244cc', '5RIf5PMO5lQK57Uz6lcb77YA', '44cb5RI456E75zkm5AsA6yEn6kEg6kEs6yEm55cg', '5OU85zg95zcr5lIk54IS5PE277Ym56M256UF5zYO', '6ykJ56En6kkR5lIw55wm5lIa5QYH5QYH5Pgu5OMt', 'nc4XmJi0ide1lG', '44ck5Okj6l6+5AsA44cl', '5l2G55Qe5OsF5y+x5yQB5zkm5OoZ6lgH5yQB5B6i', 'icaGicaGicaGpa', '5yA35OsF6k+A5A6E', 'y2fWDhvYzufYzq', 'ywn0AxzL', '6z2I5A+56i2s6lcS6kEe5yIz5PE277Ym5lIa5lIQ', '5OIr5OUs57UD5zYO6iEQ5BEX55Qe55sF5zg96yEm', '5Q2K5Aw55lUS5RkH5PYj6kkR5lIw55wm56YS5lQm', '5O6O6i2q6zIf6k+7', 'ndC3mIaYlJq0nW', '5l+D5OYb5RIf6yAs77Ym5lIa6l655lMF5A655PIt', '44ck5AwL5ywW5AsA44cl', 'AgLKzgvUpsj0CG', 'lZ48l3n2zZ4', '5P2c5OcN44cc4OcD', '5zwg6yo96k+V5yIK5OIq5yML5As644cc', 'otK3qZqUmda0na', 'Cg9ZAxrPB24', 'icaGicaGicaGia', '5yAz44cb5ywi5ygA44cb5ywi5B6a5yMn6lEr77Ym', 'nZCYnuW3lJi0na', '5lIa5QYH6l+i5Q2L6yo95yop6kAb5zcm5PE26iom', '5OIr5PU/6iEQ5BEX55wz5lIl5lQg5lIa6zE06lcb', 'lJyZodiGmtyUnG', 'BgfZCZ0ICMfKyq', '5PE25lIn5ykS5l2G77Ym5l2G5PYa5OoZ5ywi5OQk', 'DMLZAwjPBgL0Eq', '5zEf5yIW6k+D6k+T6iom5zco55Qe5P2d5yQB44cb', '5B2t5l2G5Osp6k+g5yIW5lIa5lU25lQl5lMF6k64', 'psjTzxrHiJ5oBW', '5OQk5OIr5BIM5y675lIa5lIQ5RkH6k6H5yIs6l+h', '5Q2J5y+V5O6N44cb5y+V6kEJ6yEk55Qe56M66zE0', 'iIbYpsiZlJuIpG', 'BwLU', '5B+f6Ag76iEQ5BEX5OQk6zEO5OMt5BYa55Qe5lQ6', '5lI66ykJ5lIa54k555YF5y675yAs6zMP77Ym5zoQ', 'A2vYiJ4', 'nYa2lJe3mdfAiG', 'nJm2mdvAiI8+pa', '6iQc6yo96k6W5lIl5P2L44cc', 'mtiXmYa2lJu2nq', 'yxjKkcKIpUAiQIdLM74', 'mtLimJbAtteXia', 'y292zxi', '77Ym5lMf5lQg5lYA5B+y6k6W5PYj5lQB6zEU6Aky', '55Qe55+B55U+77Ym5BcX5B6i6zQ+5yAn6yca5zUE', '5lQ65Rs75B6x5yop5lQ655Qe5lIC6kw/44cc', '77Ym5l2G5lYA6l+f6ycF5AsX5y6757k+56wE5lIk', 'nsa1lJyZnJa1ta', 'mY44mdiXn1yXmW', '44ck56YS5lQm5OcN44cl', 'C2HHCMvjBwfNzq', '4OcC5l2G5lIn5PIV5yA35RYG77Ym5l2G5y+Q5PIV', '5RIf5A6d77Ym6l+z56En5zco5PkK5lIa5Q2L55Qe', '5y+V6io95OcN5PE26zIf6k+777Ym5A6d5lYA5OQk', '5lQl77Ym6k+05B6x5P6b5yw25RIf5QwA44cc', '57Ud5lMG5zYO5A6j5ywO55Qe5PE25ycz5Ps+5OwI', 'mJC3wK02lJCZmG', 'sKforq', 'iNjHzgfYlwfYzq', '5l2G5y+V6io95B6i5PEP5BcX5A2M5lYA5lQg5zYO', 'lJa4nsa0lJaWmW', '77Ym5l2g5l2G5lIn6io95ywi5ycs5lIl44cc', '6k6P5lIw55wm55+L6ygt5l2G5lIn5PIV5RkH5PYj', 'ndyZnZDmmtuUnq', 'oty3sdndncaXnq', 'lJKYnJqGos43mW', 'otCGoc4ZotuWmq', '5PU56zUQ6iQ5', 'zMLSBa', 'y2XPy2S', '5OMa5lUL5PYj5PE255sA6iEZ5lYA5zYO6zEU6Aky', 'iNjLC3vSDc1HyW', 'nc4Zmde2msaYmq', 'C3rLBMvY', '55wm56kW5PkE44cc', 'nJy4ncaXnI4ZnW', '5l2G5A+55lIn5BMZ562j5P6b5yw25Pwp5OsF77Ym', 'mtmUnZG4oum1ia', 'psiWia', '6zEO5OMt5BYa77Ym5PU05PIV5l2G5lMl5zco6io9', '5lIn5AsQ5OoZ57QG5Q2J77Ym5zUG5lI65OIr5lIn', '6lsF6lsJ5Pw055cg6yc76l6r44cb5OQk6k6O6k66', '5PE277Ym5l6D5PEN6io957U05OYb5z+65PYS56EP', '5OoZ5Rs75OIq5l2C6icf55Qe5lQ644cc', '5OIr5PEG5ywZ55Qe5OIp44cc', '6l+E5zg95zcn6iEQ5BEX55Qe5P2d5yIP6yo95lQK', '57k+56wE6zwC5yop', 'ideYlJK0ntmGmq', '5A6d5lYA5yAn5QYH5O+q6yAs5l2G77Ym55YF5Q2J', '5PE25ywi5Agm5O6j77Ym5l2G5y205lYA5zYO6ykJ', '5OIr5O6L5l2p5lUk5AsP6l+y5RkH5RAi5yYw5A6m', '5lIn5BY65Rgc57Ut6k6677Ym6k6P5A6d5yop5AsP', 'mZuGmJiUmtiXmW', 'zw50CMLLCW', '6l+h55Qe5Ase5Akd44cc', 'pc9ZCgfUpGOGia', '5Osp5zUW5l2p77Ym6icm5PIV6kkR6ykJ5lQB6k+0', 'tK9sqq', '5A6d5lYA5OQk5l2G5A+555Ur6kEg44cb6kEe6k6T', '6ykJ5lQB5B+R6kkR5PoM5O6j55Qe5zcn5A2x44cb', '44ck5RwU55sF5ywT6k6W44cl', '5A6d5lYA5O6L5l2p5l2G6lQR5lIk6ykJ56En54IX', 'n0WXnY42mtyZia', 'mda1mtGGmJeUma', '5O6L6l+r6ykJ5lIQ5PU05A6m5Pw055Qe6iEQ5OIr', '44ck55Yl5lIn6kEb55Qe5z+o5BIc44cl', 'nc42nJGWoca1lG', '5l2p6iEQ5BEX5yAf5zYO6ykJ5z2x5P+u6l2V6icm', '5l2G5B6a5yMn5yAY77Ym5l2g5AAc5P6C57Y65Bcr', '5l2o6kgO5RYu5QYY', '5B+f5BY66l+R6iEQ5BEX6kkR5y2v5lIa5A6A5lMj', '44cc5l2G5BM25lIn5PIV5yI76jAe77Ym5y+Q5PIV', '5lIa5QYH5lMF5lIn6zsz44cc', '5l2G5yQH5A6E5lIa54k577Ym5l2g5l2G55+L6ygt', '5Ps+5AsN5lQg6k+V6k+76Aoo6zMP77Ym5PYa5zco', 'iJ4kicaGicaGia', '5l2G5AAc5l2v5Ase55cg5QYY5PYB77Ym5yEG5lMo', '5l2G5PYa5OoZ5PU/6l+z5lIQ5PE25lUJ55wz5lIl', 'ideYlJK5m0mXlG', 'pgrPDIbJBgfZCW', '55Qe5zYW5PA544cc', '55Qe5PIV5lIa5lIQ5lQ65PYj5RkH5PYj55YF55Qe', '5PIV4OcC6kkR5O6O552a6lwW4OcD6l+z5lU25lQl', '5lQ677Ym5PYa5zco5lYA6kkR5O6O5yIW5Oco5Qc3', '5l2G5AsQ5lMG5OoV6z2G56gS5OMB5B6a5yMn5O6O', '5lUa5lMi6yo95lIn5ygA77Ym5y+Q55Yl5ywj57Q/', 'phrLEhqGy2XHCW', 'mJiYideXlJi5mG', '5l2G5PYj5lIa56En6l2755Ui55Qe6zsl5yIP44cc', 'BgLJAZ0ICMvZDa', 'icaGicaGica8yG', '5BMZ562j5ywZ57o7', '5zUE5R2U44cc', '5l2G5AAc5l2v5l+D5OQK6iEQ5BEX5PYj5ywZ44cc', 'mdK4idqUnJa1oq', 'icaGpc9ZDMC+cG', 'Aw9UlwnVChKIpG', '5lQB5B6U5Bcp6icm5y+r5ywj55Qe5A2y5zYO77Ym', '5ywi6lwW5AsQ5AsA5Q2L44cc', '6ycc5zci5zYO5l2G5OoZ55Yl5BY654oi5Oof5OsF', '5Bck5lIL5ywi6kgm', '5OMN5B+177Ym6k6P5l2G55Qe6l6555wm5OsF5PU0', '56M/6ycp5yQB44cc5l2G5lIa5PEM6k6K5A6A5lUa', '5A6d5lYA6k6P5l2G5yAn55Yl5lIa5QYH5P2d5yQB', '5Asp5RsB6jkcWRFLI4pMNjFNIBK', 'u0fova', '5BM25lIn57Ui5P6b55Qe5lIC6kw/77Ym6k+V6k6K', '5OM/6k6K55Qe5OsF5y+x5yAz5yE65P2L44cc', '5zYO5l2G6l+z6yEm6yo95lIn5PIV6kof6AwW77Ym', 'CMvZDwX0', '5Pgk5BYa77Ym6k6P6k6W5B+g6yEn5PAW5O6L566H', 'sde1qZeZlJG5nq', '5ywi5yIg6l6O5zoQ5lQB5Bga6z2I5yc85B6x5l2G', '5y6F5z6l5Q+n5PYS', '5l+DiowTMcdKUk0GlI4U', '5lIa5PEM6isX56A75PEN5Qch562+5BcX5AsX5y67', '5zYO56IZ5A6A6yEm5PU05PYj5Rs75yQB77Ym5zUG', '44ck6AMS5lIbWRFKViRNMBVJGiS', '4OcC5l2G5lIn5PIV5AsA5OoZ77Ym5l2G5y+Q5PIV', '6kw/77Ym5B6a5B6a5BcX5PIV5lUo6l+z5lQB55Yl', 'icaGidXKAxyGyW', '5PIV5Oco5Qc35lIa6lEV6lwW5yIW6l+z6yEm44cc', '5lQl44cc5l2G5A+55PEG5Pwi5A+s5PQe5zkm5Oof', '5l2G5PYj5B6i5BY655Qe55cg5OoZ6BUp552a5yQB', '5Bcp546l5A2q', 'oty5nJGGnc45na', 'nc4YmJe4nemXmW', '5zkm6l+h5y6755Qe5P+q5Q6157Up5y6g5lIY5zYO', '5lYA5zYO5BEL5l2C6yEm5PQ06zYY5B6x5PYa5B27', '5BI45OYr5yMu77YB55YF5Q2J6k6P5l2G55wz5lIl', '5AsP5Rcu77Ym5yAn5yAZ5A6A5Oco5lMi5Rs744cc', '77Ym5zYO5l2G6l+z6yEm6yo95lYA55wz5lIl5PU0', '55YF5Q2J6kkR54wN6Ag+44cb5lIa5lIQ55sF5Rs7', '5lYK77Ym5zUG5lI65B6i5AsA5A+55yIR5lQ65P2L', '4OcC5ywi5Rs75lIl5y6777Ym5yIR55Qe5lUL5zco', 'mdGGmJiUmdaXna', '5Pwp5OsF44cc', '56Ul5yI75y+y5B6x6z2E5BI45RIf5QwA44cc', 'iIbJEt0I', 'zw5K', '77Ym5l2G5BEY57Up6io95yIg6l6O5yE66koc57Q5', 'iIb5mt0I', 'ntm5mtuGns44nG', 'yxv0BW', '6io95Aw95Aw96k+05lIl5y6744cc', '44ck57Uz5lIa5lIQ6z2s5BM06k+x5lQ655Qe5y2b', 'nc4XotGGmtqUna', '5yIR5lQ65y+V6io96kEj5B6x5y+Q5PIV5Rwb56Il', '44ck5zYW5lIl5A6K5OMl6k6W44cl', '44cb6iQc5Awp5zkm5OsF6kEj5OQk5lQ65BIM6l+B', '5PU05O6L6l+r5PYS6lsO44cc', 'nJC2nYa5lJC1mq', '5A6d5lYA6k6P5l2G55Yl5yIW77Ym57Ug6iw75OsF', '5AAc5P6C5l2G6kkR56Qb54s25O6O5yIW5y+W5yMn', 'yM9KEq', '5l2G5lMG5OoV5Oco5Qc36k+06k+D77Ym5lMF5PQ0', 'y292zxiTBg9JAW', 'Aw50zw5ZAxr5', '5ywZ57o76yo95lYA6Ag65yQ/5OQk5l2G5y6l55+U', '5lU25lQl55Yl5yIW5lQg5PU05REX55Qe5l2n572U', '77Ym56gU5l+D5Q+p5y+L6k+D6yo96io956Uz5l2p', '55Yl5yIW77YA5yIK5PAT5yQB5lIn5y+Q5l+D5OQK', 'psjZzwn0Aw9Ulq', '55sF5A2y5PYS6io9', '6kw/77Ym5lI65lUa5lMi5y+n6icm5PYa5O6L6l+r', 'mdeYosa0lJiXna', '5lMF5PEG5Rov5lUJ5yAz55Qe5OI/6zE044cc', '57Up5BYa5AEl5Oke5Oke5O6O57+75A6d44cb6yEn', 'mI41mdy1idmUnG', '56kW5yIW5l2G5PYa5REX55Qe5lIa5Bgc6iEQ5OIr', 'lJCZmJKGmY41mG', 'pc9KAxy+cGOGia', '5zkm55Ev6l+544cc', '5lIa5AsP5yIA5BYa5AEl5PE25l2G5OQk6iEQ5BEX', '5y6l6l+B6lQR5l2t6yEm44cc', '54gR55Qe6io95yQB5B6i5Bcr6kEb77Ym5lMF6k6P', '5AsA5lIn5B+f6kAb55Qe6k+V6k+75zkm5OUj5OMV', 'pc9JAxjJBgu+', '5P2L5RQq44cc', '5B2t5P+q5Q615PEN5lQl56Qb54s26kkR6yEn5PAW', 'C3m9iMHLCM8TBa', 'mc42nJa1ide1lG', '6k+e5lU35l2t57o75zUW5l2p77Ym5OMa5lUL5Asw', 'CZ0IDgfNiJ4', 'mdGXide5lJKYnG', '5lQo5PIV5PYj5PE25lYA5zYO55YF5Q2J5y2p5zwg', '6zQ+5PE26zIf6k+744cc', 'mtm4ntq1muzRwhDrtq', 'nZmXmtCGmtKUoq', '5A6E5lU75yQH6yo95lIa5QAc5y+R5l2C5PEG5Osp', '5yQO5lIn5PIV5RE35lMX77Ym6icm5PIV5lIa56En', '55+L6ygt6iEQ5BEX5y676l+h5zoQ6yEm77Ym5y+i', '5lIn6io956IZ56IZ5O6L5l2p6iEQ5BEX44cc', 'idiXlJK3mZuGna', '6kgO6l6+6z2E5BI455YF77Ym5lMF6z2E5BI45PYj', '5l2G5AAc5l2v5y6754IX77Ym5yEG5lMo5Oc75zkm', 'otK2nYaXmcaXnG', '5B+R5A+F6kEj6ykJ6yEm6z2I5lUK5lQ656Qs5OgV', 'ntaWmJGGmJeUoa', '5zUE562u5lU75l2v5lQ677Ym5lMF5lIn5yAn6kEJ', '6yEn6kAb55Qe5lQl77Ym5l2G5PYa6iEQ54s25y2G', '5l2G5OUL5PYj6z2E5BI45BY655Qe6lQR5lU95Rwb', '6l2S6lQR57UN57UT6lwW77Ym6l656lwW6l655OwI', 'Aw9UlwXHyMvSiG', 'CxvPEG', '5OIq5lQg6l+y6io95y+r5ywj55Qe5y+L5A2q44cc', '5yYw5zkm4OcC5yIR5OQk5OIr5lMF5y+y5OIq6ykJ', '55Qe6kEe5yIz5zU05l2p55Qe5lQ6', 'lJK5nJy5qZiWlG', '44ck6i2s5y6F54U844cl', '5yIx5AsRWRFMIzJLSjtMLQ/MS7a', '5y+L5A2q6yEm44cc', '5OoZ5OoZ6lcb5lYA5zUG5Q2K5y+x5lYK77Ym5lUL', 'zc12ywX1zsi+', '6ycc5zci5zYO5l2G6zYa6kAb6yEn5PAW5QcH5yEg', '5Rcu5lIa5Qc36iEQ5BEX6yca5y6744cc', '55sO5yIK5PAT5yQB5l+D5OQK6iEQ5Bck55Qe5lQ6', '6jc95zYW44cc5l2G5Oc76io955Yl6kEb5yIR5Ase', '5P2L55Qe5lQ644cc', 'mIa0lJaXotm5ia', 'nca3lJe5ode1ia', 'ntmXiduUmdCYma', '5l2G5PYj5B6i5BY655Qe57k+56wE6zMn5zMQ6io9', 'ndC1nIaXnI42nW', '5l+D55wz5l2G55Qe55YF5A6E77Ym5l2g5yIR5OQk', '5zYO57UN57UT5RYu5lIl5y6755Qe5lQY5A+g44cc', '44cc5l2G5B6i5Bcr6AUy5AoW5A6J5zgk5y6F5yIz', '5lIa5yIh77Ym5l2G5yIz5PU05yc+5zcr5lQo5OQk', '54k55PIo56gU5zUE5BQu77Ym6io95yEp5Bcr5B6i', '6k6K5zcm55Qe5Qch562+5P2L5A6A5lMj5l2G77Ym', '6kgO5RYu5zkm6iEQ5OIr5QY66AQx44cc6l+z6k6P', '6iEQ5A6m5Pw077Ym5y2055+L6ygt5B285Q2K5zYO', '44cb5lMF5lIn6AUy5Pwi77Ym5y2055YF5Q2J6k6P', '5l+D55wz5l2G55Qe54oi5BQM77Ym5l2g5yIR5OQk', '5zco77Ym5lUn54s26kAb5OQk5Q6l5Bga5Ps25zUE', '5B2t5l2G5zYO5lIa5lIQ5zY65zci6yEm55Yl6kEb', 'idqUodyXotqGmG', '5RkH5PYj5OsF6kEj77Ym6icm5PIV5l2G5lIn5Os/', '5PsV5Pkr6z2I77Ym6k6P5OsF5y+x6io95Rs75B6x', '5lIa5QYH5QYH5y+x5OYR5zco5BYa5AEl5Oca55Ar', 'nJuYnsaXoc44mG', '5OcO5lIn6io95lUJ5PU/5yIs5QgO77Ym5OMa5lUL', '55YF5A6E55Qe5OsF5y+x77Ym5BcX6io95yAZ5A6A', 'mKWXms45otK5ia', '44ck54MH5lI55lQT44cl', '5OIr5y+V5lUL5l+D5OQK6ykJ5lQB55Yl6lw35P2L', '5lIa5Awx5PU05RIf5PMW55Qe6lEV57Q/5OsF77Ym', '6ycc5zci5zYO5l2G5OoZ57UN57UT6l+96zEU4OcC', '56En6z2E5BI454AF5Okj55Qe6iQc5Awp77YA5lIn', '44cc5yIR5lQ65y+V6io96kEj5B6x5l2G6lEZ44cb', 'DIbJBgfZCZ0ICG', 'mZC1ideZlJGWnq', 'C3r5Bgu', '77Ym55+L6ygt5OMl5lIk6l+y6io95OQt5l2p5zoQ', '5OsF5y+x6lAk55wm', '6l+y5RkH5OoZ5RIf5QwA5Oco5lMi5zUE5lQl77Ym', '5l2G5y+Q5PIV5PEG5Rov5O6L5y+x6iEQ5BEX5zYO', 'DJ4kicaGicaGia', '5zsK6yAs77Ym5l2G56YS5lIa5y+n5BQu5PU05yop', '44ck54IX546B44cl', 'nJHdnc43nZaYnq', 'mtmGmJfwmJnimq', '5A6H576o55E05Oof', 'D2vPz2H0', '5AAc5P6C5A6d5lIn5zci55cg77Ym5OIr5lYA55U0', '5l2G55Qe5RYR5RI45OsF5OMP5AsN5OIq5zYW5zU+', '6yEk5lIn5RIf55Qe6kkR6l+96lw25OsF6yEm77Ym', '57UN57UT5l+H5lU75l2G55Qe5Asn5P2c5OsF77Ym', 'odvmmY41mJeZoa', '6l+z56En5yIg5A+45OsF5lYA6k6P5l2G5zYO5Asn', 'C29YDa', '5PIo5PIo5BEY57Up5lIn55YF5A6E77Ym5y206l+y', '57Ut5P6C5B6i5AsA5y6l5yQB6l+y5RkH55YF5Q2J', '4OcD6k+V6k6K5OIq4OcC5A6d5lIa5A6A5yc85B6x', 'C3jJ', 'CxvPELnLy3rPBW', '5yw25A6E5BEY57Up57sV6l+h5As05lQg44cc5l2G', 'CZ0Iy2fWDhvYzq', '566aWRFLPAxMLQ/MSya', '5A6E5B6i5RIf5QwA77YA5AAc5P6C6zw/5PYF5y+Q', 'mtKUoti2msa5lG', '5BI45BI45Q+u56IZ5A6A44cb5l2t6z2I5zkm5A6j', '5l2G5AsQ5lMG5OoV5zcr5Asw5Bgv5BYa77Ym5lMF', '5l2G5AsQ5A655PIt5lI65lIa57Yv55YF5Oof44cb', '5l2G5lYA5zYO6l+z6yEm54wN6kEb6ykJ56En5OQk', '6iEQ5BEX5O6O5zcr5PU05y2X6zMP55Qe6l6557Yy', '56gS6AQO6icq5yQB', 'jtWVC3bHBJ4kia', 'lJyZnJqGms44nW', '5AsQ5yAY44cc', '5lMF6Ag65l6/55Yl5RIf5yIW5BQv5PIV6lcb55YF', 'CMvKDwnL', 'nZiGmYaZidnioq', 'mtiUmdaXidqUnq', '4OcC5AsN5A626yo96l+z5Qc34OcD6l275PIt5A6j', '55Qe6l6O55YF5lYQ6io95yQB77Ym6io96l+f6ycF', '5BEX56Uz5l2p77Ym5BcX5lIn5lYA5PYj5lQ65PU/', '5lIn5OoZ5ygh6kof44cc4OcD', '57Uz6iEQ5BEX55wz5lIa54k55PEG5yQF5yIP55Qe', '5PE277Ym5l2G5BEY57Up5BYa5AEl5A+F6kEj5zoQ', '5l2G5Q+p5lIa5Q616yo95B6i5lQU44cb5Q+p5lIa', '5zoQ5Ocv5lQl5zco6kEj5B6x6iEQ5BEX5PA55BYp', '5lMi5yc85B6x77Ym5BcX5lYA57Uz5yE66l+C6lAf', 'nc4WnZm5nsaXna', '5l2G5AEl57Ui5lIn6ikV5l2o5As044cc4OcD', '6k6W5B2v5OIw6kgm5yQO77Ym6k6P5A6d5lIn5y+Q', '56EP5BQp77Ym5yAn56oO5B6x5PU056IZ5lIa5lQB', '5AsX6lsL5lYA6yc85lQ65PI+5B2I44cc', '5O2U55Qe5l2n572U5PIV77YA', '44ck5yYf5Rov5yIP5AsR5lQ644cl', '5zYO5Ash5OIy54Q25Ocb44cc', 'lxbVAw50iIbJEa', 'yM9VA3m', '5l2G5BU656Ul5yIK5PAT44cb6yc76l6r5lIo6l65', '5zg96l+q77Ym5OQk4OcC5OIr6l+y5RkH5Ps+5lIl', '44ck57QI5Qw85QkM44cl', 'icaGica8zgL2ia', '5y+r546W6iEQ5BEX5lMF5B+R5y+y5OIq6ykJ5lIQ', '56Il5BQM4OcD5PE26zIf6k+744cc', '5Rcu5RcB5yI655EB44cc', 'yNv0Dg9UignSyq', '57o76yEm5lIn5PAT6ycp5PsV6iEQ5BEX77Ym5y20', '77Ym6icm5PIV5lIa56En55YF5Q2J6io954AS6l+h', 'mtKUnZC4nIa0lG', '5A6E6zMf4OcD77Ym5l2G55Qe5RIP5P+u5OsF55+L', '5ywO6yoO5lU35yc86yo95OQ85zYO5ywZ57o755Qe', '5OQx5lQj5BQM', '77Ym5lMF5y+V6io96k6P5l2G5zYO55YF5Q2J5A6j', 'AxyGy2XHC3m9iG', 'BwfW', '5l2G5lIn6zYa6kAb5OQk5OMa5PYj55YF55U46yo9', '5l2G5PYj5B6i5BY655Qe6iEQ5OIr6yEn5Agr6io9', '5zcM5A6A5lQg5lIa6ygn44cc', '5OUs57UD6ywn5zci5lIw5l+x6kgO5RYu55Qe5lQ6', '57QM57+WWRFMLQ/LNABOTj3LHyS', 'y2XVBMvoB2rL', '44cb5y205PYa5PEP5OsF5yIW55AY5OoR55Qe5lQ6', 'ic8G', '5OQk6iEQ5BEX5lQK5lQg5yE65y6744cc5l2G55Qe', 'nc4WmJG5ideZlG', '5l2G6lQR5lIk5AEl57Ui5PYj5lIa56En5yIR5lQ6', '44ck5PYi5lQU5lIo5ywT5l6/5AoR44cl', 'u0Lera', '55Qe6yoO5yIg44cc', 'Aw9UiJ4kicaGia', '5yE66lwW55Qe5yAZ5B+d44cc5l2G5PYQ5B+f5Oc7', '5l2G5PU05Os/5Osp5OQk5PE26zE05lQK57Uz77YA', 'Bw9KzxjU', '5l2G5lIn5PIV5Pwf5Osp6lwW5zcr5y2X6zMP77Ym', 'CgfKu3rHCNq', '5B6x6k+055Qe6ykJ5lIa5yI75OMn5BYa5y+J55Qe', '5zco5P6C6yo95A6H5lIa6ygn44cc', '57Uz5Oof57UQ5zU65A6A5yE65y+J77Ym5Q+u5AAc', '5l2G5A6i5l2p6ykJ5P2H57Q/44cc', '55U05PYj5lIa5lIQ5PEN5z2q5Qch5RkH5PYj6kkR', 'lJaYmdeGmteUnG', '5PYS5RkH5lQ65PU/5lUw5lUS6k+055Qe6k+D6k+0', '5l2G5PU05yop5lIa5lIQ5OYb57UT5zYO6lEV5lIk', '6ycc5zci5l2G5zYO5OoZ6lgH5PU05AsA5lQ655sF', '5BcX6io95OQk6zU25PwJ55Qe5lQ655sF6yEn5PAW', '5AAc5P6C5PIo5AsP6yAs5P2L77Ym5lIw55wm5PQc', '6yEn5PAW5OUL5PYj5PYQ5P2L55Qe6lw354k544cc', 'qNLjza', '5l2/5Ase5Akd5lIn5y2G5lYy77Ym5l2G5lMF5lIn', 'idqUmtm0mIaYmq', 'n0mZidmUmZmZna', 'Cg93', '6io95zYW6ycj5OUP5zoQ56En5AE/5Ocb44cc', '5B6a5RIf5QwA5PA55zcr5OUj55Qe5lQ644cc', '552a6lcb77Ym5y+i5PYj6lcb5zYO6yEm6z2I6kkR', '5l2G5A+554IX44cb576o44cb55EB5OsF5zkm5QYY', '6AUy5RIP5lIk44cc', '5OQk6yEo5B+d5OUg5OIq5y+V6jc95zYW55Qe5Bcp', '5OoV5OcN55Qe6lED56A744cc', '5l2G5zYO6AUy6lsO6yEp5A+56k+D6yEm5lYA6l+f', 'zweIpGOGicaGia', 'CI1NCMLKiIbWBW', '5Rov5O6L5y+x5y2k55YF5y2k5ygh55sF5Rs755Qe', '5A6E5AsQ5zc144cb5AsQ5yA344cb5AsQ5B+R77Ym', 'mde3odfdos4Woq', '44ck55cg5PM65lIo5Oof5OsF44cl', 'nIaYms4Woti0ia', '5l2G5B6i5Pof6zw/5lIa55Y855Yl56M/576K5l2t', 'yxnZpsjIB29Rlq', '5yIR5AsX55YF55Qe57o757UF77Ym5lMF6k6P5l2G', 'icaG', 'mtLwn0mXmsa1lG', '5zYO5lQ6576K6yEm55Yl6lw35P2L5yop5PIV5zYO', '5lIa55U05ygA6ywn6kEs44cc', 'nZa3mum0lJa3na', '546W5OMn6io95OIq56Ul77Ym6io96kkR5l2G5RIf', 'ouWXms4YotmZia', 'AgLKzgvU', '5PIV5AsQ5A655PIt5zcm5PE255Yl6kEb5Q+p5lIa', '546W5A6E5P2H5lU25lMl6zE055Qe5ywZ57o777Ym', '55YF5A+55B6f5ywZ57o744cb5OM/6k+65zkm6ykJ', '5OoZ55+L6ygt6l+z5Q616k6W5B+g6l+y54M16l+E', '6kkR5A6d55Qe6l2U5BUt5y6l5l2p44cc', '55Qe5lQ644cc5l2G5lIn5PIV5RkH5PYj5QYY5PYB', '77Ym6icm5PIV5Oc75lYA5zYO5Q+p5lIa56En5QYY', 'lwfYzweIigLKpq', '6AUy77Ym6io95zcm5PE255Yl6kEb6kgO6z2I44cb', '5l2G5Ase55cg5lQY57Yy5zkm5y6F55sF56EP5BQp', 'icaGidWVzgL2pG', '5Q+u5B6i5AsA5lQ65PU06zYa6kAb5lIa5lIQ55YF', 'mtCXntCGnI4XnW', '55wL55Qe5lQ644cc', 'ntiXidyUote2mq', '44ck5lQg5lIn6lw355Qe55Uw6iYO5Q+u44cl', '5lUo55Qe6kEe5yIz77Ym5l2G6AAw5ywi5lYA77YA', '57UN57UT56gS5OMB77Ym5zoQ5lQB5yw25A6E5y+V', '5OQ956M677Ym5ywi5y+y5B6x5lIn5AsQ5yop6iEQ'];
+        _0x5850 = function() {
+            return _0x44852e;
+        }
+        ;
+        return _0x5850();
+    }
+    function topDimensionIndexes(_0x3884f0, _0x1ebfd1=-0x22b3 + 0x1ed * -0xf + 0x128 * 0x37) {
+        const _0x269f14 = _0x4de497;
+        return _0x3884f0[_0x269f14(0x6eb)]( (_0x3e9ea5, _0x4c62f4) => ({
+            'index': _0x4c62f4,
+            'weight': Math['abs'](_0x3e9ea5)
+        }))[_0x269f14(0x6b0)]( (_0x27e71b, _0x353403) => _0x353403[_0x269f14(0x6a9)] - _0x27e71b[_0x269f14(0x6a9)])['slice'](-0x914 + -0x18f5 + -0x2209 * -0x1, _0x1ebfd1)[_0x269f14(0x6eb)](_0x4fde29 => _0x4fde29[_0x269f14(0x506)]);
+    }
+    function toPercent(_0x521ebf) {
+        const _0x180c18 = {
+            _0x148b7d: 0x59a,
+            _0x127c7d: 0x827
+        }
+          , _0x404ef5 = _0x4de497;
+        return Math[_0x404ef5(0x18b)](-0x21ae + 0x1797 + 0x3 * 0x35d, Math[_0x404ef5(_0x180c18._0x148b7d)](-0x1 * -0x456 + -0x248c + 0x209a, Math[_0x404ef5(_0x180c18._0x127c7d)]((_0x521ebf + (-0x25a + 0x1 * -0x945 + 0xba1)) / (-0xacd + 0x6c9 * 0x1 + 0x408) * (-0x1b0f + -0x1db1 + 0x130c * 0x3))));
+    }
+    function matchArchetype() {
+        const _0x1d1dd2 = {
+            _0x3446c7: 0x5d7,
+            _0x140013: 0x6b0,
+            _0x5cbd85: 0x3da
+        }
+          , _0x278476 = {
+            _0x45c448: 0x213,
+            _0x4e7043: 0x6c5,
+            _0x33fe6e: 0x788,
+            _0x286e84: 0x788
+        }
+          , _0x3c0f99 = {
+            _0xac9f02: 0x59a
+        }
+          , _0x5a852e = _0x4de497
+          , _0x23f9fe = normalizeVector(userVec)
+          , _0x5ea4a3 = topDimensionIndexes(_0x23f9fe, 0x4 * -0x54c + 0x1ddb + -0x8a9)
+          , _0x26217a = Object[_0x5a852e(_0x1d1dd2._0x3446c7)](ARCHETYPES)[_0x5a852e(0x6eb)]( ([_0x27de14,_0x35dd48]) => {
+            const _0x35fed6 = _0x5a852e
+              , _0x7f74f9 = normalizeVector(_0x35dd48['vec'])
+              , _0x92ecda = euclidean(_0x23f9fe, _0x7f74f9)
+              , _0x1dafe0 = (cosineSimilarity(_0x23f9fe, _0x7f74f9) + (-0xf87 + -0xe * -0x7a + -0x237 * -0x4)) / (0x3a4 * 0x4 + 0x2075 * -0x1 + 0x11e7)
+              , _0x847811 = topDimensionIndexes(_0x7f74f9, -0xe6f + 0x296 * 0xe + -0x15c3);
+            let _0x3f03f7 = -0x1640 + -0x6bb + 0x1cfb
+              , _0x57d649 = -0x4 * 0x754 + 0x2 * -0xc47 + 0x35de;
+            _0x7f74f9[_0x35fed6(_0x278476._0x45c448)]( (_0x3113cc, _0x3d9041) => {
+                const _0x4a815d = _0x35fed6
+                  , _0xae319e = 0x1 * -0xa22 + 0xc * 0x25c + 0x9 * -0x205 + Math['abs'](_0x3113cc) * (-0x1a37 * 0x1 + 0xd9 * 0x2b + -0x4 * 0x28f + 0.35)
+                  , _0x33870b = -0x23b * 0x11 + -0x1 * -0x19f1 + 0xbfb - Math[_0x4a815d(_0x3c0f99._0xac9f02)](-0x94d + 0xb * 0x1f1 + -0x605 * 0x2, Math[_0x4a815d(0x7c6)](_0x23f9fe[_0x3d9041] - _0x3113cc)) / (0x7f7 + -0x528 + 0x5 * -0x8f);
+                _0x3f03f7 += _0x33870b * _0xae319e,
+                _0x57d649 += _0xae319e;
+            }
+            );
+            const _0x48341d = _0x57d649 ? _0x3f03f7 / _0x57d649 : 0x16 * 0x77 + -0x248d + -0x1a53 * -0x1
+              , _0x48dd52 = _0x5ea4a3[_0x35fed6(_0x278476._0x4e7043)]( (_0x3afec2, _0x28ffc4) => {
+                const _0x3aa58d = _0x35fed6
+                  , _0x30a8c9 = -0x1 * -0x22a4 + -0xf4a * -0x2 + -0xf * 0x459 - Math[_0x3aa58d(0x59a)](0x24eb + -0xed4 + -0x1613, Math['abs'](_0x23f9fe[_0x28ffc4] - _0x7f74f9[_0x28ffc4])) / (0x1 * -0x2284 + 0x265 * 0x7 + 0x11c5);
+                return _0x3afec2 + _0x30a8c9;
+            }
+            , -0xe45 * -0x1 + 0x224f + -0x3094) / _0x5ea4a3[_0x35fed6(_0x278476._0x33fe6e)]
+              , _0x3474af = _0x847811[_0x35fed6(0x19d)](_0x1fcb5b => _0x5ea4a3[_0x35fed6(0x48b)](_0x1fcb5b))[_0x35fed6(_0x278476._0x286e84)] / _0x847811[_0x35fed6(0x788)];
+            return {
+                'code': _0x27de14,
+                'distance': _0x92ecda,
+                'score': _0x1dafe0 * (0x2282 + -0x2317 + 0x95 + 0.44) + _0x48341d * (-0x1 * -0xe87 + -0x1 * 0x2219 + 0x1392 + 0.28) + _0x48dd52 * (0x14a2 + -0x1 * 0xcfb + -0x7a7 + 0.16) + _0x3474af * (0x2 * -0x1055 + -0x5ed + 0x2697 + 0.15) - _0x92ecda * (-0x836 + 0x1c4a + -0x1414 + 0.01)
+            };
+        }
+        )[_0x5a852e(_0x1d1dd2._0x140013)]( (_0x4ab376, _0x31b118) => _0x31b118[_0x5a852e(0x4bc)] - _0x4ab376[_0x5a852e(0x4bc)] || _0x4ab376[_0x5a852e(0x329)] - _0x31b118[_0x5a852e(0x329)])
+          , _0x2848b4 = ARCHETYPES[_0x26217a[0x1b37 * -0x1 + -0x11f * -0xc + 0xd * 0x10f][_0x5a852e(_0x1d1dd2._0x5cbd85)]];
+        return {
+            'primary': _0x2848b4,
+            'stats': _0x23f9fe['map']( (_0x51fe6a, _0x25a134) => ({
+                'label': DIMENSIONS[_0x25a134][_0x5a852e(0x2f2)],
+                'desc': DIMENSIONS[_0x25a134][_0x5a852e(0x2c2)],
+                'value': toPercent(_0x51fe6a)
+            }))
+        };
+    }
+    function renderRadar(_0x8af799) {
+        const _0x2dc88f = {
+            _0x30ec66: 0x6eb,
+            _0x323617: 0x6eb,
+            _0x2de7de: 0x24b,
+            _0x34b776: 0x77b,
+            _0x1d3eda: 0x760,
+            _0x2bbcc2: 0x196,
+            _0x4c0ecd: 0x5c8,
+            _0x3fcb3c: 0x2eb,
+            _0x11fae8: 0x3e4,
+            _0x1d2238: 0x4b5,
+            _0x36eae6: 0x3cf,
+            _0x49079d: 0x58b,
+            _0x2ca8af: 0x723
+        }
+          , _0xba6920 = {
+            _0x4f7737: 0x229,
+            _0x5d8ae2: 0x7fe,
+            _0x2b14f5: 0x229,
+            _0x18cee9: 0x80c,
+            _0x121be8: 0x2ab,
+            _0x4182aa: 0x80c,
+            _0x163a11: 0x814,
+            _0x26d871: 0x2f2
+        }
+          , _0x253af0 = {
+            _0x2f9216: 0x7f7,
+            _0x930a06: 0x6d9,
+            _0x2fe972: 0x62c,
+            _0x47e091: 0x80c,
+            _0x56d32e: 0x599
+        }
+          , _0x539b1e = {
+            _0x2fb783: 0x19f,
+            _0x324f51: 0x22d,
+            _0x361b19: 0x62f,
+            _0x270c63: 0x80c,
+            _0x444178: 0x219
+        }
+          , _0x4f0307 = {
+            _0x38bf43: 0x80c
+        }
+          , _0x1211bc = {
+            _0x3dc421: 0x7fe
+        }
+          , _0x12313c = _0x4de497
+          , _0x5e8e60 = 0x23d9 + -0x729 + -0x8 * 0x36e
+          , _0x12db67 = _0x5e8e60 / (-0x2241 + 0x133a + 0x3 * 0x503)
+          , _0x67890 = -0x2 * -0x964 + -0xbe1 * -0x1 + 0x455 * -0x7
+          , _0x2d1be9 = 0x10db + -0x1 * -0x2317 + -0x338c
+          , _0x3bea47 = -0x187c + 0x214b + 0x19 * -0x59
+          , _0x31cbfe = -0x83 * -0x14 + 0x243 + -0xb8d * 0x1
+          , _0x689e0d = [-0x1205 * -0x1 + 0x20 * -0x84 + 0x1 * -0x171, 0x89c * 0x2 + -0x5 * -0x3cb + -0x2407, -0x1de9 + -0x3 * -0xe9 + 0x3a * 0x79, -0x28 * -0xeb + -0x1f * 0x46 + -0x82 * 0x37, 0x5d * 0x5 + 0x117f + -0x12ec]
+          , _0x1f40d6 = Math['PI'] * (0x198e + -0x37f + -0x160d) / _0x8af799['length']
+          , _0x27fdc5 = -Math['PI'] / (-0x457 * -0x9 + 0x115 * -0x9 + -0x1d50)
+          , _0x4d8347 = (_0x1d1714, _0x920e9d, _0x48a3ee=_0x67890) => {
+            const _0x65319d = _0x22e9
+              , _0x55e36b = _0x27fdc5 + _0x1f40d6 * _0x1d1714
+              , _0x4d0c05 = _0x48a3ee * _0x920e9d / (-0x2333 * -0x1 + 0xa * 0x248 + -0x3 * 0x1335)
+              , _0x381aeb = _0x12db67 + Math[_0x65319d(0x2f7)](_0x55e36b) * _0x4d0c05
+              , _0x51dfaf = _0x12db67 + Math[_0x65319d(_0x1211bc._0x3dc421)](_0x55e36b) * _0x4d0c05;
+            return {
+                'x': _0x381aeb,
+                'y': _0x51dfaf,
+                'angle': _0x55e36b
+            };
+        }
+          , _0x4fe26c = _0x5c7fbd => _0x8af799[_0x12313c(0x6eb)]( (_0x4f518d, _0x35cb58) => {
+            const _0x1a0030 = _0x12313c
+              , _0xddbc8f = _0x4d8347(_0x35cb58, _0x5c7fbd);
+            return _0xddbc8f['x'][_0x1a0030(0x80c)](-0x118f + -0x147d + 0x260e) + ',' + _0xddbc8f['y'][_0x1a0030(_0x4f0307._0x38bf43)](-0xc4d + -0xee6 + 0x1b35);
+        }
+        )[_0x12313c(0x24b)]('\x20')
+          , _0x4e5075 = _0x8af799[_0x12313c(_0x2dc88f._0x30ec66)]( (_0x319d92, _0x16ded9) => {
+            const _0x2fc626 = _0x12313c
+              , _0x3d39d1 = _0x4d8347(_0x16ded9, -0x1a * -0xc7 + 0x5 * 0x2ec + -0xb7a * 0x3);
+            return _0x2fc626(_0x539b1e._0x2fb783) + _0x2fc626(_0x539b1e._0x324f51) + _0x2fc626(0x53c) + _0x12db67 + _0x2fc626(_0x539b1e._0x361b19) + _0x12db67 + _0x2fc626(0x1b1) + _0x3d39d1['x'][_0x2fc626(_0x539b1e._0x270c63)](0xcb + 0x24e3 + -0x25ac) + '\x22\x20y2=\x22' + _0x3d39d1['y'][_0x2fc626(0x80c)](0x1e08 + 0x583 * 0x5 + -0x3995 * 0x1) + _0x2fc626(_0x539b1e._0x444178);
+        }
+        )[_0x12313c(0x24b)]('')
+          , _0x553dba = _0x689e0d[_0x12313c(_0x2dc88f._0x323617)](_0x3640e7 => _0x12313c(0x4d5) + _0x12313c(0x591) + _0x12313c(0x71a) + 'ints=\x22' + _0x4fe26c(_0x3640e7) + (_0x12313c(0x1ed) + 'n>'))[_0x12313c(0x24b)]('')
+          , _0x4a251a = _0x4fe26c(0x320 * -0x3 + 0x26af * -0x1 + 0x300f)[_0x12313c(0x2ce)]('\x20')[_0x12313c(0x6eb)]( (_0x1b2593, _0x1f9ef5) => {
+            const _0xc18bbe = _0x12313c
+              , _0xd05551 = _0x4d8347(_0x1f9ef5, _0x8af799[_0x1f9ef5]['value']);
+            return _0xd05551['x']['toFixed'](-0x1dc8 + 0x461 + -0x1 * -0x1969) + ',' + _0xd05551['y'][_0xc18bbe(0x80c)](-0x1ee4 + 0x17 * -0xaf + 0x2e9f);
+        }
+        )[_0x12313c(0x24b)]('\x20')
+          , _0x274922 = _0x8af799[_0x12313c(_0x2dc88f._0x30ec66)]( (_0x2b602b, _0x10d000) => {
+            const _0x340219 = _0x12313c
+              , _0x15f577 = _0x4d8347(_0x10d000, _0x2b602b[_0x340219(_0x253af0._0x2f9216)]);
+            return _0x340219(0x418) + _0x340219(0x16d) + _0x340219(_0x253af0._0x930a06) + '=\x22' + _0x15f577['x'][_0x340219(0x80c)](0x1c65 + -0x1a63 + -0x200 * 0x1) + _0x340219(_0x253af0._0x2fe972) + _0x15f577['y'][_0x340219(_0x253af0._0x47e091)](0x2 * 0x162 + 0xdff + -0x10c1) + (_0x340219(_0x253af0._0x56d32e) + _0x340219(0x653));
+        }
+        )[_0x12313c(_0x2dc88f._0x2de7de)]('')
+          , _0x59394b = _0x8af799[_0x12313c(_0x2dc88f._0x323617)]( (_0x1e7b65, _0x34ff0d) => {
+            const _0x4e5c87 = _0x12313c
+              , _0x5e4499 = _0x4d8347(_0x34ff0d, -0xcf4 * -0x3 + 0x906 + 0x17bf * -0x2, _0x2d1be9)
+              , _0x355328 = Math['cos'](_0x5e4499[_0x4e5c87(_0xba6920._0x4f7737)])
+              , _0x5e8857 = Math[_0x4e5c87(_0xba6920._0x5d8ae2)](_0x5e4499[_0x4e5c87(_0xba6920._0x2b14f5)])
+              , _0x5b8498 = Math['abs'](_0x355328) < 0x1802 + 0x8cc * 0x2 + 0x6 * -0x6ef + 0.18 ? _0x4e5c87(0x82b) : _0x355328 > 0x1a6 * -0xe + 0x24b4 + -0xda0 ? 'start' : _0x4e5c87(0x62d)
+              , _0x166259 = _0x5e4499['x'] + (_0x355328 > 0x1 * -0x9a6 + 0x1633 + 0x3 * -0x42f + 0.2 ? 0x4cb * 0x4 + -0x1b65 + -0x12d * -0x7 : _0x355328 < -(0x2618 + -0xc58 + -0x4 * 0x670 + 0.2) ? -(-0x1282 + 0x265 + 0x101f * 0x1) : -0x376 * 0x1 + 0x1a7 * 0x4 + -0x326)
+              , _0x35f0cb = _0x5e4499['y'] + (_0x5e8857 > 0x49 * -0x72 + -0x3e * 0x27 + -0x14fa * -0x2 + 0.35 ? -0xb * -0xfd + -0x1d6d + 0x1294 : _0x5e8857 < -(-0x1295 + -0xdc3 * -0x1 + 0x4d2 * 0x1 + 0.35) ? -(0x17 * -0x66 + 0xbb9 + -0x28b) : 0x1131 * 0x1 + -0x1a06 * 0x1 + -0x49 * -0x1f);
+            return _0x4e5c87(0x5f8) + _0x4e5c87(0x7cd) + _0x4e5c87(0x754) + _0x166259[_0x4e5c87(_0xba6920._0x18cee9)](-0x20c4 + 0x2 * -0x30b + -0x67a * -0x6) + _0x4e5c87(_0xba6920._0x121be8) + _0x35f0cb[_0x4e5c87(_0xba6920._0x4182aa)](-0x281 * 0x3 + 0x1add * -0x1 + 0x2262) + (_0x4e5c87(_0xba6920._0x163a11) + _0x4e5c87(0x3a9)) + _0x5b8498 + '\x22>' + _0x1e7b65[_0x4e5c87(_0xba6920._0x26d871)] + _0x4e5c87(0x3bf);
+        }
+        )['join']('')
+          , _0x56688b = _0x8af799['map'](_0x2a366a => _0x12313c(0x77b) + _0x12313c(0x6de) + _0x12313c(0x381) + _0x12313c(0x250) + _0x12313c(0x466) + _0x12313c(0x7b5) + _0x2a366a[_0x12313c(0x2c2)] + ('\x22>\x0a\x20\x20\x20\x20\x20\x20\x20' + _0x12313c(0x57a) + _0x12313c(0x3c4) + _0x12313c(0x284) + _0x12313c(0x2d5) + _0x12313c(0x77b) + _0x12313c(0x57a) + _0x12313c(0x519) + _0x12313c(0x339) + _0x12313c(0x7e3) + '>') + _0x2a366a[_0x12313c(0x2f2)] + (_0x12313c(0x5d9) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x12313c(0x441) + 'n\x20class=\x22r' + _0x12313c(0x243) + _0x12313c(0x677)) + _0x2a366a[_0x12313c(0x7f7)] + (_0x12313c(0x6c1) + _0x12313c(0x58b) + _0x12313c(0x4a3) + _0x12313c(0x26d) + _0x12313c(0x7a4) + _0x12313c(0x6ea) + _0x12313c(0x792) + _0x12313c(0x78e)) + _0x2a366a[_0x12313c(0x2c2)] + (_0x12313c(0x2af) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x12313c(0x300) + _0x12313c(0x58b)))[_0x12313c(_0x2dc88f._0x2de7de)]('');
+        return _0x12313c(_0x2dc88f._0x34b776) + _0x12313c(_0x2dc88f._0x1d3eda) + 's=\x22radar-w' + 'rap\x22>\x0a\x20\x20\x20\x20' + '\x20\x20\x20\x20\x20\x20\x20\x20<s' + _0x12313c(_0x2dc88f._0x2bbcc2) + 'radar-char' + _0x12313c(0x2b2) + _0x12313c(_0x2dc88f._0x4c0ecd) + _0x3bea47 + '\x20' + _0x5e8e60 + '\x20' + _0x31cbfe + (_0x12313c(_0x2dc88f._0x3fcb3c) + 'el=\x22五维精神坐标' + '雷达图\x22\x20role=' + _0x12313c(0x7f4) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + '\x20') + _0x553dba + (_0x12313c(0x77b) + '\x20\x20\x20\x20\x20') + _0x4e5075 + (_0x12313c(0x77b) + '\x20\x20\x20\x20\x20<poly' + _0x12313c(0x42e) + _0x12313c(0x5b4) + _0x12313c(0x40a) + '\x22') + _0x4a251a + (_0x12313c(0x1ed) + 'n>\x0a\x20\x20\x20\x20\x20\x20\x20' + _0x12313c(_0x2dc88f._0x11fae8)) + _0x274922 + (_0x12313c(0x77b) + _0x12313c(_0x2dc88f._0x1d2238)) + _0x59394b + (_0x12313c(_0x2dc88f._0x34b776) + _0x12313c(0x601) + _0x12313c(0x58b) + _0x12313c(_0x2dc88f._0x36eae6) + 'ss=\x22radar-' + _0x12313c(0x7bf) + _0x12313c(_0x2dc88f._0x49079d) + _0x12313c(_0x2dc88f._0x2ca8af)) + _0x56688b + (_0x12313c(0x77b) + _0x12313c(0x1b9) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + '</div>\x0a\x20\x20\x20' + _0x12313c(_0x2dc88f._0x1d2238));
+    }
+    function renderBooks(_0x209567) {
+        const _0x1eb9f6 = _0x4de497;
+        return _0x209567['map']( (_0xf65ef4, _0x44fa12) => _0x1eb9f6(0x77b) + '\x20\x20\x20\x20\x20<div\x20' + _0x1eb9f6(0x7f3) + _0x1eb9f6(0x405) + _0x1eb9f6(0x58b) + _0x1eb9f6(0x6de) + _0x1eb9f6(0x7f3) + 'k-role\x22>' + (BOOK_ROLES[_0x44fa12] || _0x1eb9f6(0x581)) + (_0x1eb9f6(0x2af) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x1eb9f6(0x15c) + 'ass=\x22book-' + _0x1eb9f6(0x50c)) + _0xf65ef4[_0x1eb9f6(0x469)] + (_0x1eb9f6(0x2af) + _0x1eb9f6(0x58b) + _0x1eb9f6(0x15c) + _0x1eb9f6(0x721) + _0x1eb9f6(0x409)) + _0xf65ef4[_0x1eb9f6(0x185)] + (_0x1eb9f6(0x2af) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x1eb9f6(0x15c) + _0x1eb9f6(0x721) + _0x1eb9f6(0x7de)) + _0xf65ef4[_0x1eb9f6(0x4b0)] + ('</div>\x0a\x20\x20\x20' + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x1eb9f6(0x300) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'))[_0x1eb9f6(0x24b)]('');
+    }
+    function renderPrescription(_0xecb73d) {
+        const _0x4b415a = {
+            _0x17440d: 0x452,
+            _0x222e95: 0x4b5,
+            _0x3ebed1: 0x6eb,
+            _0x2a1e82: 0x24b,
+            _0x3e0317: 0x756
+        }
+          , _0x44a92a = _0x4de497
+          , _0x214ea3 = Array[_0x44a92a(_0x4b415a._0x17440d)](_0xecb73d) ? _0xecb73d : [_0xecb73d];
+        return '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x44a92a(0x760) + _0x44a92a(0x21f) + 'ption-list' + '\x22>\x0a\x20\x20\x20\x20\x20\x20\x20' + _0x44a92a(_0x4b415a._0x222e95) + _0x214ea3[_0x44a92a(_0x4b415a._0x3ebed1)]( (_0x4f7b9f, _0x2575f5) => '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x44a92a(0x57a) + _0x44a92a(0x3c4) + _0x44a92a(0x1fc) + 'ion-item\x22>' + '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x44a92a(0x58b) + '\x20<div\x20clas' + _0x44a92a(0x21f) + 'ption-inde' + _0x44a92a(0x1e9) + (_0x2575f5 + (-0x2008 + 0x16 * 0x131 + -0x1 * -0x5d3)) + (_0x44a92a(0x821) + _0x44a92a(0x58b) + '\x20\x20\x20\x20\x20\x20\x20\x20<d' + _0x44a92a(0x6ea) + _0x44a92a(0x211) + _0x44a92a(0x4a2)) + _0x4f7b9f + (_0x44a92a(0x2af) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x44a92a(0x4a3) + _0x44a92a(0x26d) + '\x20\x20\x20\x20\x20\x20\x20\x20'))[_0x44a92a(_0x4b415a._0x2a1e82)]('') + (_0x44a92a(0x77b) + '\x20</div>\x0a\x20\x20' + _0x44a92a(_0x4b415a._0x3e0317));
+    }
+    function renderResult(_0x426b77) {
+        const _0x327a17 = {
+            _0x444cc5: 0x788,
+            _0x4f5e71: 0x3da,
+            _0x31df95: 0x70c,
+            _0x109e87: 0x732,
+            _0x36a758: 0x719,
+            _0x3f13c1: 0x3af,
+            _0x51eb8b: 0x596,
+            _0x3b2843: 0x6ff,
+            _0x44e9a6: 0x2af,
+            _0x23011b: 0x3cf,
+            _0x4d7eff: 0x656,
+            _0x6252b4: 0x1ec,
+            _0x6cfd0f: 0x58b,
+            _0x13a674: 0x760,
+            _0x2ec3b1: 0x239,
+            _0x4033b7: 0x2f8,
+            _0x9728da: 0x185,
+            _0x436c36: 0x1b3,
+            _0x45b9f0: 0x15c,
+            _0x4e5341: 0x3b5,
+            _0xf6d707: 0x1d1,
+            _0x450f73: 0x756,
+            _0xb792a3: 0x25c,
+            _0x14db93: 0x6eb,
+            _0x571f56: 0x77b,
+            _0x329a61: 0x26d,
+            _0x1660d2: 0x29e,
+            _0x125865: 0x61a,
+            _0x355334: 0x6fa,
+            _0x1c0f01: 0x58b,
+            _0x2f4463: 0x5f1,
+            _0xae1c61: 0x644,
+            _0x1beb34: 0x267,
+            _0x57a9f3: 0x77b,
+            _0x206abe: 0x1b9,
+            _0x10c3f3: 0x77b,
+            _0x48d928: 0x15c,
+            _0x12e2ca: 0x3cf,
+            _0x56217d: 0x770,
+            _0x1d8854: 0x21a,
+            _0x47f3bd: 0x1b9,
+            _0x4bbb4d: 0x50b,
+            _0x209f30: 0x2af,
+            _0x4c80ab: 0x7d8,
+            _0x4c0fff: 0x164,
+            _0x441507: 0x795,
+            _0x41b0d3: 0x58b,
+            _0x1b6484: 0x486,
+            _0x1d041a: 0x2df,
+            _0x217f24: 0x602,
+            _0x4505a7: 0x2df,
+            _0x28b268: 0x58b,
+            _0x3afd00: 0x526,
+            _0x4a83eb: 0x36d,
+            _0x1db0d5: 0x58b,
+            _0x36cf68: 0x2af,
+            _0x464213: 0x64d,
+            _0x15fb66: 0x4c6,
+            _0x1f374e: 0x3cc,
+            _0x371bb9: 0x2af,
+            _0x21fa7e: 0x77b,
+            _0x39c194: 0x52e,
+            _0x249aa4: 0x749,
+            _0x2e2db3: 0x77b,
+            _0x247785: 0x57a,
+            _0x168cdd: 0x3c4,
+            _0x2021e7: 0x5c1,
+            _0x538524: 0x5f1,
+            _0x1b9742: 0x386,
+            _0x588a72: 0x57a,
+            _0x1add50: 0x38e,
+            _0x3a3bd0: 0x2e1,
+            _0x557d8b: 0x2af,
+            _0x3d6292: 0x43d,
+            _0xde6745: 0x5fc,
+            _0x6c5d9b: 0x477,
+            _0x482cdd: 0x5a2,
+            _0x5418d5: 0x263,
+            _0x5db6dc: 0x6a3
+        }
+          , _0x31539f = _0x4de497
+          , {primary: _0x52bdae, stats: _0x5deed8} = _0x426b77
+          , _0x7f782f = ARCHETYPE_ORDER[_0x31539f(0x7e2)](_0x52bdae['code']) + (-0x475 * -0x5 + 0x222c + -0x3874)
+          , _0x6c0e04 = ARCHETYPE_ORDER[_0x31539f(_0x327a17._0x444cc5)]
+          , _0x586c57 = PERSONALITY_NOTES[_0x52bdae[_0x31539f(_0x327a17._0x4f5e71)]];
+        document['getElement' + _0x31539f(_0x327a17._0x31df95)](_0x31539f(0x60f))[_0x31539f(0x2d9)] = '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x31539f(0x760) + _0x31539f(0x6b7) + _0x31539f(_0x327a17._0x109e87) + '\x22captureAr' + _0x31539f(_0x327a17._0x36a758) + '\x20\x20\x20\x20\x20\x20\x20<di' + _0x31539f(_0x327a17._0x3f13c1) + _0x31539f(0x2fe) + _0x31539f(0x77b) + _0x31539f(0x6de) + 'class=\x22log' + _0x31539f(0x380) + _0x31539f(0x77d) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x31539f(0x5f1) + _0x31539f(_0x327a17._0x51eb8b) + '.' + String(_0x7f782f)[_0x31539f(_0x327a17._0x3b2843)](-0xfbc * -0x1 + 0x243c + 0x2 * -0x19fb, '0') + _0x31539f(0x6f3) + String(_0x6c0e04)['padStart'](-0x6 * 0x648 + 0x6bf * 0x2 + -0x4 * -0x60d, '0') + (_0x31539f(_0x327a17._0x44e9a6) + _0x31539f(0x57a) + _0x31539f(0x3d7) + _0x31539f(0x57a) + 'div\x20class=' + '\x22hero\x22>\x0a\x20\x20' + _0x31539f(0x58b) + _0x31539f(_0x327a17._0x23011b) + _0x31539f(_0x327a17._0x4d7eff) + _0x31539f(0x51c) + _0x31539f(0x180) + _0x31539f(0x26d) + _0x31539f(0x746) + _0x31539f(0x372) + _0x31539f(_0x327a17._0x6252b4) + '\x22>') + _0x52bdae[_0x31539f(0x54e)] + (_0x31539f(_0x327a17._0x44e9a6) + _0x31539f(_0x327a17._0x6cfd0f) + _0x31539f(_0x327a17._0x13a674) + _0x31539f(_0x327a17._0x2ec3b1) + _0x31539f(_0x327a17._0x4033b7)) + _0x52bdae[_0x31539f(_0x327a17._0x9728da)] + _0x31539f(_0x327a17._0x436c36) + _0x52bdae['source'] + (_0x31539f(0x1bc) + _0x31539f(0x58b) + _0x31539f(_0x327a17._0x45b9f0) + _0x31539f(0x152) + _0x31539f(_0x327a17._0x4e5341)) + _0x52bdae[_0x31539f(_0x327a17._0xf6d707)] + (_0x31539f(0x2af) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + '\x20<div\x20clas' + 's=\x22tags\x22>\x0a' + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x31539f(_0x327a17._0x450f73)) + _0x52bdae[_0x31539f(_0x327a17._0xb792a3)][_0x31539f(_0x327a17._0x14db93)](_0x4fecb9 => _0x31539f(0x7da) + _0x31539f(0x659) + _0x4fecb9 + '</span>')[_0x31539f(0x24b)]('') + (_0x31539f(_0x327a17._0x571f56) + '\x20\x20\x20\x20\x20</div' + _0x31539f(_0x327a17._0x329a61) + _0x31539f(0x735) + _0x31539f(_0x327a17._0x1660d2) + _0x31539f(_0x327a17._0x125865) + _0x31539f(0x23f) + _0x31539f(_0x327a17._0x355334) + _0x31539f(_0x327a17._0x1c0f01) + _0x31539f(_0x327a17._0x2f4463) + _0x31539f(_0x327a17._0xae1c61) + _0x31539f(0x428)) + titleWithIcon(_0x31539f(0x2f0), '灵魂素描') + ('</div>\x0a\x20\x20\x20' + _0x31539f(_0x327a17._0x6cfd0f) + '\x20') + _0x52bdae[_0x31539f(_0x327a17._0x1beb34)][_0x31539f(0x6eb)](_0x133720 => '<p\x20class=\x22' + 'persona-te' + 'xt\x22>' + _0x133720 + _0x31539f(0x16a))[_0x31539f(0x24b)]('') + (_0x31539f(_0x327a17._0x57a9f3) + _0x31539f(_0x327a17._0x206abe) + _0x31539f(_0x327a17._0x10c3f3) + _0x31539f(_0x327a17._0x48d928) + 'ass=\x22meter' + _0x31539f(0x281) + _0x31539f(0x58b) + _0x31539f(_0x327a17._0x12e2ca) + _0x31539f(0x4a7) + _0x31539f(_0x327a17._0x56217d)) + titleWithIcon(_0x31539f(0x7aa) + 's', _0x31539f(_0x327a17._0x1d8854)) + (_0x31539f(_0x327a17._0x44e9a6) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + '\x20') + renderRadar(_0x5deed8) + ('\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x31539f(_0x327a17._0x47f3bd) + _0x31539f(0x77b) + _0x31539f(0x15c) + _0x31539f(0x46e) + _0x31539f(0x533) + _0x31539f(0x26d) + _0x31539f(0x746) + _0x31539f(0x4c6) + 'ction-kick' + _0x31539f(_0x327a17._0x4bbb4d)) + titleWithIcon(_0x31539f(0x6fd), _0x31539f(0x2c5)) + (_0x31539f(_0x327a17._0x209f30) + _0x31539f(_0x327a17._0x1c0f01) + _0x31539f(_0x327a17._0x4c80ab) + _0x31539f(_0x327a17._0x4c0fff) + '>') + _0x52bdae['modern'] + ('</p>\x0a\x20\x20\x20\x20\x20' + _0x31539f(0x1fa) + 'iv>\x0a\x0a\x20\x20\x20\x20\x20' + '\x20\x20\x20\x20\x20\x20\x20<di' + _0x31539f(0x69c) + 'elation-gr' + _0x31539f(0x7d6) + _0x31539f(0x57a) + _0x31539f(0x3c4) + _0x31539f(0x2fc) + _0x31539f(_0x327a17._0x441507) + _0x31539f(_0x327a17._0x41b0d3) + _0x31539f(0x15c) + _0x31539f(_0x327a17._0x1b6484) + _0x31539f(0x66d) + '>') + titleWithIcon(_0x31539f(_0x327a17._0x1d041a), _0x31539f(0x4fe)) + (_0x31539f(0x2af) + _0x31539f(0x58b) + _0x31539f(_0x327a17._0x48d928) + 'ass=\x22relat' + _0x31539f(_0x327a17._0x217f24)) + _0x586c57[_0x31539f(_0x327a17._0x4505a7)] + (_0x31539f(0x2af) + _0x31539f(_0x327a17._0x28b268) + _0x31539f(0x300) + _0x31539f(_0x327a17._0x1c0f01) + _0x31539f(0x3cf) + _0x31539f(_0x327a17._0x3afd00) + _0x31539f(_0x327a17._0x4a83eb) + _0x31539f(_0x327a17._0x1db0d5) + _0x31539f(0x746) + _0x31539f(0x53b) + _0x31539f(0x349) + 'el\x22>') + titleWithIcon(_0x31539f(0x3d8), _0x31539f(0x268)) + (_0x31539f(_0x327a17._0x36cf68) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x31539f(0x15c) + _0x31539f(0x486) + _0x31539f(_0x327a17._0x217f24)) + _0x586c57[_0x31539f(0x3d8)] + ('</div>\x0a\x20\x20\x20' + _0x31539f(0x58b) + '\x20</div>\x0a\x20\x20' + _0x31539f(0x58b) + _0x31539f(_0x327a17._0x464213) + _0x31539f(0x58b) + _0x31539f(0x5f1) + _0x31539f(0x4f7) + _0x31539f(0x26d) + _0x31539f(0x746) + _0x31539f(_0x327a17._0x15fb66) + _0x31539f(0x7c9) + _0x31539f(_0x327a17._0x4bbb4d)) + titleWithIcon(_0x31539f(0x211) + 'on', _0x31539f(_0x327a17._0x1f374e)) + (_0x31539f(_0x327a17._0x371bb9) + '\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20' + '\x20') + renderPrescription(_0x52bdae[_0x31539f(0x211) + 'on']) + (_0x31539f(_0x327a17._0x21fa7e) + _0x31539f(0x1b9) + '\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20' + _0x31539f(_0x327a17._0x48d928) + _0x31539f(_0x327a17._0x39c194) + _0x31539f(0x5ed) + _0x31539f(0x546) + _0x31539f(0x1b6) + _0x31539f(_0x327a17._0x249aa4) + _0x31539f(0x59d)) + titleWithIcon(_0x31539f(0x6da), _0x31539f(0x7d1)) + (_0x31539f(_0x327a17._0x44e9a6) + _0x31539f(0x58b) + '\x20') + renderBooks(_0x52bdae['books']) + (_0x31539f(0x77b) + '\x20\x20\x20</div>\x0a' + _0x31539f(_0x327a17._0x2e2db3) + '\x20</div>\x0a\x0a\x20' + _0x31539f(_0x327a17._0x247785) + _0x31539f(_0x327a17._0x168cdd) + _0x31539f(_0x327a17._0x2021e7) + 'tions\x22>\x0a\x20\x20' + _0x31539f(_0x327a17._0x1db0d5) + _0x31539f(_0x327a17._0x538524) + _0x31539f(_0x327a17._0x1b9742) + _0x31539f(0x37d) + _0x31539f(_0x327a17._0x588a72) + _0x31539f(0x6e2) + _0x31539f(0x785) + _0x31539f(_0x327a17._0x1add50) + _0x31539f(0x5fb) + 'artQuiz()\x22' + '>重\x20新\x20测\x20试</' + _0x31539f(_0x327a17._0x3a3bd0) + _0x31539f(0x58b) + _0x31539f(_0x327a17._0x557d8b) + _0x31539f(0x57a) + _0x31539f(0x3c4) + _0x31539f(_0x327a17._0x3d6292) + 't\x22>\x0a\x20\x20\x20\x20\x20\x20' + _0x31539f(_0x327a17._0xde6745) + 'utton\x20clas' + _0x31539f(0x7d7) + 'tn\x22\x20id=\x22sh' + _0x31539f(_0x327a17._0x6c5d9b) + '\x22\x20onclick=' + _0x31539f(0x4aa) + _0x31539f(_0x327a17._0x482cdd) + _0x31539f(_0x327a17._0x5418d5) + _0x31539f(0x755) + _0x31539f(0x348) + _0x31539f(_0x327a17._0x5db6dc) + _0x31539f(_0x327a17._0x206abe) + _0x31539f(0x3d5));
+    }
+    async function generateCard() {
+        const _0x59b8e3 = {
+            _0x1b2576: 0x70c,
+            _0x4c8d12: 0x204,
+            _0x415f1e: 0x7cb,
+            _0x25e817: 0x6f1,
+            _0x9447ce: 0x184,
+            _0x53d76f: 0x58a,
+            _0x57d868: 0x69e,
+            _0x239b88: 0x224,
+            _0x5e8704: 0x4d6,
+            _0x369714: 0x34c,
+            _0x4eab68: 0x757,
+            _0x441496: 0x4a5,
+            _0x17c672: 0x2be,
+            _0x5e191f: 0x422,
+            _0x3a9f80: 0x3a4,
+            _0x52c359: 0x23d,
+            _0x2856e4: 0x750,
+            _0x5bcddc: 0x745,
+            _0x318342: 0x818,
+            _0x3ed846: 0x5ac,
+            _0x4d5415: 0x253,
+            _0x50f2c9: 0x1ab,
+            _0x3735ac: 0x33f,
+            _0x509429: 0x7cb
+        }
+          , _0x1197ab = _0x4de497
+          , _0x28014f = document['getElement' + _0x1197ab(0x70c)](_0x1197ab(0x57c) + 'a')
+          , _0x479a5a = document[_0x1197ab(0x52d) + _0x1197ab(_0x59b8e3._0x1b2576)]('shareTrigg' + 'er')
+          , _0x140e88 = _0x479a5a[_0x1197ab(0x204) + 't'];
+        let _0x1bb4da = null;
+        _0x479a5a[_0x1197ab(_0x59b8e3._0x4c8d12) + 't'] = _0x1197ab(0x614),
+        _0x479a5a[_0x1197ab(_0x59b8e3._0x415f1e)] = !![];
+        try {
+            _0x1bb4da = _0x28014f[_0x1197ab(_0x59b8e3._0x25e817)](!![]),
+            _0x1bb4da['id'] = 'captureAre' + _0x1197ab(_0x59b8e3._0x9447ce),
+            _0x1bb4da['style'][_0x1197ab(_0x59b8e3._0x53d76f)] = _0x1197ab(0x48e),
+            _0x1bb4da[_0x1197ab(_0x59b8e3._0x57d868)][_0x1197ab(_0x59b8e3._0x239b88)] = _0x1197ab(_0x59b8e3._0x5e8704),
+            _0x1bb4da['style'][_0x1197ab(_0x59b8e3._0x369714)] = '0',
+            _0x1bb4da['style'][_0x1197ab(_0x59b8e3._0x4eab68)] = _0x28014f[_0x1197ab(_0x59b8e3._0x441496) + 'h'] + 'px',
+            _0x1bb4da[_0x1197ab(0x69e)][_0x1197ab(0x824)] = _0x28014f['offsetWidt' + 'h'] + 'px',
+            _0x1bb4da['style'][_0x1197ab(_0x59b8e3._0x17c672)] = '-1',
+            _0x1bb4da[_0x1197ab(_0x59b8e3._0x57d868)]['pointerEve' + _0x1197ab(_0x59b8e3._0x5e191f)] = _0x1197ab(_0x59b8e3._0x3a9f80),
+            _0x1bb4da[_0x1197ab(0x69e)][_0x1197ab(_0x59b8e3._0x52c359)] = _0x1197ab(_0x59b8e3._0x2856e4),
+            document['body']['appendChil' + 'd'](_0x1bb4da),
+            await new Promise(_0x839107 => setTimeout(_0x839107, 0x12c0 + -0x126b + -0x1 * 0x19));
+            const _0x107ec5 = await html2canvas(_0x1bb4da, {
+                'backgroundColor': '#faf7f1',
+                'scale': 0x2,
+                'useCORS': !![],
+                'logging': ![],
+                'windowWidth': _0x1bb4da[_0x1197ab(_0x59b8e3._0x5bcddc) + 'h'],
+                'windowHeight': _0x1bb4da[_0x1197ab(_0x59b8e3._0x318342) + 'ht']
+            });
+            document[_0x1197ab(0x52d) + _0x1197ab(0x70c)](_0x1197ab(_0x59b8e3._0x3ed846))[_0x1197ab(0x6b4)] = _0x107ec5[_0x1197ab(0x36f)](_0x1197ab(0x392)),
+            document[_0x1197ab(0x52d) + _0x1197ab(0x70c)](_0x1197ab(0x542))[_0x1197ab(_0x59b8e3._0x4d5415)][_0x1197ab(_0x59b8e3._0x50f2c9)]('active');
+        } catch (_0x2004d4) {
+            alert(_0x1197ab(0x3c0) + '以先截图结果页。'),
+            console[_0x1197ab(_0x59b8e3._0x3735ac)](_0x2004d4);
+        } finally {
+            if (_0x1bb4da)
+                _0x1bb4da[_0x1197ab(0x2c1)]();
+            _0x479a5a['textConten' + 't'] = _0x140e88,
+            _0x479a5a[_0x1197ab(_0x59b8e3._0x509429)] = ![];
+        }
+    }
+    function closeShare() {
+        const _0x2182d4 = {
+            _0x4c0d42: 0x52d,
+            _0x32d26f: 0x253,
+            _0x66f2e: 0x57d
+        }
+          , _0x56f147 = _0x4de497;
+        document[_0x56f147(_0x2182d4._0x4c0d42) + 'ById']('shareModal')[_0x56f147(_0x2182d4._0x32d26f)][_0x56f147(0x2c1)](_0x56f147(_0x2182d4._0x66f2e));
+    }
+    function restartQuiz() {
+        const _0x3a7182 = {
+            _0x170288: 0x5be
+        }
+          , _0x25cf1f = _0x4de497;
+        currentQ = -0x11dd + -0x7 * -0x2bb + -0x140,
+        answers = new Array(QUESTIONS['length'])[_0x25cf1f(_0x3a7182._0x170288)](null),
+        userVec = [0x1 * -0x156d + 0x1919 + -0x3ac, 0x3 * 0xa42 + 0x1a4f + -0x3915, -0x2488 + 0x2106 + 0x382, 0xc93 + 0x473 * -0x1 + -0x820, -0xc51 + -0x13ad + -0x5b * -0x5a],
+        switchScreen(_0x25cf1f(0x5a4));
+    }
+    document[_0x4de497(0x52d) + _0x4de497(0x70c)]('shareModal')[_0x4de497(0x51d) + _0x4de497(0x5c3)](_0x4de497(0x5bf), _0x9a0cbb => {
+        const _0x3b49b2 = _0x4de497;
+        if (_0x9a0cbb[_0x3b49b2(0x511)]['id'] === 'shareModal')
+            closeShare();
+    }
+    );
+</script>
+</body>
+</html>
