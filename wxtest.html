@@ -5,7 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>LITERATURE · 文学人物原型测试</title>
     <meta name="description" content="一份完整度更高的文学人物原型测试。24 道题，匹配 16 种文学人物侧面。"/>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        function loadHtml2Canvas() {
+            if (typeof window.html2canvas === 'function') {
+                return Promise.resolve(window.html2canvas);
+            }
+            if (window.html2CanvasLoadPromise) {
+                return window.html2CanvasLoadPromise;
+            }
+
+            window.html2CanvasLoadPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                const fail = () => {
+                    window.html2CanvasLoadPromise = null;
+                    reject(new Error('html2canvas 加载失败'));
+                };
+
+                script.src = './vendor/html2canvas.min.js';
+                script.async = true;
+                script.onload = () => {
+                    if (typeof window.html2canvas === 'function') {
+                        resolve(window.html2canvas);
+                    } else {
+                        fail();
+                    }
+                };
+                script.onerror = fail;
+                document.head.appendChild(script);
+            });
+
+            return window.html2CanvasLoadPromise;
+        }
+    </script>
     <style>
         html {
             -webkit-text-size-adjust: 100%;
@@ -2443,6 +2474,7 @@
         _0x479a5a[_0x1197ab(_0x59b8e3._0x4c8d12) + 't'] = _0x1197ab(0x614),
         _0x479a5a[_0x1197ab(_0x59b8e3._0x415f1e)] = !![];
         try {
+            await loadHtml2Canvas();
             _0x1bb4da = _0x28014f[_0x1197ab(_0x59b8e3._0x25e817)](!![]),
             _0x1bb4da['id'] = 'captureAre' + _0x1197ab(_0x59b8e3._0x9447ce),
             _0x1bb4da['style'][_0x1197ab(_0x59b8e3._0x53d76f)] = _0x1197ab(0x48e),
